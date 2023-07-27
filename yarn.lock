@@ -758,10 +758,10 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@nosana/sdk@^0.1.35":
-  version "0.1.35"
-  resolved "https://registry.yarnpkg.com/@nosana/sdk/-/sdk-0.1.35.tgz#35f710da16f60e7ce7017bc56ef49e1fb0bcf200"
-  integrity sha512-wyI48qGxwNjSI/Mq9cg2B1WdiqlLj+HC6zE1BoMyCET5B6Xt4SprAJznlF9zcJ0Jlys8MLY3tUCinDOOqx/b0w==
+"@nosana/sdk@^0.1.37":
+  version "0.1.37"
+  resolved "https://registry.yarnpkg.com/@nosana/sdk/-/sdk-0.1.37.tgz#4f7943a4bfe22066235abaf1b045c7df95d800ec"
+  integrity sha512-ozsVG5uGOfKqBBk4+QSJTtbVg8KWFu42HNjkOuGNq+XO56cnEZMPeFiK774E5xmB01rHMQE5EwWMcoJmtsSxMg==
   dependencies:
     "@coral-xyz/anchor" "^0.28.1-beta.1"
     "@solana/web3.js" "^1.78.0"
