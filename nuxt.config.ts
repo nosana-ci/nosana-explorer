@@ -8,4 +8,12 @@ export default defineNuxtConfig({
       Lexend: [300, 400, 700],
     },
   },
+  vite: {
+    server: {
+      fs: {
+        // Allow serving files from one level up to the project root
+        allow: ['..'],
+      },
+    },
+  },
 });
