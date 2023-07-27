@@ -1,5 +1,5 @@
 {
-  "name": "Nosana Explorer",
+  "name": "nosana-explorer",
   "private": true,
   "scripts": {
     "build": "nuxt build",
