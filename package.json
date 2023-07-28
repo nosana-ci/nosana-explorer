@@ -24,6 +24,6 @@
     "typescript": "^5.1.6"
   },
   "dependencies": {
-    "@nosana/sdk": "^0.1.38"
+    "@nosana/sdk": "^0.1.39"
   }
 }
