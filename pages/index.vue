@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Nosana Explorer</h1>
+    <h1 class="title is-2">Nosana Explorer</h1>
     Solana {{ nosana.solana.config.network }}
     <h2>Jobs</h2>
     <div v-if="jobs">Total jobs {{ jobs.length }}</div>
