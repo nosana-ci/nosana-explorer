@@ -1,35 +1,50 @@
 <template>
-  <section class="py-6">
+  <section class="py-6 section">
     <div class="container">
       <h1 class="title is-2">Nosana Explorer</h1>
       <p>Solana {{ nosana.solana.config.network }}</p>
       <h2 class="subtitle is-4 mt-4 mb-1">Jobs</h2>
       <div v-if="jobs">Total jobs {{ jobs.length }}</div>
-      <div v-if="jobs && jobs.length > perPage" class="mb-3">
-        <nav
-          class="pagination is-centered"
-          role="navigation"
-          aria-label="pagination"
-          style="width: 400px"
-        >
-          <button
-            :disabled="page < 2"
+      <pagination
+        v-if="jobs && jobs.length > perPage"
+        v-model="page"
+        class="pagination is-centered"
+        :total-page="Math.ceil(jobs.length / perPage)"
+        :max-page="6"
+      >
+        <template #prev-button="{ changePage }">
+          <a
             class="pagination-previous"
-            @click="page--"
+            :disabled="page < 2 ? true : null"
+            @click="changePage('-')"
+            >Previous</a
           >
-            Previous
-          </button>
-          Page {{ page }} of
-          {{ Math.ceil(jobs.length / perPage) }}
-          <button
-            :disabled="page >= Math.ceil(jobs.length / perPage)"
+        </template>
+        <template #default="{ pagination, changePage }">
+          <ul class="pagination-list">
+            <li v-for="i in pagination" :key="i">
+              <span v-if="i === '...'" class="pagination-ellipsis"
+                >&hellip;</span
+              >
+              <a
+                v-else
+                class="pagination-link"
+                :class="page == i ? 'is-current has-text-weight-bold' : ''"
+                @click="changePage(i)"
+                >{{ i }}</a
+              >
+            </li>
+          </ul>
+        </template>
+        <template #next-button="{ changePage }">
+          <a
+            :disabled="page >= Math.ceil(jobs.length / perPage) ? true : null"
             class="pagination-next"
-            @click="page++"
+            @click="changePage('+')"
+            >Next</a
           >
-            Next page
-          </button>
-        </nav>
-      </div>
+        </template>
+      </pagination>
       <div v-if="loading">Loading jobs..</div>
       <div v-else-if="filteredJobs">
         <div v-for="(job, i) in filteredJobs" :key="job">

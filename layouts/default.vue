@@ -1,6 +1,6 @@
 <template>
   <div>
     <slot />
-    <Footer />
+    <SiteFooter />
   </div>
 </template>

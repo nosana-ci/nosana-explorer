@@ -2,45 +2,33 @@
 @import 'bulma/sass/utilities/initial-variables';
 @import 'bulma/sass/utilities/functions';
 
+$family-sans-serif: 'Lexend', sans-serif;
+
 // Colors
-$primary: #1c282a;
-$secondary: #20cf8d;
-$accent: #5FFF00;
+$primary: #2feb2b;
 
-$secondary-invert: findColorInvert($secondary) !default;
-$accent-invert: findColorInvert($accent) !default;
+$link: $primary;
+$link-hover: lighten($primary, 20%);
+$link-focus: lighten($primary, 20%);
+$link-active: lighten($primary, 20%);
 
-$container-max-width: 1080px;
+// $title-weight: 600;
+// $title-color: $primary;
 
-$custom-colors: (
-  "secondary":($secondary, $secondary-invert),
-  "accent":($accent, $accent-invert),
-);
+// $body-line-height: 1.7;
+// $button-padding-horizontal: 1.7em;
+// $button-text-color: $accent;
 
-$text: $primary;
+// $dark-mode-background: #010C04;
 
-$link: $accent;
-$link-hover: lighten($accent, 20%);
-$link-focus: lighten($accent, 20%);
-$link-active: lighten($accent, 20%);
+// $navbar-height: 5rem;
+// $control-border-width: 2px;
+// $footer-background-color: transparent;
+// $input-background-color: rgba($accent, 0.08);
+// $input-color: white;
 
-$title-weight: 600;
-$title-color: $primary;
+// $box-color: white;
+// $box-background-color: #021207;
+// $label-weight: 400;
 
-$body-line-height: 1.7;
-$button-padding-horizontal: 1.7em;
-$button-text-color: $accent;
-
-$dark-mode-background: #010C04;
-
-$navbar-height: 5rem;
-$control-border-width: 2px;
-$footer-background-color: transparent;
-$input-background-color: rgba($accent, 0.08);
-$input-color: white;
-
-$box-color: white;
-$box-background-color: #021207;
-$label-weight: 400;
-
-$background-gradient: linear-gradient(180deg, rgba(18,54,3,1) 0%, rgba(10,10,10,0) 35%);
+// $background-gradient: linear-gradient(180deg, rgba(18,54,3,1) 0%, rgba(10,10,10,0) 35%);
