@@ -24,6 +24,7 @@
     "typescript": "^5.1.6"
   },
   "dependencies": {
-    "@nosana/sdk": "^0.1.41"
+    "@nosana/sdk": "^0.1.41",
+    "bulma": "^0.9.4"
   }
 }
