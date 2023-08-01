@@ -38,7 +38,6 @@
 </template>
 
 <script setup lang="ts">
-import * as buffer from 'buffer';
 const nosana = useSDK();
 const loading = ref(false);
 const jobs: Ref<Array<any>> | Ref<null> = ref(null);
@@ -46,13 +45,6 @@ const jobData = ref([]);
 
 const page: Ref<number> = ref(1);
 const perPage: Ref<number> = ref(10);
-
-// this is needed to prevent the error: 'Uncaught ReferenceError: Buffer is not defined' when using getRuns in the SDK
-onMounted(() =>
-  nextTick(() => {
-    window.Buffer = buffer.Buffer;
-  }),
-);
 
 const getJobs = async () => {
   loading.value = true;
