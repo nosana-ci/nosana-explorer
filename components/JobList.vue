@@ -47,7 +47,7 @@
                   </span>
                   <span v-else> - </span>
                 </td>
-                <td>{{ jobData[i].state }}</td>
+                <td><JobStatus :status="jobData[i].state"></JobStatus></td>
               </template>
               <td v-else colspan="3">Could not load job data</td>
             </tr>
@@ -68,6 +68,7 @@
 
 <script setup lang="ts">
 import { UseTimeAgo } from '@vueuse/components';
+import { Job } from '@nosana/sdk';
 
 const nosana = useSDK();
 const timestamp = useTimestamp({ interval: 1000 });
@@ -82,7 +83,7 @@ const props = defineProps({
 });
 
 const loading = ref(false);
-const jobData = ref([]);
+const jobData: Ref<Array<Job>> = ref([]);
 
 const page: Ref<number> = ref(1);
 const perPage: Ref<number> = ref(25);

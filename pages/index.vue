@@ -17,7 +17,7 @@
 <script setup lang="ts">
 const nosana = useSDK();
 const loading = ref(false);
-const jobs: Ref<Array<any>> | Ref<null> = ref(null);
+const jobs: Ref<Array<any> | null> = ref(null);
 
 const getJobs = async () => {
   loading.value = true;
