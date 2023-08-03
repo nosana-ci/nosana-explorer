@@ -35,7 +35,7 @@
                   <span v-else>-</span>
                 </td>
                 <td class="is-family-monospace">
-                  <span v-if="jobData[i].timeEndd">
+                  <span v-if="jobData[i].timeEnd">
                     {{ fmtMSS(jobData[i].timeEnd - jobData[i].timeStart) }}
                   </span>
                   <span v-else-if="jobData[i].timeStart">
