@@ -24,7 +24,7 @@
         <nuxt-link
           v-for="job in filteredJobs"
           :key="job.pubkey"
-          :to="`/job/${job}`"
+          :to="`/job/${job.pubkey}`"
           custom
         >
           <template #default="{ navigate }">
