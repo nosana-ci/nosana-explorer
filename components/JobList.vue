@@ -12,7 +12,7 @@
       </thead>
       <tbody>
         <nuxt-link
-          v-for="(job, i) in filteredJobs"
+          v-for="job in filteredJobs"
           :key="job.pubkey"
           :to="`/job/${job}`"
           custom
@@ -26,33 +26,41 @@
               <td class="is-family-monospace">
                 {{ job.pubkey }}
               </td>
-              <td v-if="loading" colspan="3">Loading job data..</td>
-              <template v-else-if="jobData[i]">
+              <template v-if="jobData[job.pubkey]">
                 <td>
                   <UseTimeAgo
-                    v-if="jobData[i].timeStart"
+                    v-if="jobData[job.pubkey].timeStart"
                     v-slot="{ timeAgo }"
-                    :time="new Date(jobData[i].timeStart * 1000)"
+                    :time="new Date(jobData[job.pubkey].timeStart * 1000)"
                   >
                     {{ timeAgo }}
                   </UseTimeAgo>
                   <span v-else>-</span>
                 </td>
                 <td class="is-family-monospace">
-                  <span v-if="jobData[i].timeEnd">
-                    {{ fmtMSS(jobData[i].timeEnd - jobData[i].timeStart) }}
-                  </span>
-                  <span v-else-if="jobData[i].timeStart">
+                  <span v-if="jobData[job.pubkey].timeEnd">
                     {{
                       fmtMSS(
-                        Math.floor(timestamp / 1000) - jobData[i].timeStart,
+                        jobData[job.pubkey].timeEnd -
+                          jobData[job.pubkey].timeStart,
+                      )
+                    }}
+                  </span>
+                  <span v-else-if="jobData[job.pubkey].timeStart">
+                    {{
+                      fmtMSS(
+                        Math.floor(timestamp / 1000) -
+                          jobData[job.pubkey].timeStart,
                       )
                     }}
                   </span>
                   <span v-else> - </span>
                 </td>
-                <td><JobStatus :status="jobData[i].state"></JobStatus></td>
+                <td>
+                  <JobStatus :status="jobData[job.pubkey].state"></JobStatus>
+                </td>
               </template>
+              <td v-else-if="loading" colspan="3">Loading job data..</td>
               <td v-else colspan="3">Could not load job data</td>
             </tr>
           </template>
@@ -87,7 +95,7 @@ const props = defineProps({
 });
 
 const loading = ref(false);
-const jobData: Ref<Array<Job>> = ref([]);
+const jobData: Ref<{ [key: string]: Job }> = ref({});
 
 const page: Ref<number> = ref(1);
 const perPage: Ref<number> = ref(25);
@@ -98,16 +106,32 @@ const filteredJobs = computed(() => {
     (page.value - 1) * perPage.value,
     page.value * perPage.value,
   );
-  getJobData(paginatedJobs.map((job) => job.pubkey));
+
   return paginatedJobs;
 });
 
 const getJobData = async (jobs: Array<any>) => {
   loading.value = true;
-  jobData.value = [];
-  jobData.value = await nosana.solana.getMultipleJobs(jobs);
+  const newJobData = await nosana.solana.getMultipleJobs(jobs);
+  for (let i = 0; i < jobs.length; i++) {
+    jobData.value[jobs[i]] = newJobData[i];
+  }
   loading.value = false;
 };
+
+watch(
+  filteredJobs,
+  (current) => {
+    const refreshJobs = current.filter((job) => {
+      const data = jobData.value[job.pubkey];
+      return !data || data.state === 'RUNNING' || data.state === 'QUEUED';
+    });
+    if (refreshJobs.length) {
+      getJobData(refreshJobs.map((job) => job.pubkey));
+    }
+  },
+  { immediate: true },
+);
 </script>
 
 <style lang="scss" scoped>

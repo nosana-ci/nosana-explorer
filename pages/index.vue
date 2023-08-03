@@ -26,11 +26,12 @@ watch(visibility, (current, previous) => {
   if (current === 'visible' && previous === 'hidden') {
     if (jobs.value) {
       for (let i = 0; i < jobs.value.length; i++) {
-        if (jobs.value[i].new === 0) {
+        if (jobs.value[i].new >= 0) {
           jobs.value[i].new = 1;
         }
       }
     }
+    getJobs();
   }
 });
 
