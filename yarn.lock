@@ -298,6 +298,11 @@
     "@babel/helper-validator-identifier" "^7.22.5"
     to-fast-properties "^2.0.0"
 
+"@bufbuild/protobuf@^1.0.0":
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/@bufbuild/protobuf/-/protobuf-1.3.0.tgz#69f675c76e6c1ab0b5bde141fa2df8b00927216a"
+  integrity sha512-G372ods0pLt46yxVRsnP/e2btVPuuzArcMPFpIDeIwiGPuuglEs9y75iG0HMvZgncsj5TvbYRWqbVyOe3PLCWQ==
+
 "@cloudflare/kv-asset-handler@^0.3.0":
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/@cloudflare/kv-asset-handler/-/kv-asset-handler-0.3.0.tgz#11f0af0749a400ddadcca16dcd6f4696d7036991"
@@ -2127,6 +2132,11 @@ buffer-alloc@^1.2.0:
     buffer-alloc-unsafe "^1.1.0"
     buffer-fill "^1.0.0"
 
+buffer-builder@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/buffer-builder/-/buffer-builder-0.2.0.tgz#3322cd307d8296dab1f604618593b261a3fade8f"
+  integrity sha512-7VPMEPuYznPSoR21NE1zvd2Xna6c/CloiZCfcMXR1Jny6PjX0N4Nsa38zcBFo/FMK+BlA+FLKbJCQ0i2yxp+Xg==
+
 buffer-crc32@^0.2.1, buffer-crc32@^0.2.13, buffer-crc32@~0.2.3:
   version "0.2.13"
   resolved "https://registry.yarnpkg.com/buffer-crc32/-/buffer-crc32-0.2.13.tgz#0d333e3f00eac50aa1454abd30ef8c2a5d9a7242"
@@ -2301,7 +2311,7 @@ chalk@^5.2.0, chalk@^5.3.0:
   resolved "https://registry.yarnpkg.com/chalk/-/chalk-5.3.0.tgz#67c20a7ebef70e7f3970a01f90fa210cb6860385"
   integrity sha512-dLitG79d+GV1Nb/VYcCDFivJeK1hiukt9QjRNVOsUtTy1rR1YJsmpGGTZ3qJos+uw7WmWF4wUwBd9jxjocFC2w==
 
-"chokidar@>=3.0.0 <4.0.0", chokidar@^3.5.1, chokidar@^3.5.3:
+chokidar@^3.5.1, chokidar@^3.5.3:
   version "3.5.3"
   resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-3.5.3.tgz#1cf37c8707b932bd1af1ae22c0432e2acd1903bd"
   integrity sha512-Dr3sfKRP6oTcjf2JmUmFJfeVMvXBdegxB0iVQ5eb2V10uFJUCAS8OByZdVAyVb8xXNz3GjjTgj9kLWsZTqE6kw==
@@ -6424,7 +6434,7 @@ run-parallel@^1.1.9:
   dependencies:
     queue-microtask "^1.2.2"
 
-rxjs@^7.8.0:
+rxjs@^7.4.0, rxjs@^7.8.0:
   version "7.8.1"
   resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-7.8.1.tgz#6f6f3d99ea8044291efd92e7c7fcf562c4057543"
   integrity sha512-AA3TVj+0A2iuIoQkWEK/tqFjBq2j+6PO6Y0zJcvzLAFhEFIO3HL0vls9hWLncZbAAbK0mar7oZ4V079I/qPMxg==
@@ -6472,14 +6482,66 @@ safe-regex@^2.1.1:
   resolved "https://registry.yarnpkg.com/safer-buffer/-/safer-buffer-2.1.2.tgz#44fa161b0187b9549dd84bb91802f9bd8385cd6a"
   integrity sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==
 
-sass@^1.64.1:
-  version "1.64.1"
-  resolved "https://registry.yarnpkg.com/sass/-/sass-1.64.1.tgz#6a46f6d68e0fa5ad90aa59ce025673ddaa8441cf"
-  integrity sha512-16rRACSOFEE8VN7SCgBu1MpYCyN7urj9At898tyzdXFhC+a+yOX5dXwAR7L8/IdPJ1NB8OYoXmD55DM30B2kEQ==
+sass-embedded-darwin-arm64@1.64.2:
+  version "1.64.2"
+  resolved "https://registry.yarnpkg.com/sass-embedded-darwin-arm64/-/sass-embedded-darwin-arm64-1.64.2.tgz#9eb26de60696c49e883ecc83a3cc141b6dcc1c87"
+  integrity sha512-fcshwAvM+FOMSe6yU2w27+cZXPdzgCucAMAfB+dgDhI6kLHCpJpiUI+vsdhA+kOGH4T6FuuaYTRuj6wOBv9Lug==
+
+sass-embedded-darwin-x64@1.64.2:
+  version "1.64.2"
+  resolved "https://registry.yarnpkg.com/sass-embedded-darwin-x64/-/sass-embedded-darwin-x64-1.64.2.tgz#03dff82bc06ba7860721750cff89394d95f57543"
+  integrity sha512-4tyadrM8MeE1PPHum4yUTnAoxNhAdVZ+0IAhJyLfoP/PlPwc4OP6wjqZT9cjpynRRAv7eHJt8jcAzN3FDrT1mQ==
+
+sass-embedded-linux-arm64@1.64.2:
+  version "1.64.2"
+  resolved "https://registry.yarnpkg.com/sass-embedded-linux-arm64/-/sass-embedded-linux-arm64-1.64.2.tgz#8668ac82a7af0c79cb892f78f6f02c5e0b54198c"
+  integrity sha512-unWmtcfBqk4PdAV+WRwaxeNAcNQUVlbVGvt5uXcfzbaF4gLZq+hDw41TmhuQFailgljLTa3TJ8ApubFk79um2w==
+
+sass-embedded-linux-arm@1.64.2:
+  version "1.64.2"
+  resolved "https://registry.yarnpkg.com/sass-embedded-linux-arm/-/sass-embedded-linux-arm-1.64.2.tgz#6edc222fb97e50adb57b5ec0579f8794b705c082"
+  integrity sha512-/aqnEvwTxtE7Qg/PIr5B50Yk4j/69NveEsqe52V/F448Zm5lBYY0oRtizm/kOxaB8wEpiDOODz2F0gFdrAL9Ng==
+
+sass-embedded-linux-ia32@1.64.2:
+  version "1.64.2"
+  resolved "https://registry.yarnpkg.com/sass-embedded-linux-ia32/-/sass-embedded-linux-ia32-1.64.2.tgz#54c6ff2993615eb46cbfe6711bd80ba9ced2cc60"
+  integrity sha512-bAWBrQxD4Y4AczoTYI3qBHEDSqhjHnyW+IpvDtgKgvx/6Je1rlgU5Eg+No5tQGo3s8Qi/9didZDwTOl67TS8AQ==
+
+sass-embedded-linux-x64@1.64.2:
+  version "1.64.2"
+  resolved "https://registry.yarnpkg.com/sass-embedded-linux-x64/-/sass-embedded-linux-x64-1.64.2.tgz#7902e032b31d99918b0b6d9a4a2b18a3352b0611"
+  integrity sha512-Weagae2MyCNNqR0NiKj0BPZA7xfirPAexJr4gx8Z/m2d+bHFxVZbnE5aC+86dTQZlhk9AN1kZ4aMVOwJhmpXPQ==
+
+sass-embedded-win32-ia32@1.64.2:
+  version "1.64.2"
+  resolved "https://registry.yarnpkg.com/sass-embedded-win32-ia32/-/sass-embedded-win32-ia32-1.64.2.tgz#8a526445eb9a05ff34a275467c26776e5dd97839"
+  integrity sha512-EMRa/yCNocblDFz88PY7bd0OMsOhHi47BQ/tJ1uiuIt/gGVg1/JemR9xkKfmMUbCdAop3KtH0bUD9HaI69Q0AQ==
+
+sass-embedded-win32-x64@1.64.2:
+  version "1.64.2"
+  resolved "https://registry.yarnpkg.com/sass-embedded-win32-x64/-/sass-embedded-win32-x64-1.64.2.tgz#3e3f719ae9d5b446daef3b6f9aedb8afd618c4e7"
+  integrity sha512-6NlGz5ZMwp0dxKduLzWm4EuF8ZRbxUd80VrcQe5hT6WKt/Vd5KG3crtNBb8sWLR+sEQaClc99Q9t4vlpPxifUw==
+
+"sass@npm:sass-embedded":
+  version "1.64.2"
+  resolved "https://registry.yarnpkg.com/sass-embedded/-/sass-embedded-1.64.2.tgz#5904373318c25f6c9d89b8aa43d9574118672eba"
+  integrity sha512-BSBudEBf83mUVTJLr7tpXkYn2xLn4MHN9ss+TiYV7LQeaAyW9TCPMz/tTr82UOUjK/140OhgJUwBJ/jMYvBUsQ==
   dependencies:
-    chokidar ">=3.0.0 <4.0.0"
+    "@bufbuild/protobuf" "^1.0.0"
+    buffer-builder "^0.2.0"
     immutable "^4.0.0"
-    source-map-js ">=0.6.2 <2.0.0"
+    rxjs "^7.4.0"
+    supports-color "^8.1.1"
+    varint "^6.0.0"
+  optionalDependencies:
+    sass-embedded-darwin-arm64 "1.64.2"
+    sass-embedded-darwin-x64 "1.64.2"
+    sass-embedded-linux-arm "1.64.2"
+    sass-embedded-linux-arm64 "1.64.2"
+    sass-embedded-linux-ia32 "1.64.2"
+    sass-embedded-linux-x64 "1.64.2"
+    sass-embedded-win32-ia32 "1.64.2"
+    sass-embedded-win32-x64 "1.64.2"
 
 scule@^1.0.0:
   version "1.0.0"
@@ -6668,7 +6730,7 @@ socks@^2.6.2:
     ip "^2.0.0"
     smart-buffer "^4.2.0"
 
-"source-map-js@>=0.6.2 <2.0.0", source-map-js@^1.0.1, source-map-js@^1.0.2:
+source-map-js@^1.0.1, source-map-js@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/source-map-js/-/source-map-js-1.0.2.tgz#adbc361d9c62df380125e7f161f71c826f1e490c"
   integrity sha512-R0XvVJ9WusLiqTCEiGCmICCMplcCkIwwR11mOSD9CR5u+IXYdiseeEuXCVAjS54zqwkLcPNnmU4OeJ6tUrWhDw==
@@ -6887,6 +6949,13 @@ supports-color@^7.1.0:
   version "7.2.0"
   resolved "https://registry.yarnpkg.com/supports-color/-/supports-color-7.2.0.tgz#1b7dcdcb32b8138801b3e478ba6a51caa89648da"
   integrity sha512-qpCAvRl9stuOHveKsn7HncJRvv501qIacKzQlO/+Lwxc9+0q2wLyv4Dfvt80/DPn2pqOBsJdDiogXGR9+OvwRw==
+  dependencies:
+    has-flag "^4.0.0"
+
+supports-color@^8.1.1:
+  version "8.1.1"
+  resolved "https://registry.yarnpkg.com/supports-color/-/supports-color-8.1.1.tgz#cd6fc17e28500cff56c1b86c0a7fd4a54a73005c"
+  integrity sha512-MpUEN2OodtUzxvKQl72cUF7RQ5EiHsGvSsVG0ia9c5RbWGL2CI4C7EpPS8UTBIplnlzZiNuV56w+FuNxy3ty2Q==
   dependencies:
     has-flag "^4.0.0"
 
@@ -7399,6 +7468,11 @@ validate-npm-package-name@^5.0.0:
   integrity sha512-YuKoXDAhBYxY7SfOKxHBDoSyENFeW5VvIIQp2TGQuit8gpK6MnWaQelBKxso72DoxTZfZdcP3W90LqpSkgPzLQ==
   dependencies:
     builtins "^5.0.0"
+
+varint@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/varint/-/varint-6.0.0.tgz#9881eb0ce8feaea6512439d19ddf84bf551661d0"
+  integrity sha512-cXEIW6cfr15lFv563k4GuVuW/fiwjknytD37jIOLSdSWuOI6WnO/oKwmP2FQTU2l01LP8/M5TSAJpzUaGe3uWg==
 
 vite-node@^0.33.0:
   version "0.33.0"

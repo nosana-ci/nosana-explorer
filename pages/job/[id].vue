@@ -17,7 +17,7 @@
 
 <script>
 import { useRoute } from 'vue-router';
-const nosana = useSDK();
+const { nosana } = useSDK();
 const job = ref();
 const jobId = ref();
 const loading = ref(false);
@@ -29,7 +29,7 @@ export default {
     jobId.value = params.id;
     try {
       loading.value = true;
-      job.value = await nosana.solana.getJob(jobId.value);
+      job.value = await nosana.value.solana.getJob(jobId.value);
     } catch (e) {
       console.error(e);
       job.value = null;

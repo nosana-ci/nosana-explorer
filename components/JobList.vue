@@ -1,5 +1,15 @@
 <template>
   <div v-if="!filteredJobs.length">No jobs</div>
+  <div class="columns is-mobile is-vcentered">
+    <div class="column">
+      <h2 class="subtitle is-4">Jobs</h2>
+    </div>
+    <div v-if="jobs && jobs.length > perPage" class="column has-text-right">
+      {{ (page - 1) * perPage + 1 }} -
+      {{ Math.min(page * perPage, jobs.length) }} of {{ jobs.length }} jobs
+    </div>
+  </div>
+
   <div class="table-container">
     <table class="table is-fullwidth is-striped is-hoverable">
       <thead>
@@ -82,7 +92,7 @@
 import { UseTimeAgo } from '@vueuse/components';
 import { Job } from '@nosana/sdk';
 
-const nosana = useSDK();
+const { nosana } = useSDK();
 const timestamp = useTimestamp({ interval: 1000 });
 const fmtMSS = (s: number) => {
   return (s - (s %= 60)) / 60 + (s > 9 ? 'm ' : 'm 0') + s + 's';
@@ -112,7 +122,7 @@ const filteredJobs = computed(() => {
 
 const getJobData = async (jobs: Array<any>) => {
   loading.value = true;
-  const newJobData = await nosana.solana.getMultipleJobs(jobs);
+  const newJobData = await nosana.value.solana.getMultipleJobs(jobs);
   for (let i = 0; i < jobs.length; i++) {
     jobData.value[jobs[i]] = newJobData[i];
   }

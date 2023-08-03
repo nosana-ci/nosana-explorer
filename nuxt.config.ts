@@ -10,6 +10,14 @@ export default defineNuxtConfig({
       'Space Mono': [500],
     },
   },
+  app: {
+    head: {
+      bodyAttrs: {
+        class: 'has-navbar-fixed-top',
+      },
+    },
+  },
+
   vite: {
     css: {
       preprocessorOptions: {
