@@ -1,8 +1,9 @@
 <template>
   <section class="py-6 section">
     <div class="container">
-      <h1 class="title is-2">Nosana Explorer {{ visibility }}</h1>
+      <h1 class="title is-2 mb-1">Nosana Explorer</h1>
       <p>Solana {{ nosana.solana.config.network }}</p>
+      <Search />
       <h2 class="subtitle is-4 mt-4 mb-1">Jobs</h2>
       <div v-if="jobs">
         <div>Total jobs {{ jobs.length }}</div>

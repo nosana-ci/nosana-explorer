@@ -13,7 +13,7 @@
       <tbody>
         <nuxt-link
           v-for="(job, i) in filteredJobs"
-          :key="job"
+          :key="job.pubkey"
           :to="`/job/${job}`"
           custom
         >
@@ -81,7 +81,7 @@ const fmtMSS = (s: number) => {
 };
 const props = defineProps({
   jobs: {
-    type: Array,
+    type: Array<{ pubkey: any; timeStart: any; new?: number }>,
     required: true,
   },
 });
