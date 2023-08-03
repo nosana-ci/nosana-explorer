@@ -50,8 +50,37 @@ function changePage(param: string | number) {
 
 <template>
   <div>
-    <slot name="prev-button" :change-page="changePage"></slot>
-    <slot :pagination="pageData" :change-page="changePage"></slot>
-    <slot name="next-button" :change-page="changePage"></slot>
+    <slot name="prev-button" :change-page="changePage">
+      <a
+        class="pagination-previous"
+        :disabled="modelValue < 2 ? true : null"
+        @click="changePage('-')"
+      >
+        Previous
+      </a>
+    </slot>
+    <slot :pagination="pageData" :change-page="changePage">
+      <ul class="pagination-list">
+        <li v-for="i in pageData" :key="i">
+          <span v-if="i === '...'" class="pagination-ellipsis">&hellip;</span>
+          <a
+            v-else
+            class="pagination-link"
+            :class="modelValue == i ? 'is-current has-text-weight-bold' : ''"
+            @click="changePage(i)"
+            >{{ i }}</a
+          >
+        </li>
+      </ul>
+    </slot>
+    <slot name="next-button" :change-page="changePage">
+      <a
+        :disabled="modelValue >= totalPage ? true : null"
+        class="pagination-next"
+        @click="changePage('+')"
+      >
+        Next
+      </a>
+    </slot>
   </div>
 </template>

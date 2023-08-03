@@ -2,11 +2,12 @@
 export default defineNuxtConfig({
   devtools: { enabled: true },
   css: ['~/assets/styles/global.scss'],
-  modules: ['@nuxtjs/google-fonts'],
+  modules: ['@nuxtjs/google-fonts', '@vueuse/nuxt'],
   googleFonts: {
     preload: true,
     families: {
       Lexend: [300, 400, 700],
+      'Space Mono': [500],
     },
   },
   vite: {

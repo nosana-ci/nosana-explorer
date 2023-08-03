@@ -15,6 +15,8 @@
     "@nuxtjs/eslint-config-typescript": "^12.0.0",
     "@nuxtjs/google-fonts": "^3.0.2",
     "@types/node": "^18.17.0",
+    "@vueuse/core": "^10.3.0",
+    "@vueuse/nuxt": "^10.3.0",
     "eslint": "^8.45.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^5.0.0",
@@ -25,6 +27,7 @@
   },
   "dependencies": {
     "@nosana/sdk": "^0.1.43",
+    "@vueuse/components": "^10.3.0",
     "bulma": "^0.9.4"
   }
 }
