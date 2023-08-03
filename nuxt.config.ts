@@ -11,6 +11,14 @@ export default defineNuxtConfig({
     },
   },
   vite: {
+    css: {
+      preprocessorOptions: {
+        scss: {
+          sourceMap: false,
+          additionalData: '@import "@/assets/styles/variables.scss";',
+        },
+      },
+    },
     server: {
       fs: {
         // Allow serving files from one level up to the project root

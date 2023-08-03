@@ -1,7 +1,10 @@
-@import "variables.scss";
 @import "bulma/bulma";
 
 html, body {
   max-width: 100%;
   overflow-x: hidden;
+}
+
+.tag.is-outlined {
+  border: 1px solid;
 }

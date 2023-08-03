@@ -2,11 +2,10 @@
   <div
     class="tag is-outlined is-light"
     :class="{
-      'is-accent': status === 'COMPLETED',
+      'is-success': status === 'COMPLETED',
       'is-info': status === 'RUNNING' || status === 'PENDING',
       'is-warning': status === 'QUEUED',
-      'is-danger':
-        status === 'FAILED' || status === 'STOPPED' || status === 'YAML_ERROR',
+      'is-danger': status === 'FAILED' || status === 'YAML_ERROR',
     }"
   >
     <img class="mr-2" :src="`/img/icons/status/${getIcon(status)}.svg`" />
@@ -23,18 +22,14 @@ defineProps({
   },
 });
 const getIcon = (status: string) => {
-  let icon = 'pending';
+  let icon = 'stopped';
   if (status === 'QUEUED') {
     icon = 'queued';
   } else if (status === 'RUNNING') {
     icon = 'running';
   } else if (status === 'COMPLETED') {
     icon = 'done';
-  } else if (
-    status === 'FAILED' ||
-    status === 'STOPPED' ||
-    status === 'YAML_ERROR'
-  ) {
+  } else if (status === 'FAILED' || status === 'YAML_ERROR') {
     icon = 'failed';
   }
   return icon;

@@ -18,9 +18,13 @@
           custom
         >
           <template #default="{ navigate }">
-            <tr class="is-clickable" @click="navigate">
+            <tr
+              class="is-clickable"
+              :class="{ flash: job.new }"
+              @click="navigate"
+            >
               <td class="is-family-monospace">
-                {{ job }}
+                {{ job.pubkey }}
               </td>
               <td v-if="loading" colspan="3">Loading job data..</td>
               <template v-else-if="jobData[i]">
@@ -94,10 +98,8 @@ const filteredJobs = computed(() => {
     (page.value - 1) * perPage.value,
     page.value * perPage.value,
   );
-  const filteredJobs = paginatedJobs.map((job) => job.pubkey);
-  getJobData(filteredJobs);
-
-  return filteredJobs;
+  getJobData(paginatedJobs.map((job) => job.pubkey));
+  return paginatedJobs;
 });
 
 const getJobData = async (jobs: Array<any>) => {
@@ -107,3 +109,15 @@ const getJobData = async (jobs: Array<any>) => {
   loading.value = false;
 };
 </script>
+
+<style lang="scss" scoped>
+@keyframes flash {
+  50% {
+    background-color: $primary;
+  }
+}
+.flash {
+  animation: flash 2s ease-out;
+  animation-iteration-count: 1;
+}
+</style>
