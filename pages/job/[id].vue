@@ -5,8 +5,9 @@
       <Search />
       <div v-if="loading">Loading job..</div>
       <div v-else>
-        <h3 class="subtitle">{{ jobId }}</h3>
         <div v-if="job">
+          <JobStatus :status="job.state"></JobStatus>
+          <h3 class="subtitle mt-3">{{ jobId }}</h3>
           <ul>
             <li>Node: {{ job.node }}</li>
             <li>Market: {{ job.market }}</li>
