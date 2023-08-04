@@ -12,7 +12,9 @@
             <li>Market: {{ job.market }}</li>
             <li>Project: {{ job.project }}</li>
             <li>Payer: {{ job.payer }}</li>
-            <li v-if="job.timeStart">Date: {{ job.timeStart }}</li>
+            <li v-if="job.timeStart">
+              Date: {{ new Date(job.timeStart * 1000) }}
+            </li>
             <li v-if="job.timeEnd || job.timeStart">
               Duration:
               <span v-if="job.timeEnd">
