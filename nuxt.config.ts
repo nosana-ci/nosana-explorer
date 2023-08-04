@@ -1,7 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  css: ['~/assets/styles/global.scss'],
+  css: ['~/assets/styles/global.scss', 'vue-json-pretty/lib/styles.css'],
   modules: ['@nuxtjs/google-fonts', '@vueuse/nuxt'],
   googleFonts: {
     preload: true,
