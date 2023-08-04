@@ -1,18 +1,6 @@
 <template>
   <section class="py-6 section">
     <div class="container">
-      <div>
-        <div class="select is-small">
-          <select v-model="network">
-            <option value="devnet">DevNet</option>
-            <!-- <option
-              value="https://lively-sparkling-shape.solana-mainnet.discover.quiknode.pro/515f35af4d64f05ab7b10cd8cd88f34f9d1ec7d0"
-            >
-              MainNet
-            </option> -->
-          </select>
-        </div>
-      </div>
       <Search />
       <JobList :jobs="jobs"></JobList>
       <div v-if="!loading && !jobs">Could not load jobs</div>
