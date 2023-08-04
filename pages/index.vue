@@ -1,7 +1,6 @@
 <template>
   <section class="py-6 section">
     <div class="container">
-      <h1 class="title is-2 mb-1" @click="getJobs">Nosana Explorer</h1>
       <div>
         <div class="select is-small">
           <select v-model="network">
