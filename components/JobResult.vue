@@ -1,6 +1,5 @@
 <template>
   <div>
-    {{ job }}
     <div
       v-for="jobName in (ipfsJob.ops.find((j: any) => j.id === 'checkout')
         ? []

@@ -4,7 +4,7 @@
       <NuxtLink to="/" class="text-sm">&lt; Back</NuxtLink>
       <Search />
       <div v-if="loading">Loading job..</div>
-      <div>
+      <div v-else>
         <h3 class="subtitle">{{ jobId }}</h3>
         <div v-if="job">
           <ul>
@@ -59,7 +59,7 @@
   </section>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { useRoute } from 'vue-router';
 import { Job } from '@nosana/sdk';
 import VueJsonPretty from 'vue-json-pretty';
@@ -79,20 +79,12 @@ const fmtMSS = (s: number) => {
   return (s - (s %= 60)) / 60 + (s > 9 ? 'm ' : 'm 0') + s + 's';
 };
 
-export default {
-  components: {
-    VueJsonPretty,
-  },
-  async setup() {
-    const { params } = useRoute();
-    jobId.value = String(params.id);
-    try {
-      loading.value = true;
-      job.value = await nosana.value.solana.getJob(jobId.value);
-    } catch (e) {
-      console.error(e);
-      job.value = null;
-    }
+const getJob = async () => {
+  const { params } = useRoute();
+  jobId.value = String(params.id);
+  try {
+    loading.value = true;
+    job.value = await nosana.value.solana.getJob(jobId.value);
 
     try {
       ipfsJob.value = await nosana.value.ipfs.retrieve(job.value!.ipfsJob);
@@ -126,20 +118,15 @@ export default {
         }
       }
     } catch (error) {
-      console.log(error);
+      console.log('error when processing ipfs', error);
     }
-    loading.value = false;
-    return {
-      job,
-      jobId,
-      loading,
-      fmtMSS,
-      timestamp,
-      activeTab,
-      ipfsResult,
-      ipfsJob,
-    };
-  },
+  } catch (e) {
+    console.error(e);
+    job.value = null;
+  }
+  loading.value = false;
 };
+
+getJob();
 </script>
 <style lang="scss" scoped></style>
