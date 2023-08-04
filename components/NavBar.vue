@@ -9,6 +9,7 @@
         <div class="navbar-brand">
           <nuxt-link class="navbar-item" to="/">
             <img class="logo" width="150" src="~assets/img/logo.svg" />
+            <span class="title has-text-black is-5">EXPLORER</span>
           </nuxt-link>
 
           <a
@@ -50,14 +51,15 @@
               </nuxt-link>
             </div>
             <div class="navbar-item" exact-active-class="is-active">
-              <div @click="mobileMenu = false">
-                <a
-                  target="_blank"
-                  href="https://app.nosana.io"
-                  class="button is-primary is-wider"
-                >
-                  Launch Nosana
-                </a>
+              <div>
+                <div class="select">
+                  <select v-model="network">
+                    <option value="devnet">DevNet</option>
+                    <option value="https://solana-mainnet.rpc.extrnode.com">
+                      MainNet
+                    </option>
+                  </select>
+                </div>
               </div>
             </div>
           </div>
@@ -67,14 +69,9 @@
   </div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      mobileMenu: false,
-    };
-  },
-};
+<script lang="ts" setup>
+const mobileMenu = ref(false);
+const { network } = useSDK();
 </script>
 
 <style lang="scss">

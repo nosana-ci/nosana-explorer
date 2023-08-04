@@ -1,6 +1,6 @@
 import { Client } from '@nosana/sdk';
 
-const network = ref('devnet');
+const network = useLocalStorage('network', 'devnet');
 
 const nosana = computed(() => {
   return new Client({

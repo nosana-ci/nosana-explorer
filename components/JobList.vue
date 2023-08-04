@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!filteredJobs.length">No jobs</div>
+  <div v-if="filteredJobs && !filteredJobs.length">No jobs</div>
   <div class="columns is-mobile is-vcentered">
     <div class="column">
       <h2 class="subtitle is-4">Jobs</h2>
@@ -21,8 +21,12 @@
         </tr>
       </thead>
       <tbody>
+        <tr v-if="!filteredJobs">
+          <td colspan="4">Loading jobs..</td>
+        </tr>
         <nuxt-link
           v-for="job in filteredJobs"
+          v-else
           :key="job.pubkey"
           :to="`/job/${job.pubkey}`"
           custom
@@ -100,7 +104,7 @@ const fmtMSS = (s: number) => {
 const props = defineProps({
   jobs: {
     type: Array<{ pubkey: any; timeStart: any; new?: number }>,
-    required: true,
+    default: undefined,
   },
 });
 
@@ -109,6 +113,22 @@ const jobData: Ref<{ [key: string]: Job }> = ref({});
 
 const page: Ref<number> = ref(1);
 const perPage: Ref<number> = ref(25);
+let lastPage = page.value;
+const visibility = useDocumentVisibility();
+
+watch(visibility, (current, previous) => {
+  if (current === 'visible' && previous === 'hidden') {
+    if (filteredJobs.value) {
+      for (let i = 0; i < filteredJobs.value.length; i++) {
+        if (
+          Object.prototype.hasOwnProperty.call(filteredJobs.value[i], 'new')
+        ) {
+          filteredJobs.value[i].new = 1;
+        }
+      }
+    }
+  }
+});
 
 const filteredJobs = computed(() => {
   if (!props.jobs || !props.jobs.length) return props.jobs;
@@ -116,7 +136,18 @@ const filteredJobs = computed(() => {
     (page.value - 1) * perPage.value,
     page.value * perPage.value,
   );
-
+  // check for new jobs when we are still on first page
+  if (filteredJobs.value && page.value === 1 && lastPage === 1) {
+    for (let i = 0; i < paginatedJobs.length; i++) {
+      const oldJob = filteredJobs.value.find((job) => {
+        return job.pubkey.toString() === paginatedJobs[i].pubkey.toString();
+      });
+      if (!oldJob || oldJob.new === 0) {
+        paginatedJobs[i].new = visibility.value === 'visible' ? 1 : 0;
+      }
+    }
+  }
+  lastPage = page.value;
   return paginatedJobs;
 });
 
@@ -132,12 +163,14 @@ const getJobData = async (jobs: Array<any>) => {
 watch(
   filteredJobs,
   (current) => {
-    const refreshJobs = current.filter((job) => {
-      const data = jobData.value[job.pubkey];
-      return !data || data.state === 'RUNNING' || data.state === 'QUEUED';
-    });
-    if (refreshJobs.length) {
-      getJobData(refreshJobs.map((job) => job.pubkey));
+    if (current) {
+      const refreshJobs = current.filter((job) => {
+        const data = jobData.value[job.pubkey];
+        return !data || data.state === 'RUNNING' || data.state === 'QUEUED';
+      });
+      if (refreshJobs.length) {
+        getJobData(refreshJobs.map((job) => job.pubkey));
+      }
     }
   },
   { immediate: true },
