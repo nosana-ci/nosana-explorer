@@ -55,7 +55,9 @@
                 <div class="select">
                   <select v-model="network">
                     <option value="devnet">DevNet</option>
-                    <option value="https://solana-mainnet.rpc.extrnode.com">
+                    <option
+                      value="https://lively-sparkling-shape.solana-mainnet.discover.quiknode.pro/515f35af4d64f05ab7b10cd8cd88f34f9d1ec7d0"
+                    >
                       MainNet
                     </option>
                   </select>
