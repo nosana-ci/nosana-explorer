@@ -1,7 +1,7 @@
 <template>
   <section class="py-6 section">
     <div class="container">
-      <Search />
+      <Search :jobs="jobs ? jobs!.map((a) => a.pubkey.toString()) : []" />
       <JobList :jobs="jobs"></JobList>
       <div v-if="!loading && !jobs">Could not load jobs</div>
     </div>

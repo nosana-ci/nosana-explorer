@@ -2,12 +2,16 @@
   <div class="control my-5">
     <div class="field has-addons">
       <div class="control is-fullwidth">
-        <input
+        <SimpleTypeahead
+          id="typeahead_id"
           v-model="searchJob"
           class="input"
-          type="text"
           placeholder="Job address"
-        />
+          :items="jobs ? jobs : []"
+          :min-input-length="2"
+          @selectItem="selectItem"
+        >
+        </SimpleTypeahead>
       </div>
       <div class="control">
         <a class="button is-primary" @click="submitSearch">Search</a>
@@ -16,14 +20,16 @@
   </div>
 </template>
 <script setup language="ts">
+import SimpleTypeahead from 'vue3-simple-typeahead';
 const router = useRouter();
 const searchJob = ref('');
-function submitSearch() {
-  const pattern = /[1-9A-HJ-NP-Za-km-z]{32,44}/;
-  if (!pattern.test(searchJob.value)) {
-    alert('Not a valid Solana address');
-  } else {
-    router.push('/job/' + searchJob.value);
-  }
-}
+const props = defineProps({
+  jobs: {
+    type: Array,
+    required: false,
+  },
+});
+const selectItem = (item) => {
+  router.push('job/' + item);
+};
 </script>
