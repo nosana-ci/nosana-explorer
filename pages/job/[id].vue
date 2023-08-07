@@ -87,7 +87,7 @@ const getJob = async () => {
   jobId.value = String(params.id);
   try {
     loading.value = true;
-    job.value = await nosana.value.solana.getJob(jobId.value);
+    job.value = await nosana.value.jobs.get(jobId.value);
 
     try {
       ipfsJob.value = await nosana.value.ipfs.retrieve(job.value!.ipfsJob);

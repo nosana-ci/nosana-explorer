@@ -30,7 +30,7 @@ const getJobs = async () => {
   console.log('retrieving all jobs..');
   loading.value = true;
   try {
-    jobs.value = await nosana.value.solana.getJobs();
+    jobs.value = await nosana.value.jobs.getAll();
   } catch (e) {
     console.error(e);
   }

@@ -153,7 +153,7 @@ const filteredJobs = computed(() => {
 
 const getJobData = async (jobs: Array<any>) => {
   loading.value = true;
-  const newJobData = await nosana.value.solana.getMultipleJobs(jobs);
+  const newJobData = await nosana.value.jobs.getMultiple(jobs);
   for (let i = 0; i < jobs.length; i++) {
     jobData.value[jobs[i]] = newJobData[i];
   }
