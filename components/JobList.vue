@@ -2,7 +2,7 @@
   <div v-if="filteredJobs && !filteredJobs.length">No jobs</div>
   <div class="columns is-mobile is-vcentered">
     <div class="column">
-      <h2 class="subtitle is-4">Jobs</h2>
+      <h2 class="title is-4">Jobs</h2>
     </div>
     <div v-if="jobs && jobs.length > perPage" class="column has-text-right">
       {{ (page - 1) * perPage + 1 }} -

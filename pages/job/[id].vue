@@ -1,81 +1,78 @@
 <template>
-  <section class="py-6 section">
-    <div class="container">
-      <NuxtLink to="/" class="text-sm">&lt; Back</NuxtLink>
-      <Search />
-      <div v-if="loading">Loading job..</div>
-      <div v-else>
-        <div v-if="job">
-          <JobStatus :status="job.state"></JobStatus>
-          <h3 class="subtitle mt-3">{{ jobId }}</h3>
-          <ul>
-            <li>
-              Node:
-              <nuxt-link :to="`/node/${job.node}`">{{ job.node }}</nuxt-link>
-            </li>
-            <li>Market: {{ job.market }}</li>
-            <li>Project: {{ job.project }}</li>
-            <li>Payer: {{ job.payer }}</li>
+  <div>
+    <NuxtLink to="/" class="text-sm">&lt; Back</NuxtLink>
+    <div v-if="loading">Loading job..</div>
+    <div v-else>
+      <div v-if="job">
+        <JobStatus :status="job.state"></JobStatus>
+        <h3 class="subtitle mt-3">{{ jobId }}</h3>
+        <ul>
+          <li>
+            Node:
+            <nuxt-link :to="`/node/${job.node}`">{{ job.node }}</nuxt-link>
+          </li>
+          <li>Market: {{ job.market }}</li>
+          <li>Project: {{ job.project }}</li>
+          <li>Payer: {{ job.payer }}</li>
 
-            <li v-if="job.timeStart">
-              Started:
-              {{
-                useDateFormat(
-                  new Date(job.timeStart * 1000),
-                  'YYYY-MM-DD HH:mm:ss',
-                ).value
-              }}
-              <UseTimeAgo
-                v-slot="{ timeAgo }"
-                :time="new Date(job.timeStart * 1000)"
-              >
-                ({{ timeAgo }})
-              </UseTimeAgo>
+          <li v-if="job.timeStart">
+            Started:
+            {{
+              useDateFormat(
+                new Date(job.timeStart * 1000),
+                'YYYY-MM-DD HH:mm:ss',
+              ).value
+            }}
+            <UseTimeAgo
+              v-slot="{ timeAgo }"
+              :time="new Date(job.timeStart * 1000)"
+            >
+              ({{ timeAgo }})
+            </UseTimeAgo>
+          </li>
+          <li v-if="job.timeEnd || job.timeStart">
+            Duration:
+            <span v-if="job.timeEnd">
+              {{ fmtMSS(job.timeEnd - job.timeStart) }}
+            </span>
+            <span v-else-if="job.timeStart">
+              {{ fmtMSS(Math.floor(timestamp / 1000) - job.timeStart) }}
+            </span>
+          </li>
+        </ul>
+
+        <div class="tabs mt-5">
+          <ul>
+            <li :class="{ 'is-active': activeTab === 'info' }">
+              <a @click.prevent="activeTab = 'info'">Job Info</a>
             </li>
-            <li v-if="job.timeEnd || job.timeStart">
-              Duration:
-              <span v-if="job.timeEnd">
-                {{ fmtMSS(job.timeEnd - job.timeStart) }}
-              </span>
-              <span v-else-if="job.timeStart">
-                {{ fmtMSS(Math.floor(timestamp / 1000) - job.timeStart) }}
-              </span>
+            <li :class="{ 'is-active': activeTab === 'result' }">
+              <a @click.prevent="activeTab = 'result'">Job result</a>
             </li>
           </ul>
-
-          <div class="tabs mt-5">
-            <ul>
-              <li :class="{ 'is-active': activeTab === 'info' }">
-                <a @click.prevent="activeTab = 'info'">Job Info</a>
-              </li>
-              <li :class="{ 'is-active': activeTab === 'result' }">
-                <a @click.prevent="activeTab = 'result'">Job result</a>
-              </li>
-            </ul>
+        </div>
+        <div>
+          <div
+            v-show="activeTab === 'info'"
+            class="p-1 py-4 has-background-white-bis"
+          >
+            <VueJsonPretty :data="ipfsJob" show-icon show-line-number />
           </div>
-          <div>
-            <div
-              v-show="activeTab === 'info'"
-              class="p-1 py-4 has-background-white-bis"
-            >
-              <VueJsonPretty :data="ipfsJob" show-icon show-line-number />
+          <div
+            v-show="activeTab === 'result'"
+            class="p-1 py-4 has-background-white-bis"
+          >
+            <div v-if="!ipfsResult || !ipfsResult.results">No results</div>
+            <div v-else-if="ipfsResult.results[0] === 'nos/secret'">
+              Results are secret
             </div>
-            <div
-              v-show="activeTab === 'result'"
-              class="p-1 py-4 has-background-white-bis"
-            >
-              <div v-if="!ipfsResult || !ipfsResult.results">No results</div>
-              <div v-else-if="ipfsResult.results[0] === 'nos/secret'">
-                Results are secret
-              </div>
-              <JobResult v-else :ipfs-result="ipfsResult" :ipfs-job="ipfsJob" />
-            </div>
+            <JobResult v-else :ipfs-result="ipfsResult" :ipfs-job="ipfsJob" />
           </div>
         </div>
-        <div v-else>Job not found</div>
       </div>
+      <div v-else>Job not found</div>
     </div>
-  </section>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -87,11 +84,12 @@ import { UseTimeAgo } from '@vueuse/components';
 import AnsiUp from 'ansi_up';
 
 const ansi = new AnsiUp();
-const { nosana } = useSDK();
+const { nosana, network } = useSDK();
 const job: Ref<Job | null> = ref(null);
 const ipfsJob: Ref<Object | null> = ref(null);
 const ipfsResult: Ref<{ results: any } | null> = ref(null);
-const jobId: Ref<string> = ref('');
+const { params } = useRoute();
+const jobId: Ref<string> = ref(String(params.id) || '');
 const loading: Ref<boolean> = ref(false);
 const activeTab: Ref<string> = ref('info');
 
@@ -100,9 +98,12 @@ const fmtMSS = (s: number) => {
   return (s - (s %= 60)) / 60 + (s > 9 ? 'm ' : 'm 0') + s + 's';
 };
 
+watch(network, () => {
+  job.value = null;
+  getJob();
+});
+
 const getJob = async () => {
-  const { params } = useRoute();
-  jobId.value = String(params.id);
   try {
     loading.value = true;
     job.value = await nosana.value.jobs.get(jobId.value);

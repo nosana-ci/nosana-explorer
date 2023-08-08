@@ -1,5 +1,5 @@
 <template>
-  <div class="control my-5">
+  <div class="control mb-4">
     <div class="field has-addons">
       <div class="control is-fullwidth">
         <SimpleTypeahead
@@ -23,7 +23,7 @@
 import SimpleTypeahead from 'vue3-simple-typeahead';
 const router = useRouter();
 const searchJob = ref('');
-const jobs = useJobs();
+const { jobs } = useJobs();
 const selectItem = (item: string) => {
   router.push('/job/' + item);
 };

@@ -1,42 +1,21 @@
 <template>
-  <section class="py-6 section">
-    <div class="container">
-      <Search />
-      <JobList :jobs="jobs"></JobList>
-      <div v-if="!loading && !jobs">Could not load jobs</div>
-    </div>
-  </section>
+  <div>
+    <JobList :jobs="jobs"></JobList>
+    <div v-if="!loadingJobs && !jobs">Could not load jobs</div>
+  </div>
 </template>
 
 <script setup lang="ts">
-const { nosana, network } = useSDK();
-const loading = ref(false);
-const jobs = useJobs();
+const { jobs, getJobs, loadingJobs } = useJobs();
 
+// Fetch jobs when we switch back to tab
 const visibility = useDocumentVisibility();
-
-watch(network, () => {
-  jobs.value = undefined;
-  getJobs();
-});
-
 watch(visibility, (current, previous) => {
   if (current === 'visible' && previous === 'hidden') {
     getJobs();
   }
 });
 
-const getJobs = async () => {
-  console.log('retrieving all jobs..');
-  loading.value = true;
-  try {
-    jobs.value = await nosana.value.jobs.getAll();
-  } catch (e) {
-    console.error(e);
-  }
-  loading.value = false;
-};
-
-getJobs();
+// Fetch jobs every 10 seconds
 useIntervalFn(getJobs, 10000);
 </script>

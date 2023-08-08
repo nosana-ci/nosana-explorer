@@ -1,10 +1,8 @@
 <template>
-  <section class="section">
-    <div class="container">
-      <h1 class="title mt-5 mb-6">Nodes</h1>
-      <NodeList :nodes="nodes"></NodeList>
-    </div>
-  </section>
+  <div>
+    <h1 class="title is-4">Nodes</h1>
+    <NodeList :nodes="nodes"></NodeList>
+  </div>
 </template>
 <script setup lang="ts">
 const { nosana, network } = useSDK();
