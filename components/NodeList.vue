@@ -85,7 +85,6 @@ const props = defineProps({
   nodes: {
     type: Array<Node>,
     default: undefined,
-    required: true,
   },
 });
 
