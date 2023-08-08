@@ -1,8 +1,7 @@
 <template>
   <section class="section">
     <div class="container">
-      <h1 class="title">Nodes</h1>
-      {{ nodes }}
+      <h1 class="title mt-5 mb-6">Nodes</h1>
       <NodeList :nodes="nodes"></NodeList>
     </div>
   </section>
