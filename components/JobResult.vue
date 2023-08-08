@@ -1,5 +1,7 @@
 <template>
-  <div>
+  <div
+    class="is-family-monospace has-background-grey-darker has-text-white box"
+  >
     <div
       v-for="jobName in (ipfsJob.ops.find((j: any) => j.id === 'checkout')
         ? []

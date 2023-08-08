@@ -9,12 +9,28 @@
           <JobStatus :status="job.state"></JobStatus>
           <h3 class="subtitle mt-3">{{ jobId }}</h3>
           <ul>
-            <li>Node: {{ job.node }}</li>
+            <li>
+              Node:
+              <nuxt-link :to="`/node/${job.node}`">{{ job.node }}</nuxt-link>
+            </li>
             <li>Market: {{ job.market }}</li>
             <li>Project: {{ job.project }}</li>
             <li>Payer: {{ job.payer }}</li>
+
             <li v-if="job.timeStart">
-              Date: {{ new Date(job.timeStart * 1000) }}
+              Started:
+              {{
+                useDateFormat(
+                  new Date(job.timeStart * 1000),
+                  'YYYY-MM-DD HH:mm:ss',
+                ).value
+              }}
+              <UseTimeAgo
+                v-slot="{ timeAgo }"
+                :time="new Date(job.timeStart * 1000)"
+              >
+                ({{ timeAgo }})
+              </UseTimeAgo>
             </li>
             <li v-if="job.timeEnd || job.timeStart">
               Duration:
@@ -66,6 +82,8 @@
 import { useRoute } from 'vue-router';
 import { Job } from '@nosana/sdk';
 import VueJsonPretty from 'vue-json-pretty';
+import { UseTimeAgo } from '@vueuse/components';
+
 import AnsiUp from 'ansi_up';
 
 const ansi = new AnsiUp();
