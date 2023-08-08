@@ -7,7 +7,7 @@
           v-model="searchJob"
           class="input"
           placeholder="Job address"
-          :items="jobs ? jobs : []"
+          :items="jobs ? jobs!.map((a) => a.pubkey.toString()) : []"
           :min-input-length="2"
           @selectItem="selectItem"
         >
@@ -19,17 +19,12 @@
     </div>
   </div>
 </template>
-<script setup language="ts">
+<script setup lang="ts">
 import SimpleTypeahead from 'vue3-simple-typeahead';
 const router = useRouter();
 const searchJob = ref('');
-const props = defineProps({
-  jobs: {
-    type: Array,
-    required: false,
-  },
-});
-const selectItem = (item) => {
-  router.push('job/' + item);
+const jobs = useJobs();
+const selectItem = (item: string) => {
+  router.push('/job/' + item);
 };
 </script>

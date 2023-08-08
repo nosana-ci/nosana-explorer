@@ -1,7 +1,7 @@
 <template>
   <section class="py-6 section">
     <div class="container">
-      <Search :jobs="jobs ? jobs!.map((a) => a.pubkey.toString()) : []" />
+      <Search />
       <JobList :jobs="jobs"></JobList>
       <div v-if="!loading && !jobs">Could not load jobs</div>
     </div>
@@ -11,7 +11,7 @@
 <script setup lang="ts">
 const { nosana, network } = useSDK();
 const loading = ref(false);
-const jobs: Ref<Array<any> | undefined> = ref(undefined);
+const jobs = useJobs();
 
 const visibility = useDocumentVisibility();
 
