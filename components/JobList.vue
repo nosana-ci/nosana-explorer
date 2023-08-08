@@ -1,5 +1,4 @@
 <template>
-  <div v-if="filteredJobs && !filteredJobs.length">No jobs</div>
   <div class="columns is-mobile is-vcentered">
     <div class="column">
       <h2 class="title is-4">Jobs</h2>
@@ -23,6 +22,9 @@
       <tbody>
         <tr v-if="!filteredJobs">
           <td colspan="4">Loading jobs..</td>
+        </tr>
+        <tr v-else-if="!filteredJobs.length">
+          <td colspan="4">No jobs</td>
         </tr>
         <nuxt-link
           v-for="job in filteredJobs"
