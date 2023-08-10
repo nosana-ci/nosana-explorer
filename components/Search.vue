@@ -15,9 +15,10 @@
         >
           <div class="dropdown-content has-background-white-bis">
             <a
-              v-for="item in searchItems"
+              v-for="(item, index) in searchItems"
               :key="item"
               class="dropdown-item px-4 py-2 is-size-6 is-flex is-justify-content-space-between"
+              :class="{ 'is-active': index === activeSearchItem }"
               @click="selectItem(item), (address = '')"
             >
               {{ item.value }}
@@ -33,17 +34,21 @@
 </template>
 <script setup lang="ts">
 import { Node } from '@nosana/sdk';
+import { onKeyStroke } from '@vueuse/core';
+
 const router = useRouter();
 const address = ref('');
 const { jobs } = useJobs();
 const { nodes } = useNodes();
 const items: Ref<Array<any>> = ref([]);
+const activeSearchItem: Ref<number> = ref(0);
 
 const selectItem = (item: { type: string; value: string }) => {
   router.push(`/${item.type}/${item.value}`);
 };
 
 const searchItems = computed(() => {
+  activeSearchItem.value = 0;
   if (address.value === '' || (!jobs.value && !nodes.value)) {
     return [];
   }
@@ -77,4 +82,31 @@ const searchItems = computed(() => {
     }
   });
 });
+
+// navigate through autocomplete search with arrow keys
+onKeyStroke(['ArrowDown', 'ArrowUp', 'Enter'], (e) => {
+  e.preventDefault();
+  handleKeyStroke(e);
+});
+
+const handleKeyStroke = (e: any) => {
+  if (searchItems.value.length > 0) {
+    if (e.key === 'ArrowUp' && activeSearchItem.value > 0) {
+      activeSearchItem.value--;
+    } else if (
+      e.key === 'ArrowDown' &&
+      activeSearchItem.value < searchItems.value.length - 1
+    ) {
+      activeSearchItem.value++;
+    } else if (e.key === 'Enter') {
+      router.push(
+        `/${searchItems.value[activeSearchItem.value].type}/${
+          searchItems.value[activeSearchItem.value].value
+        }`,
+      );
+      address.value = '';
+      activeSearchItem.value = 0;
+    }
+  }
+};
 </script>
