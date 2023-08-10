@@ -1,49 +1,78 @@
 <template>
   <div class="control mb-4">
     <div class="field has-addons">
-      <div class="control is-fullwidth">
-        <SimpleTypeahead
-          id="typeahead_id"
-          v-model="searchAddress"
+      <div class="control is-fullwidth dropdown is-active">
+        <input
+          v-model="address"
+          type="text"
           class="input"
           placeholder="Address"
-          :items="
-            jobs
-              ? jobs!
-                  .map((a: any) => a.pubkey.toString())
-                  .concat(
-                    nodes
-                      ? nodes!.map((a: Node) => a.authority.toString())
-                      : [],
-                  )
-              : []
-          "
-          :min-input-length="2"
-          @selectItem="selectItem"
+        />
+        <div
+          v-if="searchItems.length"
+          class="dropdown-menu is-active is-fullwidth"
+          role="menu"
         >
-        </SimpleTypeahead>
-      </div>
-      <div class="control">
-        <a class="button is-primary" @click="selectItem(searchAddress)"
-          >Search</a
-        >
+          <div class="dropdown-content has-background-white-bis">
+            <a
+              v-for="item in searchItems"
+              :key="item"
+              class="dropdown-item px-4 py-2 is-size-6 is-flex is-justify-content-space-between"
+              @click="selectItem(item), (address = '')"
+            >
+              {{ item.value }}
+              <span class="is-capitalized has-text-grey-light">{{
+                item.type
+              }}</span>
+            </a>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 <script setup lang="ts">
 import { Node } from '@nosana/sdk';
-import SimpleTypeahead from 'vue3-simple-typeahead';
 const router = useRouter();
-const searchAddress = ref('');
+const address = ref('');
 const { jobs } = useJobs();
 const { nodes } = useNodes();
+const items: Ref<Array<any>> = ref([]);
 
-const selectItem = (item: string) => {
-  if (nodes.value!.find((e: Node) => e.authority.toString() === item)) {
-    router.push('/node/' + item);
-  } else {
-    router.push('/job/' + item);
-  }
+const selectItem = (item: { type: string; value: string }) => {
+  router.push(`/${item.type}/${item.value}`);
 };
+
+const searchItems = computed(() => {
+  if (address.value === '' || (!jobs.value && !nodes.value)) {
+    return [];
+  }
+  items.value = jobs
+    .value!.map((a: any) => {
+      return { value: a.pubkey.toString(), type: 'job' };
+    })
+    .concat(
+      nodes.value
+        ? nodes.value!.map((a: Node) => {
+            return { value: a.authority.toString(), type: 'node' };
+          })
+        : [],
+    );
+
+  let matches = 0;
+  return items.value!.filter((item: any) => {
+    if (
+      item.value
+        .toString()
+        .toLowerCase()
+        .includes(address.value.toLowerCase()) &&
+      matches < 8
+    ) {
+      matches++;
+      return item;
+    } else {
+      return false;
+    }
+  });
+});
 </script>
