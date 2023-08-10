@@ -26,8 +26,8 @@
         <nuxt-link
           v-for="node in filteredNodes"
           v-else
-          :key="node.address.toString()"
-          :to="`/node/${node.address.toString()}`"
+          :key="node.authority.toString()"
+          :to="`/node/${node.authority.toString()}`"
           custom
         >
           <template #default="{ navigate }">
@@ -40,7 +40,7 @@
                 />
               </td>
               <td class="is-family-monospace py-2">
-                {{ node.address.toString() }}
+                {{ node.authority.toString() }}
               </td>
               <td class="py-2">
                 <div class="is-size-4" :title="node.country.toString()">

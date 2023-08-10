@@ -12,7 +12,9 @@
               ? jobs!
                   .map((a: any) => a.pubkey.toString())
                   .concat(
-                    nodes ? nodes!.map((a: Node) => a.address.toString()) : [],
+                    nodes
+                      ? nodes!.map((a: Node) => a.authority.toString())
+                      : [],
                   )
               : []
           "
@@ -38,7 +40,7 @@ const { jobs } = useJobs();
 const { nodes } = useNodes();
 
 const selectItem = (item: string) => {
-  if (nodes.value!.find((e: Node) => e.address.toString() === item)) {
+  if (nodes.value!.find((e: Node) => e.authority.toString() === item)) {
     router.push('/node/' + item);
   } else {
     router.push('/job/' + item);

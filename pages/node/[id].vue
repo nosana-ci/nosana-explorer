@@ -51,7 +51,9 @@ const getNode = async () => {
   nodeId.value = String(params.id);
   try {
     loading.value = true;
-    node.value = await nosana.value.nodes.get(nodeId.value);
+    node.value = await nosana.value.nodes.get(nodeId.value, {
+      authority: true,
+    });
     const country = countries.find(
       (c: any) => c.number === node.value.country.toString(),
     );
