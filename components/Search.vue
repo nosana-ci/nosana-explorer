@@ -47,6 +47,8 @@ const searchItems = computed(() => {
   if (address.value === '' || (!jobs.value && !nodes.value)) {
     return [];
   }
+
+  // combine jobs & nodes in one list
   items.value = jobs
     .value!.map((a: any) => {
       return { value: a.pubkey.toString(), type: 'job' };
