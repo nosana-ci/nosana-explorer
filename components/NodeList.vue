@@ -107,7 +107,6 @@ const filteredNodes = computed(() => {
       node.country = country.name;
       node.flag = getFlagEmoji(country.code);
     } catch (e) {
-      console.log('cant find country flag', e);
       node.country = '-';
     }
     return node;

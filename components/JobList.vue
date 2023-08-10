@@ -1,7 +1,7 @@
 <template>
   <div class="columns is-mobile is-vcentered">
     <div class="column">
-      <h2 class="title is-4">Jobs</h2>
+      <h2 class="title is-4">{{ title ? title : 'Jobs' }}</h2>
     </div>
     <div v-if="jobs && jobs.length > perPage" class="column has-text-right">
       {{ (page - 1) * perPage + 1 }} -
@@ -106,6 +106,10 @@ const fmtMSS = (s: number) => {
 const props = defineProps({
   jobs: {
     type: Array<{ pubkey: any; timeStart: any; new?: number }>,
+    default: undefined,
+  },
+  title: {
+    type: String,
     default: undefined,
   },
 });
