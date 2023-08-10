@@ -1,7 +1,10 @@
 <template>
   <div class="columns is-mobile is-vcentered">
     <div class="column">
-      <h2 class="title is-4">{{ title ? title : 'Jobs' }}</h2>
+      <h2 class="title is-4">
+        {{ title ? title : 'Jobs' }}
+        <span v-if="loadingJobs" class="is-size-7">refreshing</span>
+      </h2>
     </div>
     <div v-if="jobs && jobs.length > perPage" class="column has-text-right">
       {{ (page - 1) * perPage + 1 }} -
@@ -99,6 +102,8 @@ import { UseTimeAgo } from '@vueuse/components';
 import { Job } from '@nosana/sdk';
 
 const { nosana } = useSDK();
+
+const { loadingJobs } = useJobs();
 const timestamp = useTimestamp({ interval: 1000 });
 const fmtMSS = (s: number) => {
   return (s - (s %= 60)) / 60 + (s > 9 ? 'm ' : 'm 0') + s + 's';
