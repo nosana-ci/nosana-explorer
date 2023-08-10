@@ -13,7 +13,7 @@ const getNodes = async () => {
   console.log('retrieving all nodes..');
   loadingNodes.value = true;
   try {
-    nodes.value = await nosana.value.nodes.getAll();
+    nodes.value = await nosana.value.nodes.all();
   } catch (e) {
     console.error(e);
   }
