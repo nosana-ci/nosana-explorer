@@ -1,5 +1,6 @@
 <template>
   <div>
+    <Stats />
     <JobList :jobs="jobs"></JobList>
     <div v-if="!loadingJobs && !jobs">Could not load jobs</div>
   </div>
