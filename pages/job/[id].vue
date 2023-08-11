@@ -39,6 +39,30 @@
               {{ fmtMSS(Math.floor(timestamp / 1000) - job.timeStart) }}
             </span>
           </li>
+          <li
+            v-if="ipfsJob && ipfsJob.state && ipfsJob.state['nosana/job-type']"
+            class="is-flex is-align-items-center"
+          >
+            Job type:
+            <img
+              v-if="
+                ipfsJob.state['nosana/job-type'] === 'Gitlab' ||
+                ipfsJob.state['nosana/job-type'] === 'gitlab-flow'
+              "
+              width="30"
+              class="ml-1"
+              src="~assets/img/icons/gitlab.svg"
+            />
+            <img
+              v-else-if="
+                ipfsJob.state['nosana/job-type'] === 'github-flow' ||
+                ipfsJob.state['nosana/job-type'] === 'Github'
+              "
+              class="ml-1"
+              width="20"
+              src="~assets/img/icons/github.svg"
+            />
+          </li>
         </ul>
 
         <div class="tabs mt-5">
@@ -86,7 +110,10 @@ import AnsiUp from 'ansi_up';
 const ansi = new AnsiUp();
 const { nosana, network } = useSDK();
 const job: Ref<Job | null> = ref(null);
-const ipfsJob: Ref<Object | null> = ref(null);
+const ipfsJob: Ref<{
+  ops: Array<any>;
+  state: { 'nosana/job-type': string };
+} | null> = ref(null);
 const ipfsResult: Ref<{ results: any } | null> = ref(null);
 const { params } = useRoute();
 const jobId: Ref<string> = ref(String(params.id) || '');
