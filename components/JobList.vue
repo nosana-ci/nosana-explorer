@@ -25,13 +25,13 @@
       </thead>
       <tbody>
         <tr v-if="!filteredJobs">
-          <td colspan="4">Loading jobs..</td>
+          <td colspan="5">Loading jobs..</td>
         </tr>
         <tr v-else-if="!filteredJobs.length">
-          <td colspan="4">No jobs</td>
+          <td colspan="5">No jobs</td>
         </tr>
         <nuxt-link
-          v-for="job in filteredJobs"
+          v-for="job in sortedJobs"
           v-else
           :key="job.pubkey"
           :to="`/job/${job.pubkey}`"
@@ -90,10 +90,12 @@
                   >
                     <img
                       v-if="
-                        jobData[job.pubkey].ipfsData.state['nosana/job-type'] ===
-                          'Gitlab' ||
-                        jobData[job.pubkey].ipfsData.state['nosana/job-type'] ===
-                          'gitlab-flow'
+                        jobData[job.pubkey].ipfsData.state[
+                          'nosana/job-type'
+                        ] === 'Gitlab' ||
+                        jobData[job.pubkey].ipfsData.state[
+                          'nosana/job-type'
+                        ] === 'gitlab-flow'
                       "
                       width="30"
                       class="ml-1"
@@ -101,10 +103,12 @@
                     />
                     <img
                       v-else-if="
-                        jobData[job.pubkey].ipfsData.state['nosana/job-type'] ===
-                          'github-flow' ||
-                        jobData[job.pubkey].ipfsData.state['nosana/job-type'] ===
-                          'Github'
+                        jobData[job.pubkey].ipfsData.state[
+                          'nosana/job-type'
+                        ] === 'github-flow' ||
+                        jobData[job.pubkey].ipfsData.state[
+                          'nosana/job-type'
+                        ] === 'Github'
                       "
                       class="ml-1"
                       width="20"
@@ -113,8 +117,8 @@
                   </li>
                 </td>
               </template>
-              <td v-else-if="loading" colspan="3">Loading job data..</td>
-              <td v-else colspan="3">Could not load job data</td>
+              <td v-else-if="loading" colspan="4">Loading job data..</td>
+              <td v-else colspan="4">Could not load job data</td>
             </tr>
           </template>
         </nuxt-link>
@@ -144,7 +148,13 @@ const fmtMSS = (s: number) => {
 };
 const props = defineProps({
   jobs: {
-    type: Array<{ pubkey: any; timeStart: any; new?: number }>,
+    type: Array<{
+      pubkey: any;
+      timeStart: number;
+      timeEnd: number;
+      state: number;
+      new?: number;
+    }>,
     default: undefined,
   },
   title: {
@@ -157,7 +167,9 @@ const loading = ref(false);
 const jobData: Ref<{ [key: string]: Job }> = ref({});
 
 const page: Ref<number> = ref(1);
-const perPage: Ref<number> = ref(25);
+const perPage: Ref<number> = ref(
+  Math.max(25, props.jobs ? props.jobs.filter((j) => j.state === 0).length : 0),
+);
 let lastPage = page.value;
 const visibility = useDocumentVisibility();
 
@@ -194,6 +206,27 @@ const filteredJobs = computed(() => {
   }
   lastPage = page.value;
   return paginatedJobs;
+});
+
+const sortedJobs = computed(() => {
+  if (!filteredJobs.value) return filteredJobs.value;
+  return [...filteredJobs.value].sort((a, b) => {
+    let at = a.timeStart;
+    let bt = b.timeStart;
+    const ajd = jobData.value[a.pubkey.toString()];
+    const bjd = jobData.value[b.pubkey.toString()];
+    if (ajd) at = ajd.timeStart;
+    if (bjd) bt = bjd.timeStart;
+    if (at === bt) {
+      return a.pubkey.toString().localeCompare(b.pubkey.toString());
+    }
+    if (a.state === b.state) {
+      if (at === 0) return -1;
+      if (bt === 0) return 1;
+      return bt - at;
+    }
+    return a.state - b.state;
+  });
 });
 
 const getJobData = async (jobs: Array<any>) => {
