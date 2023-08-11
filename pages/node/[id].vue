@@ -55,7 +55,7 @@ const getNode = async () => {
       authority: true,
     });
     const country = countries.find(
-      (c: any) => c.number === node.value.country.toString(),
+      (c: any) => c.number === node.value!.country.toString(),
     );
     node.value.country = country.name;
     node.value.flag = getFlagEmoji(country.code);

@@ -50,6 +50,15 @@
                 Nodes
               </nuxt-link>
             </div>
+            <div @click="mobileMenu = false">
+              <nuxt-link
+                class="navbar-item"
+                to="/markets"
+                exact-active-class="is-active"
+              >
+                Markets
+              </nuxt-link>
+            </div>
             <div class="navbar-item" exact-active-class="is-active">
               <div>
                 <div class="select">
