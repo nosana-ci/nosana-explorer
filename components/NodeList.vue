@@ -43,7 +43,7 @@
                 {{ node.authority.toString() }}
               </td>
               <td class="py-2">
-                <div class="is-size-4" :title="node.country.toString()">
+                <div class="is-size-4" :title="node.country">
                   {{ node.flag ? node.flag : node.country }}
                 </div>
               </td>
@@ -79,7 +79,6 @@
 
 <script setup lang="ts">
 import { Node } from '@nosana/sdk';
-import countries from '@/static/countries.json';
 
 const props = defineProps({
   nodes: {
@@ -93,35 +92,13 @@ const perPage: Ref<number> = ref(25);
 
 const filteredNodes = computed(() => {
   if (!props.nodes || !props.nodes.length) return props.nodes;
-  let paginatedNodes: Array<any> = props.nodes.slice(
+  const paginatedNodes: Array<any> = props.nodes.slice(
     (page.value - 1) * perPage.value,
     page.value * perPage.value,
   );
 
-  paginatedNodes = paginatedNodes.map((x) => {
-    const node = x;
-    try {
-      const country = countries.find(
-        (c: any) => c.number === node.country.toString(),
-      );
-      node.country = country.name;
-      node.flag = getFlagEmoji(country.code);
-    } catch (e) {
-      node.country = '-';
-    }
-    return node;
-  });
-
   return paginatedNodes;
 });
-
-const getFlagEmoji = (countryCode: any) => {
-  const codePoints = countryCode
-    .toUpperCase()
-    .split('')
-    .map((char: any) => 127397 + char.charCodeAt());
-  return String.fromCodePoint(...codePoints);
-};
 </script>
 <style lang="scss" scoped>
 td {

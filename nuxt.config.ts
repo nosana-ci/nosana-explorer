@@ -11,6 +11,9 @@ export default defineNuxtConfig({
       'Space Mono': [500],
     },
   },
+  build: {
+    transpile: ['vue-countup-v3'],
+  },
   app: {
     head: {
       bodyAttrs: {

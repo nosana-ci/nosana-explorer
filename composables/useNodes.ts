@@ -1,3 +1,13 @@
+import countries from '@/static/countries.json';
+
+const getFlagEmoji = (countryCode: any) => {
+  const codePoints = countryCode
+    .toUpperCase()
+    .split('')
+    .map((char: any) => 127397 + char.charCodeAt());
+  return String.fromCodePoint(...codePoints);
+};
+
 const nodes: Ref<Array<any> | undefined> = ref(undefined);
 
 const { nosana, network } = useSDK();
@@ -13,7 +23,21 @@ const getNodes = async () => {
   console.log('retrieving all nodes..');
   loadingNodes.value = true;
   try {
-    nodes.value = await nosana.value.nodes.all();
+    let nodeList = await nosana.value.nodes.all();
+    nodeList = nodeList.map((node) => {
+      try {
+        const country = countries.find(
+          (c: any) => c.number === node.country.toString(),
+        );
+        node.countryCode = node.country;
+        node.country = country.name;
+        node.flag = getFlagEmoji(country.code);
+      } catch (e) {
+        node.country = '-';
+      }
+      return node;
+    });
+    nodes.value = nodeList;
   } catch (e) {
     console.error(e);
   }
