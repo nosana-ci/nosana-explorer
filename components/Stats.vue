@@ -118,7 +118,7 @@ const jobData = computed<ChartData<'line'>>(() => {
   const tempDateCollection: Array<any> = [];
 
   data.forEach((j) => {
-    const timestamp = parseFloat(j.timeStart) * 1000;
+    const timestamp = j.timeStart * 1000;
     if (timestamp) {
       const formatedDate = dayjs(timestamp).format('MMM/YYYY');
 
