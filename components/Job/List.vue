@@ -81,38 +81,12 @@
                 </td>
                 <td>
                   <li
-                    v-if="
-                      jobData[job.pubkey].ipfsData &&
-                      jobData[job.pubkey].ipfsData.state &&
-                      jobData[job.pubkey].ipfsData.state['nosana/job-type']
-                    "
                     class="is-flex is-align-items-center is-justify-content-center"
                   >
-                    <img
-                      v-if="
-                        jobData[job.pubkey].ipfsData.state[
-                          'nosana/job-type'
-                        ] === 'Gitlab' ||
-                        jobData[job.pubkey].ipfsData.state[
-                          'nosana/job-type'
-                        ] === 'gitlab-flow'
-                      "
-                      width="30"
+                    <JobType
+                      v-if="jobData[job.pubkey].ipfsData"
+                      :ipfs="jobData[job.pubkey].ipfsData"
                       class="ml-1"
-                      src="~assets/img/icons/gitlab.svg"
-                    />
-                    <img
-                      v-else-if="
-                        jobData[job.pubkey].ipfsData.state[
-                          'nosana/job-type'
-                        ] === 'github-flow' ||
-                        jobData[job.pubkey].ipfsData.state[
-                          'nosana/job-type'
-                        ] === 'Github'
-                      "
-                      class="ml-1"
-                      width="20"
-                      src="~assets/img/icons/github.svg"
                     />
                   </li>
                 </td>
@@ -211,21 +185,19 @@ const filteredJobs = computed(() => {
 const sortedJobs = computed(() => {
   if (!filteredJobs.value) return filteredJobs.value;
   return [...filteredJobs.value].sort((a, b) => {
-    let at = a.timeStart;
-    let bt = b.timeStart;
-    const ajd = jobData.value[a.pubkey.toString()];
-    const bjd = jobData.value[b.pubkey.toString()];
-    if (ajd) at = ajd.timeStart;
-    if (bjd) bt = bjd.timeStart;
-    if (at === bt) {
-      return a.pubkey.toString().localeCompare(b.pubkey.toString());
+    const ad = jobData.value[a.pubkey.toString()];
+    const bd = jobData.value[b.pubkey.toString()];
+    if (
+      ad &&
+      bd &&
+      ['RUNNING', 'QUEUED'].includes(ad.state) &&
+      ['RUNNING', 'QUEUED'].includes(bd.state)
+    ) {
+      if (ad.timeStart === 0) return -1;
+      if (bd.timeStart === 0) return 1;
+      return bd.timeStart - ad.timeStart;
     }
-    if (a.state === b.state) {
-      if (at === 0) return -1;
-      if (bt === 0) return 1;
-      return bt - at;
-    }
-    return a.state - b.state;
+    return 0;
   });
 });
 

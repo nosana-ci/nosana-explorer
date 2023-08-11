@@ -11,7 +11,12 @@
             Node:
             <nuxt-link :to="`/node/${job.node}`">{{ job.node }}</nuxt-link>
           </li>
-          <li>Market: {{ job.market }}</li>
+          <li>
+            Market:
+            <nuxt-link :to="`/market/${job.market}`">{{
+              job.market
+            }}</nuxt-link>
+          </li>
           <li>Project: {{ job.project }}</li>
           <li>Payer: {{ job.payer }}</li>
 
@@ -39,29 +44,9 @@
               {{ fmtMSS(Math.floor(timestamp / 1000) - job.timeStart) }}
             </span>
           </li>
-          <li
-            v-if="ipfsJob && ipfsJob.state && ipfsJob.state['nosana/job-type']"
-            class="is-flex is-align-items-center"
-          >
+          <li class="is-flex is-align-items-center">
             Job type:
-            <img
-              v-if="
-                ipfsJob.state['nosana/job-type'] === 'Gitlab' ||
-                ipfsJob.state['nosana/job-type'] === 'gitlab-flow'
-              "
-              width="30"
-              class="ml-1"
-              src="~assets/img/icons/gitlab.svg"
-            />
-            <img
-              v-else-if="
-                ipfsJob.state['nosana/job-type'] === 'github-flow' ||
-                ipfsJob.state['nosana/job-type'] === 'Github'
-              "
-              class="ml-1"
-              width="20"
-              src="~assets/img/icons/github.svg"
-            />
+            <JobType v-if="ipfsJob" :ipfs="ipfsJob" class="ml-1" />
           </li>
         </ul>
 
