@@ -113,31 +113,33 @@ const nodeData = computed<ChartData<'bar'>>(() => {
 });
 
 const jobData = computed<ChartData<'line'>>(() => {
-  const data: Array<any> = jobs.value ? jobs.value : [];
+  const data: Array<any> = jobs.value ? [...jobs.value] : [];
   const updatedData: Array<any> = [];
   const tempDateCollection: Array<any> = [];
 
-  data.forEach((j) => {
-    const timestamp = j.timeStart * 1000;
-    if (timestamp) {
-      const formatedDate = dayjs(timestamp).format('MMM/YYYY');
+  data
+    .sort((a, b) => b.timeStart - a.timeStart)
+    .forEach((j) => {
+      const timestamp = j.timeStart * 1000;
+      if (timestamp) {
+        const formatedDate = dayjs(timestamp).format('MMM/YYYY');
 
-      if (tempDateCollection.includes(formatedDate)) {
-        const index = tempDateCollection.indexOf(formatedDate);
-        const element = updatedData[index];
-        updatedData[index] = {
-          x: updatedData[index].x,
-          y: element.y + 1,
-        };
-      } else {
-        tempDateCollection.push(formatedDate);
-        updatedData.push({
-          x: timestamp,
-          y: 1,
-        });
+        if (tempDateCollection.includes(formatedDate)) {
+          const index = tempDateCollection.indexOf(formatedDate);
+          const element = updatedData[index];
+          updatedData[index] = {
+            x: updatedData[index].x,
+            y: element.y + 1,
+          };
+        } else {
+          tempDateCollection.push(formatedDate);
+          updatedData.push({
+            x: timestamp,
+            y: 1,
+          });
+        }
       }
-    }
-  });
+    });
   return {
     datasets: [
       {
