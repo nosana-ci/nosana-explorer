@@ -20,6 +20,7 @@
           <th>Started</th>
           <th>Duration</th>
           <th>Status</th>
+          <th>Job Type</th>
         </tr>
       </thead>
       <tbody>
@@ -77,6 +78,39 @@
                 </td>
                 <td>
                   <JobStatus :status="jobData[job.pubkey].state"></JobStatus>
+                </td>
+                <td>
+                  <li
+                    v-if="
+                      jobData[job.pubkey].ipfsData &&
+                      jobData[job.pubkey].ipfsData.state &&
+                      jobData[job.pubkey].ipfsData.state['nosana/job-type']
+                    "
+                    class="is-flex is-align-items-center is-justify-content-center"
+                  >
+                    <img
+                      v-if="
+                        jobData[job.pubkey].ipfsData.state['nosana/job-type'] ===
+                          'Gitlab' ||
+                        jobData[job.pubkey].ipfsData.state['nosana/job-type'] ===
+                          'gitlab-flow'
+                      "
+                      width="30"
+                      class="ml-1"
+                      src="~assets/img/icons/gitlab.svg"
+                    />
+                    <img
+                      v-else-if="
+                        jobData[job.pubkey].ipfsData.state['nosana/job-type'] ===
+                          'github-flow' ||
+                        jobData[job.pubkey].ipfsData.state['nosana/job-type'] ===
+                          'Github'
+                      "
+                      class="ml-1"
+                      width="20"
+                      src="~assets/img/icons/github.svg"
+                    />
+                  </li>
                 </td>
               </template>
               <td v-else-if="loading" colspan="3">Loading job data..</td>
@@ -167,6 +201,17 @@ const getJobData = async (jobs: Array<any>) => {
   const newJobData = await nosana.value.jobs.getMultiple(jobs);
   for (let i = 0; i < jobs.length; i++) {
     jobData.value[jobs[i]] = newJobData[i];
+  }
+  for (let i = 0; i < jobs.length; i++) {
+    try {
+      if (typeof jobData.value[jobs[i]].ipfsJob === 'string') {
+        jobData.value[jobs[i]].ipfsData = await nosana.value.ipfs.retrieve(
+          jobData.value[jobs[i]].ipfsJob,
+        );
+      }
+    } catch (error) {
+      console.error('cant get ipfs of job', error);
+    }
   }
   loading.value = false;
 };
