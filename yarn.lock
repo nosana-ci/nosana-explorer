@@ -768,10 +768,10 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@nosana/sdk@^0.1.45":
-  version "0.1.45"
-  resolved "https://registry.yarnpkg.com/@nosana/sdk/-/sdk-0.1.45.tgz#c3af3c3550811786b8fb0f987581386f4fe4d9bf"
-  integrity sha512-CpyO3VEFw7IbM8pZ+3NyOlX4yIGdE2vZPez6Lm9V0vdHhj8okpwMqMS/AkmcviDEY38Gg0de/XVfsNLi0Ex7Sg==
+"@nosana/sdk@^0.1.46":
+  version "0.1.46"
+  resolved "https://registry.yarnpkg.com/@nosana/sdk/-/sdk-0.1.46.tgz#beb3217880e7f40fa1aa61935c9a9c7add274786"
+  integrity sha512-uzp9cjKBiAVbWLZaz4P2O0zXhmdeqxMLqUfjOnGmtetm9ftYe4BxH3DxJ9vSaUDblD0N58Pz9M5Mea/Tdi+pTg==
   dependencies:
     "@coral-xyz/anchor" "^0.28.1-beta.1"
     "@solana/web3.js" "^1.78.0"
