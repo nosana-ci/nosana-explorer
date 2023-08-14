@@ -1,6 +1,7 @@
 <template>
   <div
-    class="is-family-monospace has-background-grey-darker has-text-white box"
+    class="is-family-monospace has-background-black has-text-white box"
+    style="counter-reset: line"
   >
     <div
       v-for="jobName in (ipfsJob.ops.find((j: any) => j.id === 'checkout')
@@ -8,7 +9,6 @@
         : ['checkout']
       ).concat(ipfsJob.ops.map((j: any) => j.name || j.id))"
       :key="jobName"
-      style="counter-reset: line"
     >
       <template
         v-if="
