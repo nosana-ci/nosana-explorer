@@ -114,6 +114,7 @@ import { UseTimeAgo } from '@vueuse/components';
 import { Job } from '@nosana/sdk';
 
 const { nosana } = useSDK();
+const { getIpfs } = useIpfs();
 
 const { loadingJobs } = useJobs();
 const timestamp = useTimestamp({ interval: 1000 });
@@ -210,7 +211,7 @@ const getJobData = async (jobs: Array<any>) => {
   for (let i = 0; i < jobs.length; i++) {
     try {
       if (typeof jobData.value[jobs[i]].ipfsJob === 'string') {
-        jobData.value[jobs[i]].ipfsData = await nosana.value.ipfs.retrieve(
+        jobData.value[jobs[i]].ipfsData = await getIpfs(
           jobData.value[jobs[i]].ipfsJob,
         );
       }

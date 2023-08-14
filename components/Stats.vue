@@ -205,6 +205,7 @@ const lineOptions = computed<ChartOptions<'line'>>(() => ({
       },
     },
     y: {
+      beginAtZero: true,
       border: {
         dash: [2, 4],
       },

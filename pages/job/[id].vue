@@ -95,15 +95,13 @@ import AnsiUp from 'ansi_up';
 const ansi = new AnsiUp();
 const { nosana, network } = useSDK();
 const job: Ref<Job | null> = ref(null);
-const ipfsJob: Ref<{
-  ops: Array<any>;
-  state: { 'nosana/job-type': string };
-} | null> = ref(null);
-const ipfsResult: Ref<{ results: any } | null> = ref(null);
+const ipfsJob: Ref<{ [key: string]: any }> = ref({});
+const ipfsResult: Ref<{ [key: string]: any }> = ref({});
 const { params } = useRoute();
 const jobId: Ref<string> = ref(String(params.id) || '');
 const loading: Ref<boolean> = ref(false);
 const activeTab: Ref<string> = ref('info');
+const { getIpfs } = useIpfs();
 
 const timestamp = useTimestamp({ interval: 1000 });
 const fmtMSS = (s: number) => {
@@ -121,9 +119,9 @@ const getJob = async () => {
     job.value = await nosana.value.jobs.get(jobId.value);
 
     try {
-      ipfsJob.value = await nosana.value.ipfs.retrieve(job.value!.ipfsJob);
+      ipfsJob.value = await getIpfs(job.value!.ipfsJob);
       ipfsResult.value = job.value!.ipfsResult
-        ? await nosana.value.ipfs.retrieve(job.value!.ipfsResult)
+        ? await getIpfs(job.value!.ipfsResult)
         : job.value!.ipfsResult;
 
       if (job.value!.ipfsResult) {
