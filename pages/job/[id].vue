@@ -4,7 +4,7 @@
     <div v-if="loading">Loading job..</div>
     <div v-else>
       <div v-if="job">
-        <JobStatus :status="job.state"></JobStatus>
+        <JobStatus :status="jobStatus"></JobStatus>
         <h3 class="subtitle mt-3">{{ jobId }}</h3>
         <ul>
           <li>
@@ -101,6 +101,7 @@ const { params } = useRoute();
 const jobId: Ref<string> = ref(String(params.id) || '');
 const loading: Ref<boolean> = ref(false);
 const activeTab: Ref<string> = ref('info');
+const jobStatus: Ref<string> = ref('COMPLETED');
 const { getIpfs } = useIpfs();
 
 const timestamp = useTimestamp({ interval: 1000 });
@@ -127,6 +128,15 @@ const getJob = async () => {
       if (job.value!.ipfsResult) {
         for (const key in ipfsResult.value!.results) {
           const results = ipfsResult.value!.results[key];
+          if (
+            (results && results[0] && results[0].exit) ||
+            (results &&
+              results[0] &&
+              (results[0].includes('error') || results[0].includes('failed')))
+          ) {
+            jobStatus.value = 'FAILED';
+          }
+
           if (Array.isArray(results)) {
             if (results[1]) {
               if (Array.isArray(results[1]) || Array.isArray(results[2])) {

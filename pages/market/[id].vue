@@ -78,13 +78,13 @@
 
 <script setup lang="ts">
 import { useRoute } from 'vue-router';
-import { Job } from '@nosana/sdk';
+import { Market } from '@nosana/sdk';
 
 const { nosana } = useSDK();
-const market: Ref<Node | null> = ref(null);
+const market: Ref<Market | null> = ref(null);
 const marketId: Ref<string> = ref('');
 const loading: Ref<boolean> = ref(false);
-const jobs: Ref<Array<Job> | null> = ref(null);
+const jobs: Ref<Array<any> | null> = ref(null);
 
 const getMarket = async () => {
   const { params } = useRoute();
