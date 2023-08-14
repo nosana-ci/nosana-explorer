@@ -16,6 +16,7 @@
           <th>Country</th>
           <th>CPU</th>
           <th>Memory</th>
+          <th>Number of jobs</th>
           <th>Audited</th>
         </tr>
       </thead>
@@ -44,7 +45,7 @@
               </td>
               <td class="py-2">
                 <div class="is-size-4" :title="node.country">
-                  {{ node.flag ? node.flag : node.country }}
+                  {{ node.flag ? node.flag : '-' }}
                 </div>
               </td>
               <td class="py-2">

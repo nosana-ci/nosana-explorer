@@ -55,10 +55,10 @@ const getNode = async () => {
       authority: true,
     });
     const country = countries.find(
-      (c: any) => c.number === node.value!.country.toString(),
+      (c: any) => c.number === node.value!.country!.toString(),
     );
-    node.value.country = country.name;
-    node.value.flag = getFlagEmoji(country.code);
+    node.value.country = country!.name;
+    node.value.flag = getFlagEmoji(country!.code);
     jobs.value = await nosana.value.jobs.all({ node: node.value.authority });
   } catch (e) {
     node.value = null;

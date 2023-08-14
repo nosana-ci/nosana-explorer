@@ -23,17 +23,17 @@ const getNodes = async () => {
   console.log('retrieving all nodes..');
   loadingNodes.value = true;
   try {
-    let nodeList = await nosana.value.nodes.all();
+    let nodeList = (await nosana.value.nodes.all()) as any[];
     nodeList = nodeList.map((node) => {
       try {
         const country = countries.find(
           (c: any) => c.number === node.country.toString(),
         );
         node.countryCode = node.country;
-        node.country = country.name;
-        node.flag = getFlagEmoji(country.code);
+        node.country = country!.name;
+        node.flag = getFlagEmoji(country!.code);
       } catch (e) {
-        node.country = '-';
+        node.country = null;
       }
       return node;
     });

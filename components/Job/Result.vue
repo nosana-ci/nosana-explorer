@@ -1,5 +1,6 @@
 <template>
   <div
+    v-if="ipfsJob && ipfsJob.ops"
     class="is-family-monospace has-background-black has-text-white box"
     style="counter-reset: line"
   >
