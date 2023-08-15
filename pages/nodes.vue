@@ -8,6 +8,6 @@
 <script setup lang="ts">
 const { nodes, getNodes, loadingNodes } = useNodes();
 
-// Fetch jobs every 60 seconds
-useIntervalFn(getNodes, 10000);
+// Fetch nodes every 60 seconds
+useIntervalFn(getNodes, 60000);
 </script>
