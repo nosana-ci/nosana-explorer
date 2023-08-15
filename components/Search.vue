@@ -1,13 +1,16 @@
 <template>
   <div class="control mb-4">
     <div class="field has-addons">
-      <div class="control is-fullwidth dropdown is-active">
+      <div class="control is-fullwidth dropdown is-active has-icons-right">
         <input
           v-model="address"
           type="text"
           class="input"
-          placeholder="Address"
+          placeholder="Search for jobs, nodes, markets and accounts"
         />
+        <span class="icon is-small is-right">
+          <SearchIcon />
+        </span>
         <div
           v-if="searchItems.length"
           class="dropdown-menu is-active is-fullwidth"
@@ -35,6 +38,7 @@
 <script setup lang="ts">
 import { Node } from '@nosana/sdk';
 import { onKeyStroke } from '@vueuse/core';
+import SearchIcon from '@/assets/img/icons/search.svg?component';
 
 const router = useRouter();
 const address = ref('');

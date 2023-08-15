@@ -9,7 +9,7 @@
         <div class="navbar-brand">
           <nuxt-link class="navbar-item" to="/">
             <img class="logo" width="150" src="~assets/img/logo.svg" />
-            <span class="title has-text-black is-5">EXPLORER</span>
+            <span class="subtitle is-7">EXPLORER</span>
           </nuxt-link>
 
           <a
