@@ -6,21 +6,8 @@
   </div>
 </template>
 <script setup lang="ts">
-const { network } = useSDK();
 const { nodes, getNodes, loadingNodes } = useNodes();
 
-const visibility = useDocumentVisibility();
-
-watch(network, () => {
-  nodes.value = undefined;
-  getNodes();
-});
-
-watch(visibility, (current, previous) => {
-  if (current === 'visible' && previous === 'hidden') {
-    getNodes();
-  }
-});
-
-getNodes();
+// Fetch jobs every 60 seconds
+useIntervalFn(getNodes, 10000);
 </script>

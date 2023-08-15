@@ -12,7 +12,11 @@
             </span>
           </h2>
 
-          <LineChart v-bind="lineChartProps" :height="200" />
+          <Line
+            :options="lineOptions"
+            :data="jobData"
+            style="height: 200px; width: 100%"
+          />
         </div>
       </div>
       <div class="column">
@@ -25,7 +29,11 @@
               <span v-else>-</span>
             </span>
           </h2>
-          <BarChart v-bind="barChartProps" :height="200" />
+          <Bar
+            :options="barOptions"
+            :data="nodeData"
+            style="height: 200px; width: 100%"
+          />
         </div>
       </div>
     </div>
@@ -34,7 +42,7 @@
 
 <script lang="ts" setup>
 import CountUp from 'vue-countup-v3';
-import { LineChart, useLineChart, BarChart, useBarChart } from 'vue-chart-3';
+import { Bar, Line } from 'vue-chartjs';
 import 'chartjs-adapter-dayjs-4/dist/chartjs-adapter-dayjs-4.esm';
 import {
   Chart as Chartjs,
@@ -155,7 +163,7 @@ const jobData = computed<ChartData<'line'>>(() => {
 });
 
 const barOptions = computed<ChartOptions<'bar'>>(() => ({
-  responsive: true,
+  // responsive: true,
   interaction: {
     intersect: false,
   },
@@ -184,7 +192,7 @@ const barOptions = computed<ChartOptions<'bar'>>(() => ({
 }));
 
 const lineOptions = computed<ChartOptions<'line'>>(() => ({
-  responsive: true,
+  // responsive: true,
   interaction: {
     intersect: false,
   },
@@ -215,14 +223,6 @@ const lineOptions = computed<ChartOptions<'line'>>(() => ({
     },
   },
 }));
-const { barChartProps } = useBarChart({
-  chartData: nodeData,
-  options: barOptions,
-});
-const { lineChartProps } = useLineChart({
-  chartData: jobData,
-  options: lineOptions,
-});
 </script>
 
 <style lang="scss" scoped>

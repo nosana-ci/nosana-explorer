@@ -44,6 +44,8 @@ const getNodes = async () => {
   loadingNodes.value = false;
 };
 
+getNodes();
+
 export const useNodes = () => {
   return { nodes, getNodes, loadingNodes };
 };
