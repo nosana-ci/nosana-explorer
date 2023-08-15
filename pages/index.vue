@@ -18,5 +18,5 @@ watch(visibility, (current, previous) => {
 });
 
 // Fetch jobs every 10 seconds
-// useIntervalFn(getJobs, 10000);
+useIntervalFn(getJobs, 10000);
 </script>
