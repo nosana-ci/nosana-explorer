@@ -38,6 +38,7 @@
 <script setup lang="ts">
 import { Node } from '@nosana/sdk';
 import { onKeyStroke } from '@vueuse/core';
+import { PublicKey } from '@solana/web3.js';
 import SearchIcon from '@/assets/img/icons/search.svg?component';
 
 const router = useRouter();
@@ -77,7 +78,7 @@ const searchItems = computed(() => {
     );
 
   let matches = 0;
-  return items.value!.filter((item: any) => {
+  const results = items.value!.filter((item: any) => {
     if (
       item.value
         .toString()
@@ -91,6 +92,16 @@ const searchItems = computed(() => {
       return false;
     }
   });
+
+  // if its a valid address show in dropdown
+  if (results.length === 0) {
+    try {
+      const pk = new PublicKey(address.value);
+      results.push({ value: pk.toString(), type: 'address' });
+    } catch (error) {}
+  }
+
+  return results;
 });
 
 // navigate through autocomplete search with arrow keys
