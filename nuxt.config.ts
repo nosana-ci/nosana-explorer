@@ -4,6 +4,9 @@ import svgLoader from 'vite-svg-loader';
 export default defineNuxtConfig({
   devtools: { enabled: true },
   ssr: false,
+  dir: {
+    public: 'static',
+  },
   css: ['~/assets/styles/global.scss', 'vue-json-pretty/lib/styles.css'],
   modules: ['@nuxtjs/google-fonts', '@vueuse/nuxt'],
   googleFonts: {

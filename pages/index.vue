@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Stats />
+    <!-- <Stats /> -->
     <JobList :jobs="jobs"></JobList>
     <div v-if="!loadingJobs && !jobs">Could not load jobs</div>
   </div>
@@ -18,5 +18,5 @@ watch(visibility, (current, previous) => {
 });
 
 // Fetch jobs every 10 seconds
-// useIntervalFn(getJobs, 10000);
+useIntervalFn(getJobs, 10000);
 </script>
