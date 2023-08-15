@@ -39,7 +39,7 @@
                   style="width: 35px; height: 35px; object-fit: cover"
                 />
               </td>
-              <td class="is-family-monospace py-2">
+              <td class="is-family-monospace py-2 address">
                 {{ node.authority.toString() }}
               </td>
               <td class="py-2">

@@ -62,7 +62,7 @@
             <div class="navbar-item" exact-active-class="is-active">
               <div>
                 <div class="select">
-                  <select v-model="network">
+                  <select v-model="network" @change="mobileMenu = false">
                     <option value="devnet">DevNet</option>
                     <option
                       value="https://try-rpc.mainnet.solana.blockdaemon.tech"

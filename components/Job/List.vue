@@ -43,7 +43,7 @@
               :class="{ flash: job.new }"
               @click="navigate"
             >
-              <td class="is-family-monospace">
+              <td class="is-family-monospace address">
                 {{ job.pubkey }}
               </td>
               <template v-if="jobData[job.pubkey]">

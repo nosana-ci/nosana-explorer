@@ -56,7 +56,8 @@ function changePage(param: string | number) {
         :disabled="modelValue < 2 ? true : null"
         @click="changePage('-')"
       >
-        Previous
+        <span class="is-hidden-touch">Previous</span>
+        <span class="is-hidden-desktop">&lt;</span>
       </a>
     </slot>
     <slot :pagination="pageData" :change-page="changePage">
@@ -79,8 +80,17 @@ function changePage(param: string | number) {
         class="pagination-next"
         @click="changePage('+')"
       >
-        Next
+        <span class="is-hidden-touch">Next</span>
+        <span class="is-hidden-desktop">&gt;</span>
       </a>
     </slot>
   </div>
 </template>
+
+<style lang="scss" scoped>
+@include touch {
+  .pagination {
+    font-size: 12px;
+  }
+}
+</style>

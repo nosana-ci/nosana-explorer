@@ -35,7 +35,7 @@
         >
           <template #default="{ navigate }">
             <tr class="is-clickable" @click="navigate">
-              <td class="is-family-monospace py-2">
+              <td class="is-family-monospace py-2 address">
                 {{ market.address.toString() }}
               </td>
               <td class="py-3">{{ parseInt(market.jobPrice) / 1e6 }} NOS</td>
