@@ -41,7 +41,7 @@
                 Jobs
               </nuxt-link>
             </div>
-            <div @click="mobileMenu = false">
+            <div v-if="network === 'devnet'" @click="mobileMenu = false">
               <nuxt-link
                 class="navbar-item"
                 to="/nodes"
