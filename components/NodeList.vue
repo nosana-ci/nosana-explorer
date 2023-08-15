@@ -16,7 +16,6 @@
           <th>Country</th>
           <th>CPU</th>
           <th>Memory</th>
-          <th>Number of jobs</th>
           <th>Audited</th>
         </tr>
       </thead>
