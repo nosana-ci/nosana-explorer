@@ -17,7 +17,12 @@
               job.market
             }}</nuxt-link>
           </li>
-          <li>Project: {{ job.project }}</li>
+          <li>
+            Project:
+            <nuxt-link :to="`/address/${job.project}`">{{
+              job.project
+            }}</nuxt-link>
+          </li>
           <li>Payer: {{ job.payer }}</li>
 
           <li v-if="job.timeStart">
