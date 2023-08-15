@@ -11,8 +11,10 @@ const props = defineProps({
 });
 let type;
 if (props.ipfs.state && props.ipfs.state['nosana/job-type']) {
+  // eslint-disable-next-line
   type = props.ipfs.state['nosana/job-type'];
 } else if (props.ipfs.type) {
+  // eslint-disable-next-line
   type = props.ipfs.type;
 }
 const img = ref();
