@@ -32,11 +32,20 @@
         >
           <template #default="{ navigate }">
             <tr class="is-clickable" @click="navigate">
-              <td style="width: 60px; height: 60px" class="py-2">
+              <td
+                style="width: 60px; height: 60px; text-align: center"
+                class="py-2"
+              >
                 <img
                   v-if="node.icon"
                   :src="node.icon"
-                  style="width: 35px; height: 35px; object-fit: cover"
+                  style="width: 30px; height: 30px; object-fit: cover"
+                  @error="setAltImg"
+                />
+                <img
+                  v-else
+                  src="~/assets/img/icons/node.svg"
+                  style="width: 30px; height: 30px; object-fit: cover"
                 />
               </td>
               <td class="is-family-monospace py-2 address">
@@ -99,6 +108,10 @@ const filteredNodes = computed(() => {
 
   return paginatedNodes;
 });
+
+const setAltImg = (e: any) => {
+  e.target.src = './assets/img/icons/node.svg';
+};
 </script>
 <style lang="scss" scoped>
 td {
