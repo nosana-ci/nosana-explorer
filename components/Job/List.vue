@@ -16,11 +16,11 @@
     <table class="table is-fullwidth is-striped is-hoverable">
       <thead>
         <tr>
+          <th>Job Type</th>
           <th>Address</th>
           <th>Started</th>
           <th>Duration</th>
           <th>Status</th>
-          <th>Job Type</th>
         </tr>
       </thead>
       <tbody>
@@ -43,56 +43,80 @@
               :class="{ flash: job.new }"
               @click="navigate"
             >
+              <td>
+                <li
+                  class="is-flex is-align-items-center is-justify-content-center"
+                >
+                  <JobType
+                    v-if="jobData[job.pubkey] && jobData[job.pubkey].ipfsData"
+                    :ipfs="jobData[job.pubkey].ipfsData"
+                    class="ml-1"
+                  />
+                  <span v-else-if="loading">..</span>
+                  <span v-else>-</span>
+                </li>
+              </td>
               <td class="is-family-monospace address">
                 {{ job.pubkey }}
               </td>
-              <template v-if="jobData[job.pubkey]">
-                <td>
-                  <UseTimeAgo
-                    v-if="jobData[job.pubkey].timeStart"
-                    v-slot="{ timeAgo }"
-                    :time="new Date(jobData[job.pubkey].timeStart * 1000)"
-                  >
-                    {{ timeAgo }}
-                  </UseTimeAgo>
-                  <span v-else>-</span>
-                </td>
-                <td class="is-family-monospace">
-                  <span v-if="jobData[job.pubkey].timeEnd">
-                    {{
-                      fmtMSS(
-                        jobData[job.pubkey].timeEnd -
-                          jobData[job.pubkey].timeStart,
-                      )
-                    }}
-                  </span>
-                  <span v-else-if="jobData[job.pubkey].timeStart">
-                    {{
-                      fmtMSS(
-                        Math.floor(timestamp / 1000) -
-                          jobData[job.pubkey].timeStart,
-                      )
-                    }}
-                  </span>
-                  <span v-else> - </span>
-                </td>
-                <td>
-                  <JobStatus :status="jobData[job.pubkey].state"></JobStatus>
-                </td>
-                <td>
-                  <li
-                    class="is-flex is-align-items-center is-justify-content-center"
-                  >
-                    <JobType
-                      v-if="jobData[job.pubkey].ipfsData"
-                      :ipfs="jobData[job.pubkey].ipfsData"
-                      class="ml-1"
-                    />
-                  </li>
-                </td>
-              </template>
-              <td v-else-if="loading" colspan="4">Loading job data..</td>
-              <td v-else colspan="4">Could not load job data</td>
+              <td>
+                <UseTimeAgo
+                  v-if="jobData[job.pubkey] && jobData[job.pubkey].timeStart"
+                  v-slot="{ timeAgo }"
+                  :time="new Date(jobData[job.pubkey].timeStart * 1000)"
+                >
+                  {{ timeAgo }}
+                </UseTimeAgo>
+                <UseTimeAgo
+                  v-else-if="job.timeStart"
+                  v-slot="{ timeAgo }"
+                  :time="new Date(job.timeStart * 1000)"
+                >
+                  {{ timeAgo }}
+                </UseTimeAgo>
+                <span v-else>-</span>
+              </td>
+              <td class="is-family-monospace">
+                <span v-if="jobData[job.pubkey] && jobData[job.pubkey].timeEnd">
+                  {{
+                    fmtMSS(
+                      jobData[job.pubkey].timeEnd -
+                        jobData[job.pubkey].timeStart,
+                    )
+                  }}
+                </span>
+                <span
+                  v-else-if="
+                    jobData[job.pubkey] && jobData[job.pubkey].timeStart
+                  "
+                >
+                  {{
+                    fmtMSS(
+                      Math.floor(timestamp / 1000) -
+                        jobData[job.pubkey].timeStart,
+                    )
+                  }}
+                </span>
+                <span v-else-if="job.timeEnd">
+                  {{ fmtMSS(job.timeEnd - job.timeStart) }}
+                </span>
+                <span v-else-if="job.timeStart">
+                  {{ fmtMSS(Math.floor(timestamp / 1000) - job.timeStart) }}
+                </span>
+                <span v-else> - </span>
+              </td>
+              <td>
+                <JobStatus
+                  v-if="jobData[job.pubkey] && jobData[job.pubkey].state"
+                  :status="jobData[job.pubkey].state"
+                ></JobStatus>
+                <JobStatus
+                  v-else-if="job.state === 2"
+                  :status="'COMPLETED'"
+                ></JobStatus>
+                <span v-else-if="loading">...</span>
+                <span v-else>Could not load</span>
+              </td>
             </tr>
           </template>
         </nuxt-link>
