@@ -1,11 +1,26 @@
 import { Client } from '@nosana/sdk';
+const route = useRoute();
+const network = ref(route.query.network === 'devnet' ? 'devnet' : 'mainnet');
 
-const network = useLocalStorage('network', 'devnet');
+watch(network, (value) => {
+  const router = useRouter();
+  const route = useRoute();
+  if (value === 'devnet') {
+    if (route.query.network !== 'devnet') {
+      router.push({ path: route.path, query: { network: 'devnet' } });
+    }
+  } else if (route.query.network === 'devnet') {
+    router.push({ path: route.path });
+  }
+});
 
 const nosana = computed(() => {
   return new Client({
     solana: {
-      network: network.value,
+      network:
+        network.value === 'devnet'
+          ? 'devnet'
+          : 'https://try-rpc.mainnet.solana.blockdaemon.tech',
       jobs_address:
         network.value === 'devnet'
           ? 'nosJTmGQxvwXy23vng5UjkTbfv91Bzf9jEuro78dAGR'

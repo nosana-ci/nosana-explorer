@@ -64,11 +64,7 @@
                 <div class="select">
                   <select v-model="network" @change="mobileMenu = false">
                     <option value="devnet">DevNet</option>
-                    <option
-                      value="https://try-rpc.mainnet.solana.blockdaemon.tech"
-                    >
-                      MainNet
-                    </option>
+                    <option value="mainnet">MainNet</option>
                   </select>
                 </div>
               </div>
