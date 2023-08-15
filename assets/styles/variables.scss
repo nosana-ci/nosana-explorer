@@ -40,3 +40,5 @@ $dropdown-item-active-color: hsl(0, 0%, 10%);
 $dropdown-item-active-background-color: hsl(0, 0%, 92%);
 
 $input-icon-active-color: $primary;
+
+@import 'bulma/sass/utilities/mixins';
