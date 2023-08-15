@@ -1,5 +1,5 @@
 const { nosana } = useSDK();
-const ipfsList: Ref<{ [key: string]: Object }> = ref({});
+const ipfsList: Ref<any> = useLocalStorage('ipfs', []);
 
 const getIpfs = async (hash: string) => {
   try {
