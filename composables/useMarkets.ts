@@ -21,6 +21,5 @@ const getMarkets = async () => {
 };
 
 export const useMarkets = () => {
-  getMarkets();
   return { markets, getMarkets, loadingMarkets };
 };

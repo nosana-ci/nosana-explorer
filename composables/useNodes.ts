@@ -45,6 +45,5 @@ const getNodes = async () => {
 };
 
 export const useNodes = () => {
-  getNodes();
   return { nodes, getNodes, loadingNodes };
 };
