@@ -5,12 +5,8 @@ const network = ref(route.query.network === 'devnet' ? 'devnet' : 'mainnet');
 watch(network, (value) => {
   const router = useRouter();
   const route = useRoute();
-  if (value === 'devnet') {
-    if (route.query.network !== 'devnet') {
-      router.push({ path: route.path, query: { network: 'devnet' } });
-    }
-  } else if (route.query.network === 'devnet') {
-    router.push({ path: route.path });
+  if (value !== route.query.network) {
+    router.push({ path: route.path, query: { network: value } });
   }
 });
 
