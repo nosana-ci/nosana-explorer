@@ -44,7 +44,7 @@
                 />
                 <img
                   v-else
-                  src="~/assets/img/icons/node.svg"
+                  src="/img/icons/node.svg"
                   style="width: 30px; height: 30px; object-fit: cover"
                 />
               </td>
@@ -110,7 +110,7 @@ const filteredNodes = computed(() => {
 });
 
 const setAltImg = (e: any) => {
-  e.target.src = './assets/img/icons/node.svg';
+  e.target.src = '/img/icons/node.svg';
 };
 </script>
 <style lang="scss" scoped>
