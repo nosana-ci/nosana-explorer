@@ -44,6 +44,7 @@
 import CountUp from 'vue-countup-v3';
 import { Bar, Line } from 'vue-chartjs';
 import 'chartjs-adapter-dayjs-4/dist/chartjs-adapter-dayjs-4.esm';
+
 import {
   Chart as Chartjs,
   ChartData,
@@ -62,6 +63,8 @@ import {
 } from 'chart.js';
 import { CrosshairPlugin, Interpolate } from 'chartjs-plugin-crosshair';
 import dayjs from 'dayjs';
+import isoWeek from 'dayjs/plugin/isoWeek';
+dayjs.extend(isoWeek);
 
 declare module 'chart.js' {
   interface InteractionModeMap {
@@ -141,16 +144,23 @@ const jobData = computed<ChartData<'line'>>(() => {
       const timestamp = j.timeStart * 1000;
       if (timestamp) {
         const formatedDate = dayjs(timestamp).format('MMM/YYYY');
+        const currentDate = new Date(timestamp);
+        const startDate = new Date(currentDate.getFullYear(), 0, 1);
+        const days = Math.floor(
+          (currentDate - startDate) / (24 * 60 * 60 * 1000),
+        );
 
-        if (tempDateCollection.includes(formatedDate)) {
-          const index = tempDateCollection.indexOf(formatedDate);
+        const weekNumber = Math.ceil(days / 7);
+
+        if (tempDateCollection.includes(weekNumber + formatedDate)) {
+          const index = tempDateCollection.indexOf(weekNumber + formatedDate);
           const element = updatedData[index];
           updatedData[index] = {
             x: updatedData[index].x,
             y: element.y + 1,
           };
         } else {
-          tempDateCollection.push(formatedDate);
+          tempDateCollection.push(weekNumber + formatedDate);
           updatedData.push({
             x: timestamp,
             y: 1,
@@ -243,8 +253,8 @@ const lineOptions = computed<ChartOptions<'line'>>(() => ({
       },
       time: {
         unit: 'month',
-        round: 'month',
-        tooltipFormat: 'MMM YYYY',
+        // round: 'day',
+        tooltipFormat: '[Week] W MMM YYYY',
       },
     },
     y: {
