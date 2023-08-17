@@ -83,8 +83,8 @@ const { network } = useSDK();
 
 <style lang="scss">
 .navbar {
-  backdrop-filter: blur(7px);
-  background: rgba(white, 0.9);
+  backdrop-filter: blur(6px);
+  background: rgba(white, 0.7);
   &.is-transparent {
     background: transparent;
   }

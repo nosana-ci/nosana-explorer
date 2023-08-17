@@ -1,5 +1,6 @@
 <template>
   <div
+    v-if="!imageOnly"
     class="tag is-outlined is-light"
     :class="{
       'is-success': status === 'COMPLETED',
@@ -10,8 +11,9 @@
   >
     <img class="mr-2" :src="`/img/icons/status/${getIcon(status)}.svg`" />
 
-    <span>{{ status }}</span>
+    <span v-if="!imageOnly">{{ status }}</span>
   </div>
+  <img v-else :src="`/img/icons/status/${getIcon(status)}.svg`" />
 </template>
 
 <script setup lang="ts">
@@ -19,6 +21,10 @@ defineProps({
   status: {
     type: String,
     required: true,
+  },
+  imageOnly: {
+    type: Boolean,
+    default: false,
   },
 });
 const getIcon = (status: string) => {

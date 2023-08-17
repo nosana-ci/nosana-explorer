@@ -1,39 +1,50 @@
 <template>
-  <div>
-    <div class="is-flex is-align-items-center">
-      <NuxtLink to="/" class="text-sm">&lt; Back</NuxtLink>
-      <JobStatus
-        v-if="job && !loading"
-        class="ml-2"
-        :status="jobStatus ? jobStatus : job.state"
-      ></JobStatus>
-    </div>
+  <div class="box">
     <div v-if="loading">Loading job..</div>
     <div v-else>
       <div v-if="job">
-        <h3 class="subtitle mt-3">{{ jobId }}</h3>
+        <div
+          class="is-flex is-align-items-center is-justify-content-space-between mb-3"
+        >
+          <h3 class="title is-5 address is-family-monospace my-0">
+            {{ jobId }}
+          </h3>
+          <JobStatus
+            class="ml-2"
+            :status="jobStatus ? jobStatus : job.state"
+          ></JobStatus>
+        </div>
+
         <table class="table is-fullwidth is-striped">
           <tbody>
             <tr>
               <td>Node</td>
               <td>
-                <nuxt-link :to="`/nodes/${job.node}`">{{ job.node }}</nuxt-link>
+                <nuxt-link
+                  class="address is-family-monospace"
+                  :to="`/nodes/${job.node}`"
+                  >{{ job.node }}</nuxt-link
+                >
               </td>
             </tr>
             <tr>
               <td>Market</td>
               <td>
-                <nuxt-link :to="`/markets/${job.market}`">{{
-                  job.market
-                }}</nuxt-link>
+                <nuxt-link
+                  :to="`/markets/${job.market}`"
+                  class="address is-family-monospace"
+                  >{{ job.market }}</nuxt-link
+                >
               </td>
             </tr>
             <tr>
               <td>Project</td>
               <td>
-                <nuxt-link :to="`/address/${job.project}`">{{
-                  job.project
-                }}</nuxt-link>
+                <nuxt-link
+                  class="address is-family-monospace"
+                  :to="`/address/${job.project}`"
+                  >{{ job.project }}</nuxt-link
+                >
               </td>
             </tr>
             <tr>

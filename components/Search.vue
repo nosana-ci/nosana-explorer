@@ -1,5 +1,5 @@
 <template>
-  <div class="control mb-4">
+  <div class="control mb-4 box mt-0 has-background-white-ter">
     <div class="field has-addons">
       <div class="control is-fullwidth dropdown is-active has-icons-right">
         <input

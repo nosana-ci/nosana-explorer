@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="title is-4">Markets</h1>
+    <h1 class="title is-5">Markets</h1>
     <MarketList :markets="markets"></MarketList>
     <div v-if="!loadingMarkets && !markets">Could not load markets</div>
   </div>

@@ -1,6 +1,5 @@
 <template>
-  <div>
-    <NuxtLink to="/markets" class="text-sm">&lt; Back</NuxtLink>
+  <div class="box">
     <div v-if="loading">Loading market..</div>
     <div v-else>
       <div v-if="market">
@@ -47,20 +46,20 @@
                       {{ index + 1 }}
                     </td>
                     <td>
-                      <a
+                      <nuxt-link
                         v-if="market.queueType === 0"
-                        style="max-width: 300px"
-                        class="blockchain-address"
+                        class="is-family-monospace address"
                         :href="'/jobs/' + item"
-                        >{{ item }}</a
                       >
-                      <a
+                        {{ item }}
+                      </nuxt-link>
+                      <nuxt-link
                         v-else
-                        style="max-width: 300px"
-                        class="blockchain-address"
+                        class="is-family-monospace address"
                         :href="'/nodes/' + item"
-                        >{{ item }}</a
                       >
+                        {{ item }}
+                      </nuxt-link>
                     </td>
                   </tr>
                 </tbody>

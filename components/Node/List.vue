@@ -48,8 +48,10 @@
                   style="width: 30px; height: 30px; object-fit: cover"
                 />
               </td>
-              <td class="is-family-monospace py-2 address">
-                {{ node.authority.toString() }}
+              <td>
+                <span class="is-family-monospace py-2 address">
+                  {{ node.authority.toString() }}
+                </span>
               </td>
               <td class="py-2">
                 <div class="is-size-4" :title="node.country">

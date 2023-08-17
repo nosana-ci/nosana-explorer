@@ -1,7 +1,7 @@
 <template>
   <div class="columns is-mobile is-vcentered">
     <div class="column">
-      <h2 class="title is-4">
+      <h2 class="title is-5">
         {{ title ? title : 'Jobs' }}
         <span v-if="loadingJobs" class="is-size-7">refreshing</span>
       </h2>
@@ -12,13 +12,18 @@
     </div>
   </div>
 
-  <table class="table is-fullwidth is-striped is-hoverable">
+  <table
+    class="table is-fullwidth is-striped is-hoverable mb-0"
+    :class="{ 'is-small': small }"
+  >
     <thead>
       <tr>
-        <th>Type</th>
+        <th></th>
         <th>Address</th>
+        <th v-if="!small" class="is-hidden-touch">Node</th>
         <th>Started</th>
         <th>Duration</th>
+        <th v-if="!small" class="is-hidden-touch">Price</th>
         <th>Status</th>
       </tr>
     </thead>
@@ -38,7 +43,7 @@
       >
         <template #default="{ navigate }">
           <tr
-            class="is-clickable"
+            class="is-clickable remove-greyscale-on-hover"
             :class="{ flash: job.new }"
             @click="navigate"
           >
@@ -52,19 +57,22 @@
               <span v-else>-</span>
             </td>
             <td>
-              <div
-                class="is-family-monospace address"
-                style="
-                  word-break: break-all;
-                  white-space: normal;
-                  text-overflow: ellipsis;
-                  overflow: hidden;
-                  display: -webkit-box;
-                  -webkit-line-clamp: 1;
-                  -webkit-box-orient: vertical;
-                "
-              >
+              <div class="is-family-monospace address">
                 {{ job.pubkey }}
+              </div>
+            </td>
+            <td v-if="!small" class="is-hidden-touch">
+              <div class="is-family-monospace address">
+                <span
+                  v-if="
+                    jobData[job.pubkey] &&
+                    jobData[job.pubkey].state !== 'QUEUED'
+                  "
+                >
+                  {{ jobData[job.pubkey].node }}
+                </span>
+                <span v-else-if="loading">...</span>
+                <span v-else>-</span>
               </div>
             </td>
             <td>
@@ -110,9 +118,17 @@
               </span>
               <span v-else> - </span>
             </td>
+            <td v-if="!small" class="is-hidden-touch">
+              <span v-if="jobData[job.pubkey]">
+                {{ jobData[job.pubkey].price }} NOS</span
+              >
+              <span v-else-if="loading">...</span>
+              <span v-else>-</span>
+            </td>
             <td>
               <JobStatus
                 v-if="jobData[job.pubkey] && jobData[job.pubkey].state"
+                :image-only="small"
                 :status="jobData[job.pubkey].state"
               ></JobStatus>
               <JobStatus
@@ -130,7 +146,7 @@
   <pagination
     v-if="jobs && jobs.length > perPage"
     v-model="page"
-    class="pagination is-centered"
+    class="pagination is-centered mt-4"
     :total-page="Math.ceil(jobs.length / perPage)"
     :max-page="6"
   >
@@ -163,6 +179,10 @@ const props = defineProps({
   title: {
     type: String,
     default: undefined,
+  },
+  small: {
+    type: Boolean,
+    default: false,
   },
 });
 
@@ -276,5 +296,26 @@ watch(
 .flash {
   animation: flash 2s ease-out;
   animation-iteration-count: 1;
+}
+.table {
+  white-space: nowrap;
+  &.is-small {
+    white-space: normal;
+  }
+}
+@include touch {
+  .table {
+    white-space: normal;
+  }
+}
+@include until-widescreen {
+  .table {
+    font-size: 12px;
+    .address {
+      max-width: 70px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
 }
 </style>

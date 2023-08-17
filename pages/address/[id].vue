@@ -1,6 +1,5 @@
 <template>
-  <div>
-    <NuxtLink to="/" class="text-sm">&lt; Back</NuxtLink>
+  <div class="box">
     <div v-if="loading">Loading..</div>
     <div v-else>
       <div v-if="address">

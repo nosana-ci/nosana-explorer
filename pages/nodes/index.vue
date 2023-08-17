@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="title is-4">Nodes</h1>
+    <h1 class="title is-5">Nodes</h1>
     <NodeList :nodes="nodes"></NodeList>
     <div v-if="!loadingNodes && !nodes">Could not load nodes</div>
   </div>

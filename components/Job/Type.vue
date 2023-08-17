@@ -31,3 +31,18 @@ if (jobtype) {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+img {
+  max-width: none;
+  -webkit-filter: grayscale(30%); /* Chrome 19+ & Safari 6+ */
+  transition: 0.2s;
+}
+</style>
+<style lang="scss">
+.remove-greyscale-on-hover:hover {
+  img {
+    -webkit-filter: grayscale(0%);
+  }
+}
+</style>

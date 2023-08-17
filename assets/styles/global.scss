@@ -14,13 +14,12 @@ html, body {
   width: 100%;
 }
 
-@include until-widescreen {
-  .table {
-    font-size: 12px;
-    .address {
-      max-width: 70px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-  }
+.address {
+  word-break: break-all;
+  white-space: normal;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
 }
