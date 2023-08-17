@@ -37,10 +37,8 @@
               </td>
             </tr>
             <tr>
-              <td>Payer</td>
-              <td>
-                {{ job.payer }}
-              </td>
+              <td>Price</td>
+              <td>{{ job.price }} NOS</td>
             </tr>
             <tr>
               <td>Started</td>
