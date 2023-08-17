@@ -58,11 +58,20 @@ import {
   Filler,
   BarController,
   BarElement,
+  Interaction,
 } from 'chart.js';
+import { CrosshairPlugin, Interpolate } from 'chartjs-plugin-crosshair';
 import dayjs from 'dayjs';
+
+declare module 'chart.js' {
+  interface InteractionModeMap {
+    interpolate: Interpolate;
+  }
+}
 
 const { jobs, loadingJobs } = useJobs();
 const { nodes, loadingNodes } = useNodes();
+Interaction.modes.interpolate = Interpolate;
 
 Chartjs.register(
   TimeScale,
@@ -75,6 +84,7 @@ Chartjs.register(
   BarElement,
   Filler,
   Tooltip,
+  CrosshairPlugin,
 );
 
 const nodeData = computed<ChartData<'bar'>>(() => {
@@ -152,20 +162,26 @@ const jobData = computed<ChartData<'line'>>(() => {
     datasets: [
       {
         fill: true,
-        cubicInterpolationMode: 'monotone',
+        // cubicInterpolationMode: 'monotone',
         label: 'Jobs',
         borderColor: '#2feb2b',
+        showLine: true,
         backgroundColor: '#2feb2b45',
         data: updatedData,
+        interpolate: true,
       },
     ],
   };
 });
 
+// @ts-ignore
 const barOptions = computed<ChartOptions<'bar'>>(() => ({
   // responsive: true,
   interaction: {
     intersect: false,
+  },
+  plugins: {
+    crosshair: false,
   },
   scales: {
     x: {
@@ -195,6 +211,25 @@ const lineOptions = computed<ChartOptions<'line'>>(() => ({
   // responsive: true,
   interaction: {
     intersect: false,
+  },
+  plugins: {
+    tooltip: {
+      intersect: false,
+      mode: 'index',
+    },
+    crosshair: {
+      sync: {
+        enable: false,
+      },
+      line: {
+        color: '#2feb2b', // crosshair line color
+      },
+      zoom: {
+        enabled: true, // enable zooming
+        zoomButtonText: 'Reset Zoom', // reset zoom button text
+        zoomButtonClass: 'button is-small is-outlined reset-zoom', // reset zoom button class
+      },
+    },
   },
   scales: {
     x: {
@@ -228,5 +263,12 @@ const lineOptions = computed<ChartOptions<'line'>>(() => ({
 <style lang="scss" scoped>
 .countup-wrap {
   display: inline;
+}
+</style>
+<style lang="scss">
+.reset-zoom {
+  position: absolute;
+  top: 20px;
+  right: 20px;
 }
 </style>
