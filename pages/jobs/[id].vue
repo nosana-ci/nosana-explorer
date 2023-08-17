@@ -45,18 +45,21 @@
             <tr>
               <td>Started</td>
               <td>
-                {{
-                  useDateFormat(
-                    new Date(job.timeStart * 1000),
-                    'YYYY-MM-DD HH:mm:ss',
-                  ).value
-                }}
-                <UseTimeAgo
-                  v-slot="{ timeAgo }"
-                  :time="new Date(job.timeStart * 1000)"
-                >
-                  ({{ timeAgo }})
-                </UseTimeAgo>
+                <span v-if="job.timeStart">
+                  {{
+                    useDateFormat(
+                      new Date(job.timeStart * 1000),
+                      'YYYY-MM-DD HH:mm:ss',
+                    ).value
+                  }}
+                  <UseTimeAgo
+                    v-slot="{ timeAgo }"
+                    :time="new Date(job.timeStart * 1000)"
+                  >
+                    ({{ timeAgo }})
+                  </UseTimeAgo>
+                </span>
+                <span v-else>-</span>
               </td>
             </tr>
             <tr>
@@ -68,6 +71,7 @@
                 <span v-else-if="job.timeStart">
                   {{ fmtMSS(Math.floor(timestamp / 1000) - job.timeStart) }}
                 </span>
+                <span v-else> - </span>
               </td>
             </tr>
             <tr>
@@ -140,7 +144,7 @@ const { getIpfs } = useIpfs();
 
 const timestamp = useTimestamp({ interval: 1000 });
 const fmtMSS = (s: number) => {
-  return (s - (s %= 60)) / 60 + (s > 9 ? 'm ' : 'm 0') + s + 's';
+  return (s - (s %= 60)) / 60 + (s > 9 ? 'm:' : 'm:0') + s + 's';
 };
 
 watch(network, () => {

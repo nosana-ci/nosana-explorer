@@ -35,3 +35,23 @@ const getIcon = (status: string) => {
   return icon;
 };
 </script>
+
+<style lang="scss" scoped>
+.tag {
+  min-width: max-content;
+}
+
+@include until-widescreen {
+  .tag {
+    background: none !important;
+    border: none !important;
+    padding: 0 !important;
+    img {
+      margin: 0 !important;
+    }
+    span {
+      display: none;
+    }
+  }
+}
+</style>

@@ -147,7 +147,7 @@ const { getIpfs } = useIpfs();
 const { loadingJobs } = useJobs();
 const timestamp = useTimestamp({ interval: 1000 });
 const fmtMSS = (s: number) => {
-  return (s - (s %= 60)) / 60 + (s > 9 ? 'm ' : 'm 0') + s + 's';
+  return (s - (s %= 60)) / 60 + (s > 9 ? 'm:' : 'm:0') + s + 's';
 };
 const props = defineProps({
   jobs: {
@@ -276,14 +276,5 @@ watch(
 .flash {
   animation: flash 2s ease-out;
   animation-iteration-count: 1;
-}
-
-.table {
-  white-space: nowrap;
-}
-@include touch {
-  .table {
-    white-space: normal;
-  }
 }
 </style>
