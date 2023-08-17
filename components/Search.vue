@@ -120,8 +120,10 @@ const handleKeyStroke = (e: any) => {
     ) {
       activeSearchItem.value++;
     } else if (e.key === 'Enter') {
+      let s = '';
+      if (searchItems.value[activeSearchItem.value].type !== 'address') s = 's';
       router.push(
-        `/${searchItems.value[activeSearchItem.value].type}/${
+        `/${searchItems.value[activeSearchItem.value].type}${s}/${
           searchItems.value[activeSearchItem.value].value
         }`,
       );
