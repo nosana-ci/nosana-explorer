@@ -16,7 +16,7 @@
     <table class="table is-fullwidth is-striped is-hoverable">
       <thead>
         <tr>
-          <th>Job Type</th>
+          <th>Type</th>
           <th>Address</th>
           <th>Started</th>
           <th>Duration</th>
@@ -44,17 +44,13 @@
               @click="navigate"
             >
               <td>
-                <li
-                  class="is-flex is-align-items-center is-justify-content-center"
-                >
-                  <JobType
-                    v-if="jobData[job.pubkey] && jobData[job.pubkey].ipfsData"
-                    :ipfs="jobData[job.pubkey].ipfsData"
-                    class="ml-1"
-                  />
-                  <span v-else-if="loading">..</span>
-                  <span v-else>-</span>
-                </li>
+                <JobType
+                  v-if="jobData[job.pubkey] && jobData[job.pubkey].ipfsData"
+                  :ipfs="jobData[job.pubkey].ipfsData"
+                  class="ml-1"
+                />
+                <span v-else-if="loading">..</span>
+                <span v-else>-</span>
               </td>
               <td class="is-family-monospace address">
                 {{ job.pubkey }}
