@@ -162,7 +162,7 @@ const jobData = computed<ChartData<'line'>>(() => {
     datasets: [
       {
         fill: true,
-        // cubicInterpolationMode: 'monotone',
+        cubicInterpolationMode: 'monotone',
         label: 'Jobs',
         borderColor: '#2feb2b',
         showLine: true,
