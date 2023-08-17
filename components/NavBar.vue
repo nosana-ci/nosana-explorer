@@ -35,7 +35,7 @@
             <div @click="mobileMenu = false">
               <nuxt-link
                 class="navbar-item"
-                to="/"
+                to="/jobs"
                 exact-active-class="is-active"
               >
                 Jobs

@@ -14,7 +14,7 @@ html, body {
   width: 100%;
 }
 
-@include touch {
+@include until-widescreen {
   .table {
     font-size: 12px;
     .address {

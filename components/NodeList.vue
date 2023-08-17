@@ -27,7 +27,7 @@
           v-for="node in filteredNodes"
           v-else
           :key="node.authority.toString()"
-          :to="`/node/${node.authority.toString()}`"
+          :to="`/nodes/${node.authority.toString()}`"
           custom
         >
           <template #default="{ navigate }">

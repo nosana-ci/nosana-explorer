@@ -1,70 +1,96 @@
 <template>
   <div>
-    <NuxtLink to="/" class="text-sm">&lt; Back</NuxtLink>
+    <div class="is-flex is-align-items-center">
+      <NuxtLink to="/" class="text-sm">&lt; Back</NuxtLink>
+      <JobStatus
+        v-if="job && !loading"
+        class="ml-2"
+        :status="jobStatus ? jobStatus : job.state"
+      ></JobStatus>
+    </div>
     <div v-if="loading">Loading job..</div>
     <div v-else>
       <div v-if="job">
-        <JobStatus
-          v-if="!loading"
-          :status="jobStatus ? jobStatus : job.state"
-        ></JobStatus>
         <h3 class="subtitle mt-3">{{ jobId }}</h3>
-        <ul>
-          <li>
-            Node:
-            <nuxt-link :to="`/node/${job.node}`">{{ job.node }}</nuxt-link>
-          </li>
-          <li>
-            Market:
-            <nuxt-link :to="`/market/${job.market}`">{{
-              job.market
-            }}</nuxt-link>
-          </li>
-          <li>
-            Project:
-            <nuxt-link :to="`/address/${job.project}`">{{
-              job.project
-            }}</nuxt-link>
-          </li>
-          <li>Payer: {{ job.payer }}</li>
-
-          <li v-if="job.timeStart">
-            Started:
-            {{
-              useDateFormat(
-                new Date(job.timeStart * 1000),
-                'YYYY-MM-DD HH:mm:ss',
-              ).value
-            }}
-            <UseTimeAgo
-              v-slot="{ timeAgo }"
-              :time="new Date(job.timeStart * 1000)"
-            >
-              ({{ timeAgo }})
-            </UseTimeAgo>
-          </li>
-          <li v-if="job.timeEnd || job.timeStart">
-            Duration:
-            <span v-if="job.timeEnd">
-              {{ fmtMSS(job.timeEnd - job.timeStart) }}
-            </span>
-            <span v-else-if="job.timeStart">
-              {{ fmtMSS(Math.floor(timestamp / 1000) - job.timeStart) }}
-            </span>
-          </li>
-          <li class="is-flex is-align-items-center">
-            Job type:
-            <JobType v-if="ipfsJob" :ipfs="ipfsJob" class="ml-1" />
-          </li>
-        </ul>
+        <table class="table is-fullwidth is-striped">
+          <tbody>
+            <tr>
+              <td>Node</td>
+              <td>
+                <nuxt-link :to="`/nodes/${job.node}`">{{ job.node }}</nuxt-link>
+              </td>
+            </tr>
+            <tr>
+              <td>Market</td>
+              <td>
+                <nuxt-link :to="`/markets/${job.market}`">{{
+                  job.market
+                }}</nuxt-link>
+              </td>
+            </tr>
+            <tr>
+              <td>Project</td>
+              <td>
+                <nuxt-link :to="`/address/${job.project}`">{{
+                  job.project
+                }}</nuxt-link>
+              </td>
+            </tr>
+            <tr>
+              <td>Payer</td>
+              <td>
+                {{ job.payer }}
+              </td>
+            </tr>
+            <tr>
+              <td>Started</td>
+              <td>
+                {{
+                  useDateFormat(
+                    new Date(job.timeStart * 1000),
+                    'YYYY-MM-DD HH:mm:ss',
+                  ).value
+                }}
+                <UseTimeAgo
+                  v-slot="{ timeAgo }"
+                  :time="new Date(job.timeStart * 1000)"
+                >
+                  ({{ timeAgo }})
+                </UseTimeAgo>
+              </td>
+            </tr>
+            <tr>
+              <td>Duration</td>
+              <td>
+                <span v-if="job.timeEnd">
+                  {{ fmtMSS(job.timeEnd - job.timeStart) }}
+                </span>
+                <span v-else-if="job.timeStart">
+                  {{ fmtMSS(Math.floor(timestamp / 1000) - job.timeStart) }}
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <td>Type</td>
+              <td>
+                <JobType
+                  v-if="ipfsJob"
+                  :ipfs="ipfsJob"
+                  :text="true"
+                  class="ml-1"
+                />
+              </td>
+            </tr>
+          </tbody>
+        </table>
 
         <div class="tabs mt-5">
           <ul>
-            <li :class="{ 'is-active': activeTab === 'info' }">
-              <a @click.prevent="activeTab = 'info'">Job Info</a>
-            </li>
             <li :class="{ 'is-active': activeTab === 'result' }">
-              <a @click.prevent="activeTab = 'result'">Job result</a>
+              <a @click.prevent="activeTab = 'result'">Result</a>
+            </li>
+            <li :class="{ 'is-active': activeTab === 'info' }">
+              <a @click.prevent="activeTab = 'info'">JSON Flow</a>
             </li>
           </ul>
         </div>
@@ -108,7 +134,7 @@ const ipfsResult: Ref<{ [key: string]: any }> = ref({});
 const { params } = useRoute();
 const jobId: Ref<string> = ref(String(params.id) || '');
 const loading: Ref<boolean> = ref(false);
-const activeTab: Ref<string> = ref('info');
+const activeTab: Ref<string> = ref('result');
 const jobStatus: Ref<string | null> = ref(null);
 const { getIpfs } = useIpfs();
 

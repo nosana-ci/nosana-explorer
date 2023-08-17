@@ -1,17 +1,8 @@
 <template>
   <div>
-    <Stats />
-    <div class="columns mt-4">
-      <div class="column is-6">
-        <div class="box">
-          <JobList :title="'Latest Jobs'" :jobs="jobs?.slice(0, 5)"></JobList>
-          <div class="has-text-right">
-            <nuxt-link to="/jobs">All jobs ></nuxt-link>
-          </div>
-        </div>
-      </div>
+    <div class="box">
+      <JobList :jobs="jobs"></JobList>
     </div>
-
     <div v-if="!loadingJobs && !jobs">Could not load jobs</div>
   </div>
 </template>

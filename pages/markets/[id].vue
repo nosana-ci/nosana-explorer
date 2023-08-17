@@ -51,14 +51,14 @@
                         v-if="market.queueType === 0"
                         style="max-width: 300px"
                         class="blockchain-address"
-                        :href="'/job/' + item"
+                        :href="'/jobs/' + item"
                         >{{ item }}</a
                       >
                       <a
                         v-else
                         style="max-width: 300px"
                         class="blockchain-address"
-                        :href="'/node/' + item"
+                        :href="'/nodes/' + item"
                         >{{ item }}</a
                       >
                     </td>

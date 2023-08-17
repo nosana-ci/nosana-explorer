@@ -1,5 +1,8 @@
 <template>
-  <img v-if="img" style="height: 20px" :src="`/img/icons/type/${img}`" />
+  <span v-if="type" class="is-flex is-align-items-center">
+    <img style="height: 20px" :src="`/img/icons/type/${type}.svg`" />
+    <span v-if="text" class="ml-2">{{ type }}</span>
+  </span>
 </template>
 
 <script setup lang="ts">
@@ -8,21 +11,23 @@ const props = defineProps({
     type: Object,
     required: true,
   },
+  text: {
+    type: Boolean,
+    default: false,
+  },
 });
-let type;
+let jobtype;
 if (props.ipfs.state && props.ipfs.state['nosana/job-type']) {
-  // eslint-disable-next-line
-  type = props.ipfs.state['nosana/job-type'];
+  jobtype = props.ipfs.state['nosana/job-type'];
 } else if (props.ipfs.type) {
-  // eslint-disable-next-line
-  type = props.ipfs.type;
+  jobtype = props.ipfs.type;
 }
-const img = ref();
-if (type) {
-  if (type === 'Github' || type === 'github-flow') {
-    img.value = 'github.svg';
-  } else if (type === 'Gitlab' || type === 'gitlab-flow') {
-    img.value = 'gitlab.svg';
+const type = ref();
+if (jobtype) {
+  if (jobtype === 'Github' || jobtype === 'github-flow') {
+    type.value = 'github';
+  } else if (jobtype === 'Gitlab' || jobtype === 'gitlab-flow') {
+    type.value = 'gitlab';
   }
 }
 </script>
