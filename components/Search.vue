@@ -50,7 +50,9 @@ const items: Ref<Array<any>> = ref([]);
 const activeSearchItem: Ref<number> = ref(0);
 
 const selectItem = (item: { type: string; value: string }) => {
-  router.push(`/${item.type}/${item.value}`);
+  let s = '';
+  if (item.type !== 'address') s = 's';
+  router.push(`/${item.type}${s}/${item.value}`);
 };
 
 const searchItems = computed(() => {
@@ -120,13 +122,7 @@ const handleKeyStroke = (e: any) => {
     ) {
       activeSearchItem.value++;
     } else if (e.key === 'Enter') {
-      let s = '';
-      if (searchItems.value[activeSearchItem.value].type !== 'address') s = 's';
-      router.push(
-        `/${searchItems.value[activeSearchItem.value].type}${s}/${
-          searchItems.value[activeSearchItem.value].value
-        }`,
-      );
+      selectItem(searchItems.value[activeSearchItem.value]);
       address.value = '';
       activeSearchItem.value = 0;
     }
