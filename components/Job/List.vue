@@ -119,7 +119,7 @@
             </td>
             <td v-if="!small" class="is-hidden-touch">
               <span v-if="jobData[job.pubkey]">
-                {{ jobData[job.pubkey].price }} NOS</span
+                {{ jobData[job.pubkey].price / 1e6 }} NOS</span
               >
               <span v-else-if="loading">...</span>
               <span v-else>-</span>

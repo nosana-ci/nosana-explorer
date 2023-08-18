@@ -14,7 +14,7 @@ $link-hover: lighten($primary, 20%);
 $link-focus: lighten($primary, 20%);
 $link-active: lighten($primary, 20%);
 
-$container-max-width: 1140px;
+// $container-max-width: 1140px;
 // $title-weight: 600;
 // $title-color: $primary;
 
@@ -43,3 +43,6 @@ $input-icon-active-color: $primary;
 $box-shadow: 0 0.25em 0.51em -0.125em rgba(10, 10, 10, 0.1), 0 0px 0 1px rgba(10, 10, 10, 0.02);
 
 @import 'bulma/sass/utilities/mixins';
+
+$table-row-hover-background-color: lighten($primary, 40%);
+$table-striped-row-even-hover-background-color: lighten($primary, 40%);

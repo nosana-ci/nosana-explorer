@@ -49,7 +49,7 @@
             </tr>
             <tr>
               <td>Price</td>
-              <td>{{ job.price }} NOS</td>
+              <td>{{ job.price / 1e6 }} NOS</td>
             </tr>
             <tr>
               <td>Started</td>

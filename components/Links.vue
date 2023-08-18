@@ -74,3 +74,11 @@
     </table>
   </div>
 </template>
+
+<style lang="scss" scoped>
+@include until-widescreen {
+  .table {
+    font-size: 12px;
+  }
+}
+</style>
