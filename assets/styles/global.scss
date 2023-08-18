@@ -23,3 +23,23 @@ html, body {
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
 }
+
+.loader {
+  width: 20px;
+  height: 20px;
+  border: 2px solid;
+  border-color: $primary transparent;
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

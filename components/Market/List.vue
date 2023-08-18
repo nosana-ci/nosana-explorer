@@ -35,21 +35,23 @@
         >
           <template #default="{ navigate }">
             <tr class="is-clickable" @click="navigate">
-              <td class="is-family-monospace py-2 address">
-                {{ market.address.toString() }}
+              <td>
+                <span class="is-family-monospace py-2 address">
+                  {{ market.address.toString() }}
+                </span>
               </td>
               <td class="py-3">{{ parseInt(market.jobPrice) / 1e6 }} NOS</td>
               <td class="py-3">{{ parseInt(market.jobTimeout) / 60 }} min</td>
               <td class="py-3">
-                <span v-if="market.queueType === 1">{{
-                  market.queue.length
-                }}</span>
+                <span v-if="market.queueType === 1">
+                  {{ market.queue.length }}
+                </span>
                 <span v-else>-</span>
               </td>
               <td class="py-3">
-                <span v-if="market.queueType === 0">{{
-                  market.queue.length
-                }}</span>
+                <span v-if="market.queueType === 0">
+                  {{ market.queue.length }}
+                </span>
                 <span v-else>-</span>
               </td>
             </tr>

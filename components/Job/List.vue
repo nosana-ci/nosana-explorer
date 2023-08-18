@@ -22,7 +22,7 @@
         <th>Address</th>
         <th v-if="!small" class="is-hidden-touch">Node</th>
         <th>Started</th>
-        <th>Duration</th>
+        <th class="is-hidden-mobile">Duration</th>
         <th v-if="!small" class="is-hidden-touch">Price</th>
         <th>Status</th>
       </tr>
@@ -51,9 +51,8 @@
               <JobType
                 v-if="jobData[job.pubkey] && jobData[job.pubkey].ipfsData"
                 :ipfs="jobData[job.pubkey].ipfsData"
-                class="ml-1"
               />
-              <span v-else-if="loading">..</span>
+              <span v-else-if="loading"><span class="loader"></span></span>
               <span v-else>-</span>
             </td>
             <td>
@@ -92,7 +91,7 @@
               </UseTimeAgo>
               <span v-else>-</span>
             </td>
-            <td class="is-family-monospace">
+            <td class="is-family-monospace is-hidden-mobile">
               <span v-if="jobData[job.pubkey] && jobData[job.pubkey].timeEnd">
                 {{
                   fmtMSS(

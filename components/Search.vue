@@ -4,6 +4,7 @@
       <div class="control is-fullwidth dropdown is-active has-icons-right">
         <input
           v-model="address"
+          autofocus
           type="text"
           class="input"
           placeholder="Search for jobs, nodes, markets and accounts"

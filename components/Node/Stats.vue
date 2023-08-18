@@ -21,8 +21,8 @@
         <tr>
           <td><b>Total CPU</b></td>
           <td>
-            <span v-if="nodes"
-              >{{ nodes.reduce((a, b) => a + b.cpu, 0) }} cores
+            <span v-if="nodes">
+              {{ nodes.reduce((a, b) => a + b.cpu, 0) }} cores
             </span>
             <span v-else-if="loadingNodes">...</span>
             <span v-else>-</span>
@@ -31,8 +31,8 @@
         <tr>
           <td><b>Total GPU</b></td>
           <td>
-            <span v-if="nodes"
-              >{{ nodes.reduce((a, b) => a + b.gpu, 0) }} GB
+            <span v-if="nodes">
+              {{ nodes.reduce((a, b) => a + b.gpu, 0) }} GB
             </span>
             <span v-else-if="loadingNodes">...</span>
             <span v-else>-</span>
@@ -41,8 +41,8 @@
         <tr>
           <td><b>Total Memory</b></td>
           <td>
-            <span v-if="nodes"
-              >{{ nodes.reduce((a, b) => a + b.memory, 0) }} GB
+            <span v-if="nodes">
+              {{ nodes.reduce((a, b) => a + b.memory, 0) }} GB
             </span>
             <span v-else-if="loadingNodes">...</span>
             <span v-else>-</span>
@@ -51,8 +51,8 @@
         <tr>
           <td><b>Total IOPS</b></td>
           <td>
-            <span v-if="nodes"
-              >{{ nodes.reduce((a, b) => a + b.iops, 0) }} IOPS
+            <span v-if="nodes">
+              {{ nodes.reduce((a, b) => a + b.iops, 0) }} IOPS
             </span>
             <span v-else-if="loadingNodes">...</span>
             <span v-else>-</span>
@@ -61,8 +61,8 @@
         <tr>
           <td><b>Total storage</b></td>
           <td>
-            <span v-if="nodes"
-              >{{ nodes.reduce((a, b) => a + b.storage, 0) }} GB
+            <span v-if="nodes">
+              {{ nodes.reduce((a, b) => a + b.storage, 0) }} GB
             </span>
             <span v-else-if="loadingNodes">...</span>
             <span v-else>-</span>
@@ -71,8 +71,8 @@
         <tr>
           <td><b>Countries</b></td>
           <td>
-            <span v-if="nodes"
-              >{{ new Set(nodes.map((n) => n.country)).size }}
+            <span v-if="nodes">
+              {{ new Set(nodes.map((n) => n.country)).size }}
             </span>
             <span v-else-if="loadingNodes">...</span>
             <span v-else>-</span>

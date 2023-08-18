@@ -19,6 +19,7 @@ const getMarkets = async () => {
   }
   loadingMarkets.value = false;
 };
+getMarkets();
 
 export const useMarkets = () => {
   return { markets, getMarkets, loadingMarkets };

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="box">
     <h1 class="title is-5">Nodes</h1>
     <NodeList :nodes="nodes"></NodeList>
     <div v-if="!loadingNodes && !nodes">Could not load nodes</div>
