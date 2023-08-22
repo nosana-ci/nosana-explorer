@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="columns">
-      <div class="column">
+      <div class="column is-12">
         <div class="box">
           <h2 class="title is-5">
             Jobs
@@ -19,7 +19,7 @@
           />
         </div>
       </div>
-      <div class="column">
+      <!-- <div class="column">
         <div class="box">
           <h2 class="title is-5">
             Nodes
@@ -35,7 +35,7 @@
             style="height: 200px; width: 100%"
           />
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
