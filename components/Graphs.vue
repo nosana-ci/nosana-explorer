@@ -11,12 +11,9 @@
               <span v-else>-</span>
             </span>
           </h2>
-
-          <Line
-            :options="lineOptions"
-            :data="jobData"
-            style="height: 200px; width: 100%"
-          />
+          <div style="height: 200px">
+            <Line :options="lineOptions" :data="jobData" style="width: 100%" />
+          </div>
         </div>
       </div>
       <!-- <div class="column">
@@ -29,11 +26,9 @@
               <span v-else>-</span>
             </span>
           </h2>
-          <Bar
-            :options="barOptions"
-            :data="nodeData"
-            style="height: 200px; width: 100%"
-          />
+          <div style="height: 200px">
+            <Bar :options="barOptions" :data="nodeData" style="width: 100%" />
+          </div>
         </div>
       </div> -->
     </div>
@@ -186,7 +181,8 @@ const jobData = computed<ChartData<'line'>>(() => {
 
 // @ts-ignore
 const barOptions = computed<ChartOptions<'bar'>>(() => ({
-  // responsive: true,
+  responsive: true,
+  maintainAspectRatio: false,
   interaction: {
     intersect: false,
   },
@@ -218,7 +214,8 @@ const barOptions = computed<ChartOptions<'bar'>>(() => ({
 }));
 
 const lineOptions = computed<ChartOptions<'line'>>(() => ({
-  // responsive: true,
+  responsive: true,
+  maintainAspectRatio: false,
   interaction: {
     intersect: false,
   },
