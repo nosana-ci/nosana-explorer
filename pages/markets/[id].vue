@@ -10,7 +10,7 @@
             Job expiration: {{ parseInt(market.jobExpiration) / 60 }} seconds
           </li>
           <li>Job price: {{ parseInt(market.jobPrice) / 1e6 }}NOS</li>
-          <li>Job timeout: {{ parseInt(market.jobTimeout) / 60 }} seconds</li>
+          <li>Job timeout: {{ parseInt(market.jobTimeout) / 60 }} minutes</li>
           <li>Job type: {{ market.jobType }}</li>
           <li>Vault: {{ market.vault.toString() }}</li>
           <li>Vault bump: {{ market.vaultBump }}</li>
