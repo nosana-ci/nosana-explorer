@@ -68,7 +68,7 @@
                 <img
                   class="mr-2"
                   :src="`/img/icons/status/${
-                    node.audited ? 'done' : 'stopped'
+                    node.audited ? 'done' : 'done'
                   }.svg`"
                 />
               </td>

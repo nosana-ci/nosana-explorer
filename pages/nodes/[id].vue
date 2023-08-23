@@ -21,9 +21,8 @@
           <li>
             Audited:
             <img
-              :src="`/img/icons/status/${
-                node.audited ? 'done' : 'stopped'
-              }.svg`"
+              style="vertical-align: middle"
+              :src="`/img/icons/status/${node.audited ? 'done' : 'done'}.svg`"
             />
           </li>
         </ul>
