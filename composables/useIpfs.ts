@@ -4,11 +4,12 @@ const ipfsList: Ref<any> = useLocalStorage('ipfs', {});
 const getIpfs = async (hash: string) => {
   try {
     if (ipfsList.value[hash]) {
-      return ipfsList.value[hash] as Object;
+      return JSON.parse(ipfsList.value[hash]) as Object;
     }
-    console.log('getting ipfs..');
-    ipfsList.value[hash] = await nosana.value.ipfs.retrieve(hash);
-    return ipfsList.value[hash] as Object;
+    ipfsList.value[hash] = JSON.stringify(
+      await nosana.value.ipfs.retrieve(hash),
+    );
+    return JSON.parse(ipfsList.value[hash]) as Object;
   } catch (e) {
     console.error(e);
   }
