@@ -13,7 +13,7 @@
         <tr>
           <th></th>
           <th>Address</th>
-          <th>Country</th>
+          <!-- <th>Country</th> -->
           <th>CPU</th>
           <th>Memory</th>
           <th>Audited</th>
@@ -53,16 +53,16 @@
                   {{ node.authority.toString() }}
                 </span>
               </td>
-              <td class="py-2">
+              <!-- <td class="py-2">
                 <div class="is-size-4" :title="node.country">
                   {{ node.flag ? node.flag : '-' }}
                 </div>
+              </td> -->
+              <td class="py-2">
+                <span class="is-size-6">{{ node.cpu }} cores</span>
               </td>
               <td class="py-2">
-                <span class="is-size-6">{{ node.cpu }}</span>
-              </td>
-              <td class="py-2">
-                <span class="is-size-6">{{ node.memory }}</span>
+                <span class="is-size-6">{{ node.memory }} GB</span>
               </td>
               <td class="py-2">
                 <img

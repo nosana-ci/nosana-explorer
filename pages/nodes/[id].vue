@@ -5,17 +5,17 @@
       <div v-if="node">
         <h3 class="subtitle mt-3">{{ nodeId }}</h3>
         <ul class="mb-6">
-          <li>
+          <!-- <li>
             Location:
             {{ node.flag ? node.flag : node.country }}
-          </li>
+          </li> -->
           <li>Authority: {{ node.authority }}</li>
-          <li>Architecture type: {{ node.architecture }} MB</li>
-          <li>CPU: {{ node.cpu }} MB</li>
-          <li>GPU: {{ node.gpu }} MB</li>
-          <li>Memory: {{ node.memory }} MB</li>
-          <li>IOPS: {{ node.iops }}</li>
-          <li>Storage: {{ node.storage }} MB</li>
+          <li>Architecture type: {{ node.architecture }}</li>
+          <li>CPU: {{ node.cpu }} cores</li>
+          <!-- <li>GPU: {{ node.gpu }} MB</li> -->
+          <li>Memory: {{ node.memory }} GB</li>
+          <li>IOPS: {{ node.iops }} IOPS</li>
+          <li>Storage: {{ node.storage }} GB</li>
           <li>Endpoint: {{ node.endpoint }}</li>
           <li>Version: {{ node.version }}</li>
           <li>
