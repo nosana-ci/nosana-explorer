@@ -1,36 +1,38 @@
 <template>
-  <div class="control mb-4 box mt-0 has-background-white-ter">
-    <div class="field has-addons">
-      <div class="control is-fullwidth dropdown is-active has-icons-right">
-        <input
-          v-model="address"
-          autofocus
-          type="text"
-          class="input"
-          placeholder="Search for jobs, nodes, markets and accounts"
-        />
-        <span class="icon is-small is-right">
-          <SearchIcon />
-        </span>
-        <div
-          v-if="searchItems.length"
-          class="dropdown-menu is-active is-fullwidth"
-          role="menu"
-        >
-          <div class="dropdown-content has-background-white-bis">
-            <a
-              v-for="(item, index) in searchItems"
-              :key="item"
-              class="dropdown-item px-4 py-2 is-size-6 is-flex is-justify-content-space-between"
-              :class="{ 'is-active': index === activeSearchItem }"
-              @click="selectItem(item), (address = '')"
-            >
-              {{ item.value }}
-              <span class="is-capitalized has-text-grey-light">{{
-                item.type
-              }}</span>
-            </a>
-          </div>
+  <div class="field has-addons mb-5">
+    <div class="control is-fullwidth dropdown is-active has-icons-right">
+      <input
+        v-model="address"
+        autofocus
+        type="text"
+        class="input py-5 px-3"
+        style="
+          padding-top: 1.4rem !important;
+          padding-bottom: 1.4rem !important;
+        "
+        placeholder="Search for jobs, nodes, markets and accounts"
+      />
+      <span class="icon is-small is-right">
+        <SearchIcon />
+      </span>
+      <div
+        v-if="searchItems.length"
+        class="dropdown-menu is-active is-fullwidth"
+        role="menu"
+      >
+        <div class="dropdown-content has-background-white-bis">
+          <a
+            v-for="(item, index) in searchItems"
+            :key="item"
+            class="dropdown-item px-4 py-2 is-size-6 is-flex is-justify-content-space-between"
+            :class="{ 'is-active': index === activeSearchItem }"
+            @click="selectItem(item), (address = '')"
+          >
+            {{ item.value }}
+            <span class="is-capitalized has-text-grey-light">{{
+              item.type
+            }}</span>
+          </a>
         </div>
       </div>
     </div>

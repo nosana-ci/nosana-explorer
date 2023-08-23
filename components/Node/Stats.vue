@@ -48,7 +48,7 @@
             <span v-else>-</span>
           </td>
         </tr>
-        <tr>
+        <!-- <tr>
           <td><b>Total IOPS</b></td>
           <td>
             <span v-if="nodes">
@@ -57,7 +57,7 @@
             <span v-else-if="loadingNodes">...</span>
             <span v-else>-</span>
           </td>
-        </tr>
+        </tr> -->
         <tr>
           <td><b>Total storage</b></td>
           <td>

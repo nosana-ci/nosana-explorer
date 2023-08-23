@@ -14,7 +14,7 @@
           <li>CPU: {{ node.cpu }} cores</li>
           <!-- <li>GPU: {{ node.gpu }} MB</li> -->
           <li>Memory: {{ node.memory }} GB</li>
-          <li>IOPS: {{ node.iops }} IOPS</li>
+          <!-- <li>IOPS: {{ node.iops }} IOPS</li> -->
           <li>Storage: {{ node.storage }} GB</li>
           <li>Endpoint: {{ node.endpoint }}</li>
           <li>Version: {{ node.version }}</li>
