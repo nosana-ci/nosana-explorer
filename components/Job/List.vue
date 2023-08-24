@@ -298,6 +298,9 @@ watch(
 }
 .table {
   white-space: nowrap;
+  .address {
+    max-width: 150px;
+  }
   &.is-small {
     white-space: normal;
   }
