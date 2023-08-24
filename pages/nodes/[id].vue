@@ -15,7 +15,16 @@
 
             <tr>
               <td>Authority</td>
-              <td>{{ node.authority }}</td>
+              <td>
+                <a
+                  class="address is-family-monospace"
+                  target="_blank"
+                  :href="
+                    'https://explorer.solana.com/address/' + node.authority
+                  "
+                  >{{ node.authority }}</a
+                >
+              </td>
             </tr>
             <tr>
               <td>Architecture type:</td>
@@ -37,7 +46,9 @@
             </tr>
             <tr>
               <td>Endpoint</td>
-              <td>{{ node.endpoint }}</td>
+              <td>
+                <a :href="node.endpoint" target="_blank">{{ node.endpoint }}</a>
+              </td>
             </tr>
             <tr>
               <td>Version</td>
