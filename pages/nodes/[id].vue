@@ -34,19 +34,23 @@
 </template>
 
 <script setup lang="ts">
-import { useRoute } from 'vue-router';
 import { Job, Node } from '@nosana/sdk';
 import countries from '@/static/countries.json';
+const { params } = useRoute();
 
-const { nosana } = useSDK();
+const { nosana, network } = useSDK();
 const node: Ref<Node | null> = ref(null);
-const nodeId: Ref<string> = ref('');
+const nodeId: Ref<string> = ref(String(params.id));
 const loading: Ref<boolean> = ref(false);
 const jobs: Ref<Array<Job> | null> = ref(null);
 
+watch(network, () => {
+  node.value = null;
+  jobs.value = null;
+  getNode();
+});
+
 const getNode = async () => {
-  const { params } = useRoute();
-  nodeId.value = String(params.id);
   try {
     loading.value = true;
     node.value = await nosana.value.nodes.get(nodeId.value, {

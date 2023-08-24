@@ -4,8 +4,9 @@
     <div v-else>
       <div v-if="address">
         <h3 class="subtitle mt-3 mb-2">{{ address }}</h3>
-        <p v-if="balance && balance.uiAmount" class="mb-6 is-2">
-          NOS Balance: {{ balance.uiAmount }}
+        <p class="mb-6 is-2">
+          NOS Balance:
+          <span v-if="balance && balance.uiAmount">{{ balance.uiAmount }}</span>
         </p>
         <hr />
         <JobList
@@ -21,18 +22,24 @@
 </template>
 
 <script setup lang="ts">
-import { useRoute } from 'vue-router';
 import { Job } from '@nosana/sdk';
 import { PublicKey } from '@solana/web3.js';
+const { params } = useRoute();
 
-const { nosana } = useSDK();
-const address: Ref<string> = ref('');
-const balance: Ref<any> = ref('');
+const { nosana, network } = useSDK();
+const address: Ref<string | null> = ref(null);
+const balance: Ref<any | null> = ref(null);
 const loading: Ref<boolean> = ref(false);
 const jobs: Ref<Array<Job> | null> = ref(null);
 
+watch(network, () => {
+  address.value = null;
+  balance.value = null;
+  jobs.value = null;
+  getAddress();
+});
+
 const getAddress = async () => {
-  const { params } = useRoute();
   loading.value = true;
   try {
     const pk = new PublicKey(String(params.id));
