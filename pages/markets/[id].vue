@@ -4,22 +4,78 @@
     <div v-else>
       <div v-if="market">
         <h3 class="subtitle mt-3">{{ marketId }}</h3>
-        <ul class="mb-6">
-          <li>Authority: {{ market.authority }}</li>
-          <li>
-            Job expiration: {{ parseInt(market.jobExpiration) / 60 }} seconds
-          </li>
-          <li>Job price: {{ parseInt(market.jobPrice) / 1e6 }}NOS</li>
-          <li>Job timeout: {{ parseInt(market.jobTimeout) / 60 }} minutes</li>
-          <li>Job type: {{ market.jobType }}</li>
-          <li>Vault: {{ market.vault.toString() }}</li>
-          <li>Vault bump: {{ market.vaultBump }}</li>
-          <li>Node access key: {{ market.nodeAccessKey.toString() }}</li>
-          <li>Minimum XNOS: {{ parseInt(market.nodeXnosMinimum) / 1e6 }}</li>
-        </ul>
+        <table class="table is-fullwidth is-striped">
+          <tbody>
+            <tr>
+              <td>Authority</td>
+              <td>
+                <a
+                  target="_blank"
+                  class="address is-family-monospace"
+                  :href="
+                    'https://explorer.solana.com/address/' + market.authority
+                  "
+                  >{{ market.authority }}</a
+                >
+              </td>
+            </tr>
+            <tr>
+              <td>Job expiration</td>
+              <td>{{ market.jobExpiration / 60 }} seconds</td>
+            </tr>
+            <tr>
+              <td>Job price</td>
+              <td>{{ market.jobPrice / 1e6 }}NOS</td>
+            </tr>
+            <tr>
+              <td>Job timeout</td>
+              <td>{{ market.jobTimeout / 60 }} minutes</td>
+            </tr>
+            <tr>
+              <td>Job type</td>
+              <td>{{ market.jobType }}</td>
+            </tr>
+            <tr>
+              <td>Vault</td>
+              <td>
+                <a
+                  target="_blank"
+                  class="address is-family-monospace"
+                  :href="
+                    'https://explorer.solana.com/address/' +
+                    market.vault.toString()
+                  "
+                  >{{ market.vault.toString() }}</a
+                >
+              </td>
+            </tr>
+            <tr>
+              <td>Vault bump</td>
+              <td>{{ market.vaultBump }}</td>
+            </tr>
+            <tr>
+              <td>Node access key</td>
+              <td>
+                <a
+                  target="_blank"
+                  class="address is-family-monospace"
+                  :href="
+                    'https://explorer.solana.com/address/' +
+                    market.nodeAccessKey.toString()
+                  "
+                  >{{ market.nodeAccessKey.toString() }}</a
+                >
+              </td>
+            </tr>
+            <tr>
+              <td>Minimum XNOS</td>
+              <td>{{ market.nodeXnosMinimum / 1e6 }}</td>
+            </tr>
+          </tbody>
+        </table>
         <div class="py-5 queues columns">
           <div class="node-queue column is-half">
-            <h2 class="title is-4">
+            <h2 class="title is-5">
               <span v-if="market.queueType === 0"> Job </span>
               <span v-else-if="market.queueType === 1"> Node </span>
               Queue

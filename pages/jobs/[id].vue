@@ -4,7 +4,7 @@
     <div v-else>
       <div v-if="job">
         <div
-          class="is-flex is-align-items-center is-justify-content-space-between mb-3"
+          class="is-flex is-align-items-center is-justify-content-space-between mb-4"
         >
           <h3 class="title is-5 address is-family-monospace my-0">
             {{ jobId }}

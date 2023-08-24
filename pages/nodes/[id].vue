@@ -3,29 +3,70 @@
     <div v-if="loading">Loading node..</div>
     <div v-else>
       <div v-if="node">
-        <h3 class="subtitle mt-3">{{ nodeId }}</h3>
-        <ul class="mb-6">
-          <!-- <li>
+        <h3 class="title is-5 address is-family-monospace mb-4">
+          {{ nodeId }}
+        </h3>
+        <table class="table is-fullwidth is-striped">
+          <tbody>
+            <!-- <tr>
             Location:
             {{ node.flag ? node.flag : node.country }}
-          </li> -->
-          <li>Authority: {{ node.authority }}</li>
-          <li>Architecture type: {{ node.architecture }}</li>
-          <li>CPU: {{ node.cpu }} cores</li>
-          <!-- <li>GPU: {{ node.gpu }} MB</li> -->
-          <li>Memory: {{ node.memory }} GB</li>
-          <!-- <li>IOPS: {{ node.iops }} IOPS</li> -->
-          <li>Storage: {{ node.storage }} GB</li>
-          <li>Endpoint: {{ node.endpoint }}</li>
-          <li>Version: {{ node.version }}</li>
-          <li>
-            Audited:
-            <img
-              style="vertical-align: middle"
-              :src="`/img/icons/status/${node.audited ? 'done' : 'done'}.svg`"
-            />
-          </li>
-        </ul>
+          </tr> -->
+
+            <tr>
+              <td>Authority</td>
+              <td>
+                <a
+                  class="address is-family-monospace"
+                  target="_blank"
+                  :href="
+                    'https://explorer.solana.com/address/' + node.authority
+                  "
+                  >{{ node.authority }}</a
+                >
+              </td>
+            </tr>
+            <tr>
+              <td>Architecture type:</td>
+              <td>{{ node.architecture }}</td>
+            </tr>
+            <tr>
+              <td>CPU:</td>
+              <td>{{ node.cpu }} cores</td>
+            </tr>
+            <!-- <tr>GPU: {{ node.gpu }} MB</tr> -->
+            <tr>
+              <td>Memory</td>
+              <td>{{ node.memory }} GB</td>
+            </tr>
+            <!-- <tr>IOPS: {{ node.iops }} IOPS</tr> -->
+            <tr>
+              <td>Storage</td>
+              <td>{{ node.storage }} GB</td>
+            </tr>
+            <tr>
+              <td>Endpoint</td>
+              <td>
+                <a :href="node.endpoint" target="_blank">{{ node.endpoint }}</a>
+              </td>
+            </tr>
+            <tr>
+              <td>Version</td>
+              <td>{{ node.version }}</td>
+            </tr>
+            <tr>
+              <td>Audited</td>
+              <td>
+                <img
+                  style="vertical-align: middle"
+                  :src="`/img/icons/status/${
+                    node.audited ? 'done' : 'done'
+                  }.svg`"
+                />
+              </td>
+            </tr>
+          </tbody>
+        </table>
         <JobList title="Jobs by this node" :jobs="jobs"></JobList>
       </div>
       <div v-else>Node not found</div>
