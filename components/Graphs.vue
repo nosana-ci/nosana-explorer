@@ -220,6 +220,9 @@ const lineOptions = computed<ChartOptions<'line'>>(() => ({
     intersect: false,
   },
   plugins: {
+    legend: {
+      display: false,
+    },
     tooltip: {
       intersect: false,
       mode: 'index',
