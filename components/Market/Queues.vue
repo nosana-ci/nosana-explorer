@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div style="height: 150px">
+    <div style="height: 200px">
       <Bar :options="barOptions" :data="queueData" style="width: 100%" />
     </div>
     <table class="table is-fullwidth is-striped">
@@ -72,8 +72,8 @@ const queueData = computed<ChartData<'bar'>>(() => {
       {
         label: 'Nodes',
         borderWidth: 3,
-        borderColor: '#b54bf9',
-        backgroundColor: '#b54bf945',
+        borderColor: '#2feb2b',
+        backgroundColor: '#2feb2b45',
         data: data.map((m) => (m.queueType === 1 ? m.queue.length : 0)),
       },
       {
@@ -81,7 +81,7 @@ const queueData = computed<ChartData<'bar'>>(() => {
         borderWidth: 3,
         borderColor: '#f9d54b',
         backgroundColor: '#f9d54b45',
-        data: data.map((m) => (m.queueType === 0 ? m.queue.length : 0)),
+        data: data.map((m) => (m.queueType === 0 ? -m.queue.length : 0)),
       },
     ],
   };
@@ -91,14 +91,23 @@ const queueData = computed<ChartData<'bar'>>(() => {
 const barOptions = computed<ChartOptions<'bar'>>(() => ({
   responsive: true,
   maintainAspectRatio: false,
-  barThickness: 50,
+  // barThickness: 20,
   interaction: {
     intersect: false,
   },
+  indexAxis: 'y',
   plugins: {
     legend: {
-      position: 'left',
+      position: 'bottom',
       onClick: () => {},
+    },
+    tooltip: {
+      callbacks: {
+        label: (tooltipItem) =>
+          `${tooltipItem.dataset.label}: ${Math.abs(
+            tooltipItem.formattedValue,
+          )}`,
+      },
     },
     crosshair: false,
   },
@@ -106,14 +115,20 @@ const barOptions = computed<ChartOptions<'bar'>>(() => ({
     x: {
       stacked: true,
       grid: {
-        display: false,
-        tickBorderDash: [2, 4],
+        lineWidth: (v) => {
+          return v.tick?.value === 0 ? 1 : 0;
+        },
+        color: '#000000',
       },
-      border: {
-        dash: [2, 4],
+      ticks: {
+        precision: 0,
+        callback: function (value) {
+          return Math.abs(value);
+        },
       },
     },
     y: {
+      stacked: true,
       border: {
         dash: [2, 4],
       },
