@@ -59,7 +59,7 @@
           </td>
         </tr> -->
         <tr>
-          <td><b>Total storage</b></td>
+          <td><b>Total Storage</b></td>
           <td>
             <span v-if="nodes">
               {{ nodes.reduce((a, b) => a + b.storage, 0) }} GB

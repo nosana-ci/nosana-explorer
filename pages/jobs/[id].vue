@@ -94,6 +94,29 @@
                 />
               </td>
             </tr>
+            <tr>
+              <td>Source</td>
+              <td
+                v-if="
+                  ipfsJob.state &&
+                  ipfsJob.state['nosana/job-type'] &&
+                  (ipfsJob.state['nosana/job-type'] === 'Github' ||
+                    ipfsJob.state['nosana/job-type'] === 'github-flow')
+                "
+              >
+                <a
+                  :href="
+                    ipfsJob.state['input/repo'].replace('.git', '') +
+                    '/commit/' +
+                    ipfsJob.state['input/commit-sha']
+                  "
+                  target="_blank"
+                >
+                  {{ ipfsJob.state['input/commit-sha'] }}
+                </a>
+              </td>
+              <td v-else>Secret</td>
+            </tr>
           </tbody>
         </table>
 

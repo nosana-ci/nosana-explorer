@@ -6,7 +6,9 @@ const getIpfs = async (hash: string) => {
     if (!ipfsList.value[hash]) {
       ipfsList.value[hash] = await nosana.value.ipfs.retrieve(hash);
     }
-    return JSON.parse(JSON.stringify(ipfsList.value[hash])) as Object;
+    return ipfsList.value[hash]
+      ? (JSON.parse(JSON.stringify(ipfsList.value[hash])) as Object)
+      : ipfsList.value[hash];
   } catch (e) {
     console.error(e);
   }

@@ -1,7 +1,9 @@
 <template>
   <span v-if="type" class="is-flex is-align-items-center">
     <img style="height: 20px" :src="`/img/icons/type/${type}.svg`" />
-    <span v-if="text" class="ml-2">{{ type }}</span>
+    <span v-if="text" class="ml-2 is-capitalized">{{
+      typeMap[type as keyof typeof typeMap]
+    }}</span>
   </span>
 </template>
 
@@ -16,6 +18,8 @@ const props = defineProps({
     default: false,
   },
 });
+const typeMap = { github: 'GitHub', gitlab: 'GitLab' };
+
 let jobtype;
 if (props.ipfs.state && props.ipfs.state['nosana/job-type']) {
   jobtype = props.ipfs.state['nosana/job-type'];
