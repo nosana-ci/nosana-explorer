@@ -76,18 +76,22 @@
 </template>
 
 <script setup lang="ts">
-import { useRoute } from 'vue-router';
 import { Market } from '@nosana/sdk';
 
-const { nosana } = useSDK();
+const { params } = useRoute();
+const { nosana, network } = useSDK();
 const market: Ref<Market | null> = ref(null);
-const marketId: Ref<string> = ref('');
+const marketId: Ref<string> = ref(String(params.id));
 const loading: Ref<boolean> = ref(false);
 const jobs: Ref<Array<any> | null> = ref(null);
 
+watch(network, () => {
+  market.value = null;
+  jobs.value = null;
+  getMarket();
+});
+
 const getMarket = async () => {
-  const { params } = useRoute();
-  marketId.value = String(params.id);
   try {
     loading.value = true;
     market.value = await nosana.value.jobs.getMarket(marketId.value);
