@@ -20,7 +20,7 @@
           </td>
         </tr>
         <tr>
-          <td><b>Github Connector</b></td>
+          <td><b>GitHub Connector</b></td>
           <td>
             <a
               href="https://app.nosana.io"
