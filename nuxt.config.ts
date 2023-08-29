@@ -21,6 +21,7 @@ export default defineNuxtConfig({
   },
   app: {
     head: {
+      title: 'Nosana Explorer',
       bodyAttrs: {
         class: 'has-navbar-fixed-top',
       },
