@@ -20,20 +20,21 @@ const props = defineProps({
 });
 const typeMap = { github: 'GitHub', gitlab: 'GitLab' };
 
-let jobtype;
-if (props.ipfs.state && props.ipfs.state['nosana/job-type']) {
-  jobtype = props.ipfs.state['nosana/job-type'];
-} else if (props.ipfs.type) {
-  jobtype = props.ipfs.type;
-}
-const type = ref();
-if (jobtype) {
-  if (jobtype === 'Github' || jobtype === 'github-flow') {
-    type.value = 'github';
-  } else if (jobtype === 'Gitlab' || jobtype === 'gitlab-flow') {
-    type.value = 'gitlab';
+const type = computed(() => {
+  let jobtype;
+  if (props.ipfs.state && props.ipfs.state['nosana/job-type']) {
+    jobtype = props.ipfs.state['nosana/job-type'];
+  } else if (props.ipfs.type) {
+    jobtype = props.ipfs.type;
   }
-}
+  if (jobtype) {
+    if (jobtype === 'Github' || jobtype === 'github-flow') {
+      return 'github';
+    } else if (jobtype === 'Gitlab' || jobtype === 'gitlab-flow') {
+      return 'gitlab';
+    }
+  }
+});
 </script>
 
 <style lang="scss" scoped>
