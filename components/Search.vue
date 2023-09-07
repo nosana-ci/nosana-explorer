@@ -12,7 +12,7 @@
         "
         placeholder="Search for jobs, nodes, markets and accounts"
       />
-      <span class="icon is-small is-right">
+      <span class="icon is-small pt-1 is-right">
         <SearchIcon />
       </span>
       <div

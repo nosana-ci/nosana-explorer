@@ -139,11 +139,32 @@
           v-show="activeTab === 'result'"
           class="p-1 py-4 has-background-white-bis"
         >
-          <div v-if="!ipfsResult || !ipfsResult.results">No results</div>
+          <div
+            v-if="job.state === 'RUNNING'"
+            class="is-family-monospace has-background-black has-text-white box"
+          >
+            <div v-if="logs && logs.length > 0" style="counter-reset: line">
+              <div v-for="step in logs" :key="step.id">
+                <div
+                  v-for="(log, ik) in step.logs.split('\n')"
+                  :key="ik"
+                  class="row-count"
+                >
+                  <span class="pre" v-html="log.slice(0, 10000)" />
+                </div>
+              </div>
+            </div>
+            <span v-else>Loading logs...</span>
+          </div>
+          <div v-else-if="!ipfsResult || !ipfsResult.results">No results</div>
           <div v-else-if="ipfsResult.results[0] === 'nos/secret'">
             Results are secret
           </div>
-          <JobResult v-else :ipfs-result="ipfsResult" :ipfs-job="ipfsJob" />
+          <JobResult
+            v-else-if="ipfsResult && job.state === 'COMPLETED'"
+            :ipfs-result="ipfsResult"
+            :ipfs-job="ipfsJob"
+          />
         </div>
       </div>
     </div>
@@ -157,8 +178,14 @@ import { useRoute } from 'vue-router';
 import { Job } from '@nosana/sdk';
 import VueJsonPretty from 'vue-json-pretty';
 import { UseTimeAgo } from '@vueuse/components';
-
+import axios from 'axios';
+import { PublicKey } from '@solana/web3.js';
 import AnsiUp from 'ansi_up';
+import nodes from '@/static/nodes.json';
+
+const sleep = (seconds: number): Promise<void> =>
+  // eslint-disable-next-line promise/param-names
+  new Promise((res) => setTimeout(res, seconds * 1e3));
 
 const ansi = new AnsiUp();
 const { nosana, network } = useSDK();
@@ -170,6 +197,7 @@ const jobId: Ref<string> = ref(String(params.id) || '');
 const loading: Ref<boolean> = ref(false);
 const activeTab: Ref<string> = ref('result');
 const jobStatus: Ref<string | null> = ref(null);
+const logs: Ref<any | null> = ref(null);
 const { getIpfs } = useIpfs();
 
 const timestamp = useTimestamp({ interval: 1000 });
@@ -186,13 +214,24 @@ const getJob = async () => {
   try {
     loading.value = true;
     job.value = await nosana.value.jobs.get(jobId.value);
-    console.log(job.value.state);
     if (job.value.state === 'QUEUED' || job.value.state === 'RUNNING') {
       if (!isActive.value) resume();
     } else if (isActive.value) pause();
 
     try {
       ipfsJob.value = await getIpfs(job.value!.ipfsJob);
+      if (
+        job.value.state === 'RUNNING' &&
+        ipfsJob.value &&
+        typeof ipfsJob.value !== 'string' &&
+        ipfsJob.value.state['nosana/job-type'] &&
+        (ipfsJob.value.state['nosana/job-type'] === 'Github' ||
+          ipfsJob.value.state['nosana/job-type'] === 'github-flow') &&
+        !logs.value
+      ) {
+        logs.value = [];
+        await getStreamingLogs();
+      }
       ipfsResult.value = job.value!.ipfsResult
         ? await getIpfs(job.value!.ipfsResult)
         : job.value!.ipfsResult;
@@ -241,10 +280,89 @@ const getJob = async () => {
   loading.value = false;
 };
 
+// TODO: implement this in the SDK
+const getStreamingLogs = async () => {
+  const jobInfo = job.value;
+  const ops = ipfsJob.value.ops.filter((j: any) => !j.id.endsWith('-volume'));
+  try {
+    if (!ipfsJob.value.ops) return new Error('No job steps found');
+
+    const runs = await nosana.value.jobs.getRuns(new PublicKey(jobId.value));
+    if (runs.length === 0) return;
+
+    // @ts-ignore
+    const node = nodes[runs[0].account.node.toString()];
+    const env = network.value as unknown as string;
+    if (!node || !node[env] || !node[env].endpoint) {
+      // skip streaming logs
+      console.log('node or node endpoint not found');
+      return;
+    }
+
+    const nodeUrl = node[env].endpoint.replace(
+      '$MARKET',
+      jobInfo?.market.toString().substring(0, 5),
+    );
+
+    const api = axios.create({
+      baseURL: nodeUrl,
+    });
+    let response;
+    let retries = 20;
+    let jobFinished = false;
+    let indexOfOp = 0;
+
+    while (!jobFinished) {
+      const stage = ops[indexOfOp];
+      await sleep(1);
+
+      try {
+        response = await api.get(`/nosana/logs/${jobId.value}/${stage.id}`);
+        const logsIndex = logs.value.findIndex((e: any) => e.id === stage.id);
+        if (logsIndex > -1) {
+          logs.value[logsIndex].logs = ansi.ansi_to_html(
+            response.data.replace(String.fromCharCode(26), ''),
+          );
+        } else {
+          logs.value.push({
+            logs: ansi.ansi_to_html(
+              response.data.replace(String.fromCharCode(26), ''),
+            ),
+            id: stage.id,
+          });
+        }
+
+        if (response.status === 200) {
+          indexOfOp++;
+        } else {
+          retries = 20;
+        }
+      } catch (err) {
+        console.error(err);
+        retries--;
+        if (retries < 1) {
+          const job = await nosana.value.jobs.get(jobId.value);
+
+          if (job.state === 'COMPLETED' || job.state === 'STOPPED') {
+            jobFinished = true;
+            return;
+          }
+        }
+      }
+    }
+  } catch (e) {
+    console.error(e);
+  }
+};
+
 const { pause, resume, isActive } = useIntervalFn(getJob, 10000, {
   immediate: false,
 });
 
 getJob();
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.pre {
+  white-space: pre-wrap;
+}
+</style>
