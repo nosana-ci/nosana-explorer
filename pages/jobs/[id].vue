@@ -103,6 +103,10 @@
               "
             >
               <a
+                v-if="
+                  ipfsJob.state['input/repo'] &&
+                  ipfsJob.state['input/commit-sha']
+                "
                 :href="
                   ipfsJob.state['input/repo'].replace('.git', '') +
                   '/commit/' +
