@@ -113,7 +113,7 @@
                 {{ ipfsJob.state['input/commit-sha'] }}
               </a>
             </td>
-            <td v-else>Secret</td>
+            <td v-else>Other</td>
           </tr>
         </tbody>
       </table>
