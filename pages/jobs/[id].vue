@@ -93,6 +93,17 @@
             </td>
           </tr>
           <tr>
+            <td>Trigger</td>
+            <td>
+              <JobTrigger
+                v-if="ipfsJob"
+                :ipfs="ipfsJob"
+                :text="true"
+                class="ml-1"
+              />
+            </td>
+          </tr>
+          <tr>
             <td>Source</td>
             <td
               v-if="

@@ -18,21 +18,29 @@ const props = defineProps({
     default: false,
   },
 });
-const typeMap = { github: 'GitHub', gitlab: 'GitLab' };
+const typeMap = {
+  docker: 'Docker',
+};
 
 const type = computed(() => {
   let jobtype;
   if (props.ipfs.state && props.ipfs.state['nosana/job-type']) {
     jobtype = props.ipfs.state['nosana/job-type'];
+  } else if (props.ipfs.state && props.ipfs.state['nosana/type']) {
+    jobtype = props.ipfs.state['nosana/type'];
   } else if (props.ipfs.type) {
     jobtype = props.ipfs.type;
   }
-  if (jobtype) {
-    if (jobtype === 'Github' || jobtype === 'github-flow') {
-      return 'github';
-    } else if (jobtype === 'Gitlab' || jobtype === 'gitlab-flow') {
-      return 'gitlab';
-    }
+
+  switch (jobtype) {
+    case 'Github':
+    case 'github-flow':
+      return 'docker';
+    case 'Gitlab':
+    case 'gitlab-flow':
+      return 'docker';
+    default:
+      return jobtype;
   }
 });
 </script>
