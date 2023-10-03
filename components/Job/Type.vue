@@ -20,6 +20,7 @@ const props = defineProps({
 });
 const typeMap = {
   docker: 'Docker',
+  wasm: 'WebAssembly',
 };
 
 const type = computed(() => {
