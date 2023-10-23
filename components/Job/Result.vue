@@ -90,6 +90,15 @@
         </div>
       </template>
     </div>
+    <template
+      v-if="
+        ipfsResult && ipfsResult.results && ipfsResult.results['nosana/error']
+      "
+    >
+      <div class="row-count has-text-danger">
+        {{ ipfsResult.results['nosana/error'] }}
+      </div>
+    </template>
   </div>
 </template>
 <script lang="ts" setup>

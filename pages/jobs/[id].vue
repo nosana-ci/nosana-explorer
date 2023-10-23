@@ -284,6 +284,13 @@ const getJob = async () => {
             }
           }
         }
+
+        if (
+          ipfsResult.value.results &&
+          ipfsResult.value.results['nosana/error']
+        ) {
+          jobStatus.value = 'FAILED';
+        }
       }
     } catch (error) {
       console.log('error when processing ipfs', error);
