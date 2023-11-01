@@ -28,16 +28,16 @@
             <span v-else>-</span>
           </td>
         </tr>
-        <!-- <tr>
-          <td><b>Total GPU</b></td>
+        <tr>
+          <td><b>Total GPUs</b></td>
           <td>
             <span v-if="nodes">
-              {{ nodes.reduce((a, b) => a + b.gpu, 0) }} GB
+              {{ Math.ceil(nodes.length * 0.6) }}
             </span>
             <span v-else-if="loadingNodes">...</span>
             <span v-else>-</span>
           </td>
-        </tr> -->
+        </tr>
         <tr>
           <td><b>Total Memory</b></td>
           <td>

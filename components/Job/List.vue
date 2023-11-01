@@ -48,7 +48,7 @@
             @click="navigate"
           >
             <td>
-              <JobTrigger
+              <JobType
                 v-if="jobData[job.pubkey] && jobData[job.pubkey].ipfsData"
                 :ipfs="jobData[job.pubkey].ipfsData"
               />
