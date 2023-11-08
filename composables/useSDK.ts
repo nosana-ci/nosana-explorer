@@ -15,8 +15,8 @@ const nosana = computed(() => {
     solana: {
       network:
         network.value === 'devnet'
-          ? 'https://weathered-newest-sunset.solana-devnet.discover.quiknode.pro/e22ef3983d0200847e1a6247da9176626423f227'
-          : 'https://try-rpc.mainnet.solana.blockdaemon.tech', // https://rpc-public.hellomoon.io
+          ? 'https://rpc-devnet.hellomoon.io/853e30f5-383d-4cc6-a5ee-b5fb4c7a7178'
+          : 'https://rpc.hellomoon.io/853e30f5-383d-4cc6-a5ee-b5fb4c7a7178', // https://rpc-public.hellomoon.io
       jobs_address:
         network.value === 'devnet'
           ? 'nosJTmGQxvwXy23vng5UjkTbfv91Bzf9jEuro78dAGR'
