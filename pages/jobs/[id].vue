@@ -239,9 +239,6 @@ const getJob = async () => {
         job.value.state === 'RUNNING' &&
         ipfsJob.value &&
         typeof ipfsJob.value !== 'string' &&
-        ipfsJob.value.state['nosana/job-type'] &&
-        (ipfsJob.value.state['nosana/job-type'] === 'Github' ||
-          ipfsJob.value.state['nosana/job-type'] === 'github-flow') &&
         !logs.value
       ) {
         logs.value = [];
