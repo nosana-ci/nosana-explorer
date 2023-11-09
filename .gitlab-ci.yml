@@ -5,7 +5,3 @@ include:
 variables:
   NODE_VERSION: 16
   OUTPUT_DIR: .output/public
-
-default:
-  tags:
-    - nosana
