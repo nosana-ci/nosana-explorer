@@ -31,8 +31,8 @@
         <tr>
           <td><b>Total GPUs</b></td>
           <td>
-            <span v-if="nodes">
-              {{ Math.ceil(nodes.length * 0.6) }}
+            <span v-if="gpuCount && gpuCount > 0">
+              {{ gpuCount + 12 }}
             </span>
             <span v-else-if="loadingNodes">...</span>
             <span v-else>-</span>
@@ -86,6 +86,29 @@
 
 <script lang="ts" setup>
 const { nodes, loadingNodes, getNodes } = useNodes();
+const { runs, getActiveRuns } = useJobs();
+const { markets, getMarkets } = useMarkets();
+const gpuCount: Ref<number | null> = ref(null);
+await getActiveRuns();
+if (markets.value && markets.value.length === 0) {
+  await getMarkets();
+}
+
+// Get the combined GPUS in running jobs + queued
+const nodesInRuns = runs?.value?.map(function (item) {
+  return item.account.node.toString();
+});
+
+const nodesInMarkets = markets?.value?.flatMap((market) => {
+  return market.queueType === 1
+    ? market.queue.map((data: any) => data.toString())
+    : [];
+});
+const combined = nodesInMarkets?.concat(
+  nodesInRuns?.filter((item) => !nodesInMarkets?.includes(item)),
+);
+const uniqueValues = [...new Set(combined)];
+gpuCount.value = uniqueValues.length;
 
 // Fetch nodes every 60 seconds
 useIntervalFn(getNodes, 60000);
