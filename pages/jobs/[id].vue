@@ -107,6 +107,7 @@
             <td>Source</td>
             <td
               v-if="
+                ipfsJob &&
                 ipfsJob.state &&
                 ipfsJob.state['nosana/job-type'] &&
                 (ipfsJob.state['nosana/job-type'] === 'Github' ||
@@ -171,6 +172,7 @@
             </div>
             <span v-else>Loading logs...</span>
           </div>
+          <div v-else-if="loading">Loading results..</div>
           <div v-else-if="!ipfsResult || !ipfsResult.results">No results</div>
           <div v-else-if="ipfsResult.results[0] === 'nos/secret'">
             Results are secret
@@ -244,10 +246,16 @@ const getJob = async () => {
         logs.value = [];
         await getStreamingLogs();
       }
-      ipfsResult.value = job.value!.ipfsResult
-        ? await getIpfs(job.value!.ipfsResult)
-        : job.value!.ipfsResult;
+      console.log('retrieving ipfs results..', job.value!.ipfsResult);
+      if (job.value!.ipfsResult) {
+        const resultResponse = await getIpfs(job.value!.ipfsResult);
+        console.log('rr', resultResponse);
+        ipfsResult.value = resultResponse;
+      } else {
+        ipfsResult.value = job.value!.ipfsResult;
+      }
 
+      console.log('retrieving ipfs results done ', ipfsResult.value);
       if (ipfsResult.value && typeof ipfsResult.value !== 'string') {
         for (const key in ipfsResult.value!.results) {
           const results = ipfsResult.value!.results[key];

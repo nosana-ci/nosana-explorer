@@ -3,12 +3,16 @@ const ipfsList: Ref<any> = useLocalStorage('ipfs', {});
 
 const getIpfs = async (hash: string) => {
   try {
-    if (!ipfsList.value[hash]) {
-      ipfsList.value[hash] = await nosana.value.ipfs.retrieve(hash);
+    let ipfsData = ipfsList.value[hash];
+    if (!ipfsData) {
+      console.log('retrieving', hash);
+      ipfsData = await nosana.value.ipfs.retrieve(hash);
+      ipfsList.value[hash] = ipfsData;
+      console.log('ipfsList.value[hash]', hash, ipfsData);
     }
-    return ipfsList.value[hash]
-      ? (JSON.parse(JSON.stringify(ipfsList.value[hash])) as Object)
-      : ipfsList.value[hash];
+    return ipfsData
+      ? (JSON.parse(JSON.stringify(ipfsData)) as Object)
+      : ipfsData;
   } catch (e) {
     console.error(e);
   }
