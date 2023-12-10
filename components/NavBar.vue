@@ -25,52 +25,52 @@
             <span aria-hidden="true"></span>
           </a>
         </div>
-        <div
-          id="navbar"
-          class="navbar-menu"
-          :class="{ 'is-active': mobileMenu }"
-        >
-          <div class="navbar-start"></div>
-          <div class="navbar-end is-align-items-center">
-            <div @click="mobileMenu = false">
-              <nuxt-link
-                class="navbar-item"
-                to="/jobs"
-                exact-active-class="is-active"
-              >
-                Jobs
-              </nuxt-link>
-            </div>
-            <div @click="mobileMenu = false">
-              <nuxt-link
-                class="navbar-item"
-                to="/nodes"
-                exact-active-class="is-active"
-              >
-                Nodes
-              </nuxt-link>
-            </div>
-            <div @click="mobileMenu = false">
-              <nuxt-link
-                class="navbar-item"
-                to="/markets"
-                exact-active-class="is-active"
-              >
-                Markets
-              </nuxt-link>
-            </div>
-            <div class="navbar-item" exact-active-class="is-active">
-              <div>
-                <div class="select">
-                  <select v-model="network" @change="mobileMenu = false">
-                    <option value="devnet">DevNet</option>
-                    <option value="mainnet">MainNet</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <!-- <div -->
+        <!--   id="navbar" -->
+        <!--   class="navbar-menu" -->
+        <!--   :class="{ 'is-active': mobileMenu }" -->
+        <!-- > -->
+        <!--   <div class="navbar-start"></div> -->
+        <!--   <div class="navbar-end is-align-items-center"> -->
+        <!--     <div @click="mobileMenu = false"> -->
+        <!--       <nuxt-link -->
+        <!--         class="navbar-item" -->
+        <!--         to="/jobs" -->
+        <!--         exact-active-class="is-active" -->
+        <!--       > -->
+        <!--         Jobs -->
+        <!--       </nuxt-link> -->
+        <!--     </div> -->
+        <!--     <div @click="mobileMenu = false"> -->
+        <!--       <nuxt-link -->
+        <!--         class="navbar-item" -->
+        <!--         to="/nodes" -->
+        <!--         exact-active-class="is-active" -->
+        <!--       > -->
+        <!--         Nodes -->
+        <!--       </nuxt-link> -->
+        <!--     </div> -->
+        <!--     <div @click="mobileMenu = false"> -->
+        <!--       <nuxt-link -->
+        <!--         class="navbar-item" -->
+        <!--         to="/markets" -->
+        <!--         exact-active-class="is-active" -->
+        <!--       > -->
+        <!--         Markets -->
+        <!--       </nuxt-link> -->
+        <!--     </div> -->
+        <!--     <div class="navbar-item" exact-active-class="is-active"> -->
+        <!--       <div> -->
+        <!--         <div class="select"> -->
+        <!--           <select v-model="network" @change="mobileMenu = false"> -->
+        <!--             <option value="devnet">DevNet</option> -->
+        <!--             <option value="mainnet">MainNet</option> -->
+        <!--           </select> -->
+        <!--         </div> -->
+        <!--       </div> -->
+        <!--     </div> -->
+        <!--   </div> -->
+        <!-- </div> -->
       </div>
     </nav>
   </div>
