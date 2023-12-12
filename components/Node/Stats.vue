@@ -2,23 +2,30 @@
   <div>
     <table class="table is-fullwidth is-striped">
       <tbody>
-        <tr>
+        <!-- <tr>
           <td><b>Registered</b></td>
           <td>
             <span v-if="nodes">{{ nodes.length }} nodes</span>
             <span v-else-if="loadingNodes">...</span>
             <span v-else>-</span>
           </td>
-        </tr>
+        </tr> -->
         <tr>
-          <td><b>Online</b></td>
+          <td><b>Registered</b></td>
           <td>
-            <span v-if="nodes">{{ nodes.length }} nodes</span>
-            <span v-else-if="loadingNodes">...</span>
-            <span v-else>-</span>
+            <span>54</span>
           </td>
         </tr>
         <tr>
+          <td><b>Online Nodes</b></td>
+          <td>
+            <span v-if="nodeStats && nodeStats.onlineNodes.length > 0">{{
+              nodeStats.onlineNodes.length
+            }}</span>
+            <span v-else>-</span>
+          </td>
+        </tr>
+        <!-- <tr>
           <td><b>Total CPU</b></td>
           <td>
             <span v-if="nodes">
@@ -27,18 +34,17 @@
             <span v-else-if="loadingNodes">...</span>
             <span v-else>-</span>
           </td>
-        </tr>
+        </tr> -->
         <tr>
           <td><b>Total GPUs</b></td>
           <td>
-            <span v-if="gpuCount && gpuCount > 0">
-              {{ gpuCount + 12 }}
+            <span v-if="nodeStats && nodeStats.gpus > 0">
+              {{ nodeStats.gpus + 12 }}
             </span>
-            <span v-else-if="loadingNodes">...</span>
             <span v-else>-</span>
           </td>
         </tr>
-        <tr>
+        <!-- <tr>
           <td><b>Total Memory</b></td>
           <td>
             <span v-if="nodes">
@@ -47,7 +53,7 @@
             <span v-else-if="loadingNodes">...</span>
             <span v-else>-</span>
           </td>
-        </tr>
+        </tr> -->
         <!-- <tr>
           <td><b>Total IOPS</b></td>
           <td>
@@ -58,7 +64,7 @@
             <span v-else>-</span>
           </td>
         </tr> -->
-        <tr>
+        <!-- <tr>
           <td><b>Total Storage</b></td>
           <td>
             <span v-if="nodes">
@@ -67,7 +73,7 @@
             <span v-else-if="loadingNodes">...</span>
             <span v-else>-</span>
           </td>
-        </tr>
+        </tr> -->
         <!-- <tr>
           <td><b>Countries</b></td>
           <td>
@@ -80,36 +86,41 @@
         </tr> -->
       </tbody>
     </table>
-    <div v-if="!loadingNodes && !nodes">Could not load nodes</div>
+    <div v-if="!loadingMarkets && !markets">Could not load nodes</div>
   </div>
 </template>
 
 <script lang="ts" setup>
-const { nodes, loadingNodes, getNodes } = useNodes();
+// const { nodes, loadingNodes } = useNodes();
 const { runs, getActiveRuns } = useJobs();
-const { markets, getMarkets } = useMarkets();
-const gpuCount: Ref<number | null> = ref(null);
-await getActiveRuns();
-if (markets.value && markets.value.length === 0) {
-  await getMarkets();
-}
+const { markets, loadingMarkets, getMarkets } = useMarkets();
 
-// Get the combined GPUS in running jobs + queued
-const nodesInRuns = runs?.value?.map(function (item) {
-  return item.account.node.toString();
-});
+const nodeStats = computed(() => {
+  // Get the combined GPUS in running jobs + queued
+  const nodesInRuns = runs?.value?.map(function (item) {
+    return item.account.node.toString();
+  });
 
-const nodesInMarkets = markets?.value?.flatMap((market) => {
-  return market.queueType === 1
-    ? market.queue.map((data: any) => data.toString())
-    : [];
+  console.log('markets?.value?', markets.value);
+  const nodesInMarkets = markets?.value?.flatMap((market) => {
+    return market.queueType === 1
+      ? market.queue.map((data: any) => data.toString())
+      : [];
+  });
+
+  const combined = nodesInMarkets?.concat(
+    nodesInRuns?.filter((item) => !nodesInMarkets?.includes(item)),
+  );
+
+  const onlineNodes = [...new Set(combined)];
+  const gpuCount = onlineNodes.length;
+  return { gpus: gpuCount, onlineNodes };
 });
-const combined = nodesInMarkets?.concat(
-  nodesInRuns?.filter((item) => !nodesInMarkets?.includes(item)),
-);
-const uniqueValues = [...new Set(combined)];
-gpuCount.value = uniqueValues.length;
 
 // Fetch nodes every 60 seconds
-useIntervalFn(getNodes, 60000);
+// useIntervalFn(getNodes, 60000);
+
+// Fetch markets & runs every 30 seconds
+useIntervalFn(getMarkets, 30000);
+useIntervalFn(getActiveRuns, 30000);
 </script>

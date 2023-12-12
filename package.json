@@ -27,7 +27,7 @@
     "vite-svg-loader": "^4.0.0"
   },
   "dependencies": {
-    "@nosana/sdk": "^0.2.35",
+    "@nosana/sdk": "^0.2.37",
     "@vueuse/components": "^10.3.0",
     "ansi_up": "^5.2.1",
     "bulma": "^0.9.4",
