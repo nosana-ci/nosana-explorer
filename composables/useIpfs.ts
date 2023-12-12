@@ -8,7 +8,6 @@ const getIpfs = async (hash: string) => {
       console.log('retrieving', hash);
       ipfsData = await nosana.value.ipfs.retrieve(hash);
       ipfsList.value[hash] = ipfsData;
-      console.log('ipfsList.value[hash]', hash, ipfsData);
     }
     return ipfsData
       ? (JSON.parse(JSON.stringify(ipfsData)) as Object)

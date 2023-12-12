@@ -7,7 +7,6 @@
 </template>
 <script setup lang="ts">
 const { markets, getMarkets, loadingMarkets } = useMarkets();
-
 const visibility = useDocumentVisibility();
 
 watch(visibility, (current, previous) => {

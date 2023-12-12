@@ -24,7 +24,7 @@
               <td>{{ market.jobExpiration / 60 }} seconds</td>
             </tr>
             <tr>
-              <td>Job price</td>
+              <td>NOS per second</td>
               <td>{{ market.jobPrice / 1e6 }}NOS</td>
             </tr>
             <tr>

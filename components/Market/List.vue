@@ -15,8 +15,9 @@
     <table class="table is-fullwidth is-striped is-hoverable">
       <thead>
         <tr>
-          <th>Address</th>
-          <th>Job price</th>
+          <th v-if="network === 'mainnet'">Name</th>
+          <th v-else>Address</th>
+          <th>NOS per second</th>
           <th>Job timeout</th>
           <th>Nodes in queue</th>
           <th>Jobs in queue</th>
@@ -36,7 +37,22 @@
           <template #default="{ navigate }">
             <tr class="is-clickable" @click="navigate">
               <td>
-                <span class="is-family-monospace py-2 address">
+                <span
+                  v-if="
+                    network === 'mainnet' &&
+                    testgridMarkets[
+                      market.address.toString() as keyof typeof testgridMarkets
+                    ]
+                  "
+                  class="py-2"
+                >
+                  {{
+                    testgridMarkets[
+                      market.address.toString() as keyof typeof testgridMarkets
+                    ].name
+                  }}
+                </span>
+                <span v-else class="is-family-monospace py-2 address">
                   {{ market.address.toString() }}
                 </span>
               </td>
@@ -72,6 +88,8 @@
 
 <script setup lang="ts">
 import { Market } from '@nosana/sdk';
+import testgridMarkets from '@/static/markets.json';
+const { network } = useSDK();
 
 const props = defineProps({
   markets: {
@@ -79,16 +97,21 @@ const props = defineProps({
     default: undefined,
   },
 });
-
 const page: Ref<number> = ref(1);
 const perPage: Ref<number> = ref(25);
 
 const filteredMarkets = computed(() => {
   if (!props.markets || !props.markets.length) return props.markets;
-  const paginatedMarkets: Array<any> = props.markets.slice(
-    (page.value - 1) * perPage.value,
-    page.value * perPage.value,
-  );
+
+  const paginatedMarkets: Array<any> = props.markets
+    .filter((market) =>
+      network.value === 'mainnet'
+        ? testgridMarkets[
+            market.address.toString() as keyof typeof testgridMarkets
+          ]
+        : true,
+    )
+    .slice((page.value - 1) * perPage.value, page.value * perPage.value);
   return paginatedMarkets;
 });
 </script>
