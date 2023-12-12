@@ -10,10 +10,18 @@
           <td>
             <span v-if="markets">
               {{
-                markets.reduce(
-                  (a, b) => a + (b.queueType === 0 ? b.queue.length : 0),
-                  0,
-                )
+                markets
+                  .filter((m) =>
+                    network === 'mainnet'
+                      ? testgridMarkets[
+                          m.address.toString() as keyof typeof testgridMarkets
+                        ]
+                      : true,
+                  )
+                  .reduce(
+                    (a, b) => a + (b.queueType === 0 ? b.queue.length : 0),
+                    0,
+                  )
               }}
               jobs
             </span>
@@ -26,10 +34,18 @@
           <td>
             <span v-if="markets">
               {{
-                markets.reduce(
-                  (a, b) => a + (b.queueType === 1 ? b.queue.length : 0),
-                  0,
-                )
+                markets
+                  .filter((m) =>
+                    network === 'mainnet'
+                      ? testgridMarkets[
+                          m.address.toString() as keyof typeof testgridMarkets
+                        ]
+                      : true,
+                  )
+                  .reduce(
+                    (a, b) => a + (b.queueType === 1 ? b.queue.length : 0),
+                    0,
+                  )
               }}
               nodes
             </span>
@@ -46,7 +62,6 @@
 <script lang="ts" setup>
 import { Bar } from 'vue-chartjs';
 import 'chartjs-adapter-dayjs-4/dist/chartjs-adapter-dayjs-4.esm';
-
 import {
   Chart as Chartjs,
   ChartData,
@@ -56,6 +71,8 @@ import {
   Legend,
   BarElement,
 } from 'chart.js';
+import testgridMarkets from '@/static/markets.json';
+const { network } = useSDK();
 
 Chartjs.register(BarController, BarElement, Tooltip, Legend);
 
@@ -64,7 +81,15 @@ const { markets, loadingMarkets, getMarkets } = useMarkets();
 // @ts-ignore
 const queueData = computed<ChartData<'bar'>>(() => {
   const data: Array<any> = markets.value
-    ? markets.value.filter((m) => m.queue.length)
+    ? markets.value
+        .filter((m) => m.queue.length)
+        .filter((m) =>
+          network.value === 'mainnet'
+            ? testgridMarkets[
+                m.address.toString() as keyof typeof testgridMarkets
+              ]
+            : true,
+        )
     : [];
   return {
     labels: data.map((m) => m.address.toString().slice(0, 7) + '...'),
