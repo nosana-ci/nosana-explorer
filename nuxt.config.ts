@@ -1,4 +1,5 @@
 import svgLoader from 'vite-svg-loader';
+import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill';
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -49,6 +50,20 @@ export default defineNuxtConfig({
       fs: {
         // Allow serving files from one level up to the project root
         allow: ['..'],
+      },
+    },
+    resolve: {
+      alias: {
+        stream: 'rollup-plugin-node-polyfills/polyfills/stream',
+        events: 'rollup-plugin-node-polyfills/polyfills/events',
+      },
+    },
+    optimizeDeps: {
+      esbuildOptions: {
+        define: {
+          global: 'globalThis',
+        },
+        plugins: [NodeGlobalsPolyfillPlugin({ buffer: true })],
       },
     },
   },

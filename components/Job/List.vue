@@ -118,9 +118,25 @@
               <span v-else> - </span>
             </td>
             <td v-if="!small" class="is-hidden-touch">
-              <span v-if="jobData[job.pubkey]">
-                {{ jobData[job.pubkey].price / 1e6 }} NOS</span
+              <span
+                v-if="
+                  jobData[job.pubkey] &&
+                  jobData[job.pubkey].timeEnd &&
+                  jobData[job.pubkey].timeStart
+                "
               >
+                {{
+                  (
+                    (jobData[job.pubkey].price / 1e6) *
+                    (jobData[job.pubkey].timeEnd -
+                      jobData[job.pubkey].timeStart)
+                  ).toFixed(2)
+                }}
+                NOS</span
+              >
+              <span v-else-if="jobData[job.pubkey]">
+                {{ jobData[job.pubkey].price / 1e6 }}
+              </span>
               <span v-else-if="loading">...</span>
               <span v-else>-</span>
             </td>

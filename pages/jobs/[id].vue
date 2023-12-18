@@ -20,7 +20,7 @@
             <td>
               <nuxt-link
                 class="address is-family-monospace"
-                :to="`/nodes/${job.node}`"
+                :to="`/address/${job.node}`"
                 >{{ job.node }}</nuxt-link
               >
             </td>

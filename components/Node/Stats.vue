@@ -101,7 +101,6 @@ const nodeStats = computed(() => {
     return item.account.node.toString();
   });
 
-  console.log('markets?.value?', markets.value);
   const nodesInMarkets = markets?.value?.flatMap((market) => {
     return market.queueType === 1
       ? market.queue.map((data: any) => data.toString())

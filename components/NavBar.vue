@@ -41,7 +41,7 @@
                 Jobs
               </nuxt-link>
             </div>
-            <div @click="mobileMenu = false">
+            <!-- <div @click="mobileMenu = false">
               <nuxt-link
                 class="navbar-item"
                 to="/nodes"
@@ -49,7 +49,7 @@
               >
                 Nodes
               </nuxt-link>
-            </div>
+            </div> -->
             <div @click="mobileMenu = false">
               <nuxt-link
                 class="navbar-item"
