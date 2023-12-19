@@ -163,7 +163,7 @@
     v-model="page"
     class="pagination is-centered mt-4"
     :total-page="Math.ceil(jobs.length / perPage)"
-    :max-page="6"
+    :max-page="10"
   >
   </pagination>
 </template>

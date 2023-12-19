@@ -1,17 +1,17 @@
+import { useIDBKeyval } from '@vueuse/integrations/useIDBKeyval';
+import { get } from 'idb-keyval';
 const { nosana } = useSDK();
 const ipfsList: Ref<any> = useLocalStorage('ipfs', {});
 
 const getIpfs = async (hash: string) => {
   try {
-    let ipfsData = ipfsList.value[hash];
+    let ipfsData = await get(hash);
     if (!ipfsData) {
       console.log('retrieving', hash);
       ipfsData = await nosana.value.ipfs.retrieve(hash);
-      ipfsList.value[hash] = ipfsData;
+      useIDBKeyval(hash, ipfsData);
     }
-    return ipfsData
-      ? (JSON.parse(JSON.stringify(ipfsData)) as Object)
-      : ipfsData;
+    return ipfsData || null;
   } catch (e) {
     console.error(e);
   }
