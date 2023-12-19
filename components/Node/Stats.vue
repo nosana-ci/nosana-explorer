@@ -39,7 +39,7 @@
           <td><b>Total GPUs</b></td>
           <td>
             <span v-if="nodeStats && nodeStats.gpus > 0">
-              {{ nodeStats.gpus + 12 }}
+              {{ nodeStats.gpus }}
             </span>
             <span v-else>-</span>
           </td>

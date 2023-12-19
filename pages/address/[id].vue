@@ -19,10 +19,43 @@
                 <span v-if="balance">{{ balance.uiAmount }}</span> NOS
               </td>
             </tr>
-            <tr v-if="jobs">
-              <td>Jobs ran</td>
+            <tr>
+              <td>SOL Balance</td>
+              <td>
+                <span v-if="solBalance">{{ solBalance / 1e9 }}</span> SOL
+              </td>
+            </tr>
+            <tr v-if="jobs && nodeNfts && nodeNfts.length > 0">
+              <td><span data-tooltip="Tooltip content">Jobs ran</span></td>
               <td>
                 <span>{{ jobs.length }}</span>
+              </td>
+            </tr>
+            <tr v-if="jobs && nodeNfts && nodeNfts.length > 0">
+              <td>Node Access Key</td>
+              <td>
+                <span
+                  ><JobStatus
+                    :status="'COMPLETED'"
+                    data-tooltip="Node Access Key found"
+                  ></JobStatus
+                ></span>
+              </td>
+            </tr>
+            <tr v-if="jobs && nodeNfts && nodeNfts.length > 0">
+              <td>Status</td>
+              <td>
+                <JobStatus
+                  v-if="nodeStatus === 'QUEUED'"
+                  :status="'QUEUED'"
+                  data-tooltip="Node is queued in market"
+                ></JobStatus>
+                <JobStatus
+                  v-else-if="nodeStatus === 'RUNNING'"
+                  :status="'RUNNING'"
+                  data-tooltip="Node is running a job"
+                ></JobStatus>
+                <span v-else>-</span>
               </td>
             </tr>
             <!-- TODO: First need to include price in the jobs.all() in SDK-->
@@ -41,12 +74,14 @@
           </tbody>
         </table>
 
-        <JobList
-          v-if="jobs && jobs.length > 0"
-          title="Jobs by this node"
-          :jobs="jobs"
-        ></JobList>
-        <span v-else-if="!loading"> No jobs found for this address. </span>
+        <div v-if="nodeNfts && nodeNfts.length > 0">
+          <JobList
+            v-if="jobs && jobs.length > 0"
+            title="Jobs by this node"
+            :jobs="jobs"
+          ></JobList>
+          <span v-else-if="!loading"> No jobs found for this address. </span>
+        </div>
       </div>
       <div v-else>Address not found</div>
     </div>
@@ -60,14 +95,18 @@ import testgridMarkets from '@/static/markets.json';
 
 const { params } = useRoute();
 const { nosana, network } = useSDK();
+const { runs, getActiveRuns } = useJobs();
+const { markets, getMarkets } = useMarkets();
 const address: Ref<string | null> = ref(null);
 const balance: Ref<any | null> = ref(null);
+const solBalance: Ref<any | null> = ref(null);
+const nodeStatus: Ref<any | null> = ref(null);
 const nodeNfts: Ref<Array<any>> = ref([]);
 const loading: Ref<boolean> = ref(false);
 const jobs: Ref<Array<any> | null> = ref(null);
 
 // create connection for Metaplex
-// TODO move this to SDK or composable(?)
+// TODO move this to SDK or plugin(?)
 const web3 = new Connection(
   network.value === 'devnet'
     ? 'https://rpc-devnet.hellomoon.io/853e30f5-383d-4cc6-a5ee-b5fb4c7a7178'
@@ -90,17 +129,16 @@ const getAddress = async () => {
 
     try {
       jobs.value = await nosana.value.jobs.all({ node: address.value });
-      console.log('jobs', jobs.value);
     } catch (e) {
       console.log('cant get jobs of project', e);
     }
 
     try {
       balance.value = await nosana.value.solana.getNosBalance(address.value);
+      solBalance.value = await nosana.value.solana.getSolBalance(address.value);
     } catch (e) {
       console.error('cant get balance', e);
     }
-    console.log('address:', address.value);
 
     try {
       const nfts = await metaplex
@@ -128,6 +166,29 @@ const getAddress = async () => {
   } catch (error) {
     console.error('not a valid address', error);
     address.value = null;
+  }
+
+  if (nodeNfts.value.length > 0) {
+    const nodesInRuns = runs?.value?.map(function (item) {
+      return item.account.node.toString();
+    });
+
+    if (nodesInRuns?.includes(address.value)) {
+      nodeStatus.value = 'RUNNING';
+    }
+
+    const nodesInMarkets = markets?.value?.flatMap((market) => {
+      return market.queueType === 1
+        ? market.queue.map((data: any) => data.toString())
+        : [];
+    });
+
+    if (nodesInMarkets?.includes(address.value)) {
+      nodeStatus.value = 'QUEUED';
+    }
+
+    useIntervalFn(getMarkets, 30000);
+    useIntervalFn(getActiveRuns, 30000);
   }
   loading.value = false;
 };
