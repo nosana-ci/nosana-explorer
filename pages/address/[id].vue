@@ -26,36 +26,69 @@
               </td>
             </tr>
             <tr v-if="jobs && nodeNfts && nodeNfts.length > 0">
-              <td><span data-tooltip="Tooltip content">Jobs ran</span></td>
+              <td>Jobs ran</td>
               <td>
                 <span>{{ jobs.length }}</span>
               </td>
             </tr>
             <tr v-if="jobs && nodeNfts && nodeNfts.length > 0">
               <td>Node Access Key</td>
-              <td>
-                <span
-                  ><JobStatus
-                    :status="'COMPLETED'"
-                    data-tooltip="Node Access Key found"
-                  ></JobStatus
-                ></span>
+              <td style="vertical-align: middle">
+                <div
+                  data-tooltip="Node Access Key found"
+                  style="width: fit-content"
+                  class="is-flex"
+                >
+                  <JobStatus :status="'COMPLETED'" image-only></JobStatus>
+                </div>
               </td>
             </tr>
             <tr v-if="jobs && nodeNfts && nodeNfts.length > 0">
               <td>Status</td>
-              <td>
-                <JobStatus
+              <td style="vertical-align: middle">
+                <div
                   v-if="nodeStatus === 'QUEUED'"
-                  :status="'QUEUED'"
                   data-tooltip="Node is queued in market"
-                ></JobStatus>
-                <JobStatus
+                  style="width: fit-content"
+                  class="is-flex"
+                >
+                  <JobStatus :status="'QUEUED'" image-only></JobStatus>
+                </div>
+                <div
                   v-else-if="nodeStatus === 'RUNNING'"
-                  :status="'RUNNING'"
                   data-tooltip="Node is running a job"
-                ></JobStatus>
+                  style="width: fit-content"
+                  class="is-flex"
+                >
+                  <JobStatus image-only :status="'RUNNING'"></JobStatus>
+                </div>
                 <span v-else>-</span>
+              </td>
+            </tr>
+            <tr
+              v-if="
+                nodeStatus === 'QUEUED' && nodeMarket && nodeMarket.length > 0
+              "
+            >
+              <td>Market</td>
+              <td>
+                <nuxt-link
+                  :to="`/markets/${nodeMarket[0].address.toString()}`"
+                  class="address is-family-monospace"
+                  >{{ nodeMarket[0].address.toString() }}</nuxt-link
+                >
+              </td>
+            </tr>
+            <tr
+              v-if="nodeStatus === 'RUNNING' && nodeRuns && nodeRuns.length > 0"
+            >
+              <td>Running job</td>
+              <td>
+                <nuxt-link
+                  :to="`/markets/${nodeRuns[0].account.job.toString()}`"
+                  class="address is-family-monospace"
+                  >{{ nodeRuns[0].account.job.toString() }}</nuxt-link
+                >
               </td>
             </tr>
             <!-- TODO: First need to include price in the jobs.all() in SDK-->
@@ -102,6 +135,8 @@ const balance: Ref<any | null> = ref(null);
 const solBalance: Ref<any | null> = ref(null);
 const nodeStatus: Ref<any | null> = ref(null);
 const nodeNfts: Ref<Array<any>> = ref([]);
+const nodeMarket: Ref<any> = ref(null);
+const nodeRuns: Ref<any> = ref(null);
 const loading: Ref<boolean> = ref(false);
 const jobs: Ref<Array<any> | null> = ref(null);
 
@@ -130,7 +165,7 @@ const getAddress = async () => {
     try {
       jobs.value = await nosana.value.jobs.all({ node: address.value });
     } catch (e) {
-      console.log('cant get jobs of project', e);
+      console.log('cant get jobs of node', e);
     }
 
     try {
@@ -169,14 +204,19 @@ const getAddress = async () => {
   }
 
   if (nodeNfts.value.length > 0) {
+    // get active runs of node
     const nodesInRuns = runs?.value?.map(function (item) {
       return item.account.node.toString();
     });
 
     if (nodesInRuns?.includes(address.value)) {
       nodeStatus.value = 'RUNNING';
+      nodeRuns.value = runs?.value?.filter(
+        (r) => r.account.node.toString() === address.value,
+      );
     }
 
+    // get market where node is in
     const nodesInMarkets = markets?.value?.flatMap((market) => {
       return market.queueType === 1
         ? market.queue.map((data: any) => data.toString())
@@ -185,6 +225,9 @@ const getAddress = async () => {
 
     if (nodesInMarkets?.includes(address.value)) {
       nodeStatus.value = 'QUEUED';
+      nodeMarket.value = markets?.value?.filter((m) =>
+        m.queue.find((a: any) => a.toString() === address.value?.toString()),
+      );
     }
 
     useIntervalFn(getMarkets, 30000);
