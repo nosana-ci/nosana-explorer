@@ -1,14 +1,16 @@
 <template>
   <div>
     <div class="box">
-      <JobList :jobs="jobs"></JobList>
+      <JobList :jobs="jobs" :loading-jobs="loadingJobs"></JobList>
     </div>
-    <div v-if="!loadingJobs && !jobs">Could not load jobs</div>
+    <div v-if="!loading && !jobs">Could not load jobs</div>
   </div>
 </template>
 
 <script setup lang="ts">
-const { jobs, getJobs, loadingJobs } = useJobs();
+const { network } = useSDK();
+const loading: Ref<boolean> = ref(false);
+const { jobs, loadingJobs, getJobs } = useJobs();
 
 // Fetch jobs when we switch back to tab
 const visibility = useDocumentVisibility();
@@ -17,7 +19,14 @@ watch(visibility, (current, previous) => {
     getJobs();
   }
 });
+watch(network, () => {
+  getJobs();
+});
 
-// Fetch jobs every 20 seconds
-useIntervalFn(getJobs, 20000);
+if (!jobs.value) {
+  getJobs();
+}
+
+// Fetch jobs every 30 seconds
+useIntervalFn(getJobs, 30000);
 </script>

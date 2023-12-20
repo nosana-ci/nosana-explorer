@@ -3,23 +3,23 @@
     v-if="!imageOnly"
     class="tag is-outlined is-light"
     :class="{
-      'is-success': status === 'COMPLETED',
-      'is-info': status === 'RUNNING' || status === 'PENDING',
-      'is-warning': status === 'QUEUED',
-      'is-danger': status === 'FAILED' || status === 'YAML_ERROR',
+      'is-success': statusString === 'COMPLETED',
+      'is-info': statusString === 'RUNNING' || statusString === 'PENDING',
+      'is-warning': statusString === 'QUEUED',
+      'is-danger': statusString === 'FAILED' || statusString === 'YAML_ERROR',
     }"
   >
-    <img class="mr-2" :src="`/img/icons/status/${getIcon(status)}.svg`" />
+    <img class="mr-2" :src="`/img/icons/status/${getIcon(statusString)}.svg`" />
 
-    <span v-if="!imageOnly">{{ status }}</span>
+    <span v-if="!imageOnly">{{ statusString }}</span>
   </div>
-  <img v-else :src="`/img/icons/status/${getIcon(status)}.svg`" />
+  <img v-else :src="`/img/icons/status/${getIcon(statusString)}.svg`" />
 </template>
 
 <script setup lang="ts">
-defineProps({
+const props = defineProps({
   status: {
-    type: String,
+    type: [String, Number],
     required: true,
   },
   imageOnly: {
@@ -27,6 +27,18 @@ defineProps({
     default: false,
   },
 });
+const statusString = ref(props.status);
+if (typeof statusString.value !== 'string') {
+  let string = 'STOPPED';
+  if (statusString.value === 0) {
+    string = 'QUEUED';
+  } else if (statusString.value === 1) {
+    string = 'RUNNING';
+  } else if (statusString.value === 2) {
+    string = 'COMPLETED';
+  }
+  statusString.value = string;
+}
 const getIcon = (status: string) => {
   let icon = 'stopped';
   if (status === 'QUEUED') {
@@ -52,9 +64,11 @@ const getIcon = (status: string) => {
     background: none !important;
     border: none !important;
     padding: 0 !important;
+
     img {
       margin: 0 !important;
     }
+
     span {
       display: none;
     }

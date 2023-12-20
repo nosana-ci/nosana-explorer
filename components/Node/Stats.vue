@@ -2,88 +2,51 @@
   <div>
     <table class="table is-fullwidth is-striped">
       <tbody>
-        <!-- <tr>
-          <td><b>Registered</b></td>
-          <td>
-            <span v-if="nodes">{{ nodes.length }} nodes</span>
-            <span v-else-if="loadingNodes">...</span>
-            <span v-else>-</span>
-          </td>
-        </tr> -->
         <tr>
-          <td><b>Registered</b></td>
+          <td><b>Completed Jobs</b></td>
           <td>
-            <span>54</span>
+            <span v-if="completedJobs">
+              {{ completedJobs.length }}
+            </span>
+            <span v-else>-</span>
           </td>
         </tr>
         <tr>
-          <td><b>Online Nodes</b></td>
+          <td><b>Running Jobs</b></td>
           <td>
-            <span v-if="nodeStats && nodeStats.onlineNodes.length > 0">{{
+            <span v-if="runningJobs">
+              {{ runningJobs.length }}
+            </span>
+            <span v-else>-</span>
+          </td>
+        </tr>
+        <tr>
+          <td><b>Queued Jobs</b></td>
+          <td>
+            <span v-if="queuedJobs">
+              {{ queuedJobs.length }}
+            </span>
+            <span v-else>-</span>
+          </td>
+        </tr>
+        <tr>
+          <td><b>Online GPU Nodes</b></td>
+          <td>
+            <span v-if="nodeStats.onlineNodes">{{
               nodeStats.onlineNodes.length
             }}</span>
             <span v-else>-</span>
           </td>
         </tr>
-        <!-- <tr>
-          <td><b>Total CPU</b></td>
-          <td>
-            <span v-if="nodes">
-              {{ nodes.reduce((a, b) => a + b.cpu, 0) }} cores
-            </span>
-            <span v-else-if="loadingNodes">...</span>
-            <span v-else>-</span>
-          </td>
-        </tr> -->
         <tr>
-          <td><b>Total GPUs</b></td>
+          <td><b>Nodes in Queue</b></td>
           <td>
-            <span v-if="nodeStats && nodeStats.gpus > 0">
-              {{ nodeStats.gpus }}
+            <span v-if="nodeStats.nodesInMarkets">
+              {{ nodeStats.nodesInMarkets.length }}
             </span>
             <span v-else>-</span>
           </td>
         </tr>
-        <!-- <tr>
-          <td><b>Total Memory</b></td>
-          <td>
-            <span v-if="nodes">
-              {{ nodes.reduce((a, b) => a + b.memory, 0) }} GB
-            </span>
-            <span v-else-if="loadingNodes">...</span>
-            <span v-else>-</span>
-          </td>
-        </tr> -->
-        <!-- <tr>
-          <td><b>Total IOPS</b></td>
-          <td>
-            <span v-if="nodes">
-              {{ nodes.reduce((a, b) => a + b.iops, 0) }} IOPS
-            </span>
-            <span v-else-if="loadingNodes">...</span>
-            <span v-else>-</span>
-          </td>
-        </tr> -->
-        <!-- <tr>
-          <td><b>Total Storage</b></td>
-          <td>
-            <span v-if="nodes">
-              {{ nodes.reduce((a, b) => a + b.storage, 0) }} GB
-            </span>
-            <span v-else-if="loadingNodes">...</span>
-            <span v-else>-</span>
-          </td>
-        </tr> -->
-        <!-- <tr>
-          <td><b>Countries</b></td>
-          <td>
-            <span v-if="nodes">
-              {{ new Set(nodes.map((n) => n.country)).size }}
-            </span>
-            <span v-else-if="loadingNodes">...</span>
-            <span v-else>-</span>
-          </td>
-        </tr> -->
       </tbody>
     </table>
     <div v-if="!loadingMarkets && !markets">Could not load nodes</div>
@@ -92,8 +55,36 @@
 
 <script lang="ts" setup>
 // const { nodes, loadingNodes } = useNodes();
-const { runs, getActiveRuns } = useJobs();
-const { markets, loadingMarkets, getMarkets } = useMarkets();
+const { runs, jobs } = useJobs();
+const { markets, loadingMarkets } = useMarkets();
+
+const runningJobs = computed(() => {
+  if (jobs.value) {
+    return jobs.value.filter((j) => {
+      // check if running
+      return j.state === 1;
+    });
+  }
+  return null;
+});
+const completedJobs = computed(() => {
+  if (jobs.value) {
+    return jobs.value.filter((j) => {
+      // check if running
+      return j.state === 2;
+    });
+  }
+  return null;
+});
+const queuedJobs = computed(() => {
+  if (jobs.value) {
+    return jobs.value.filter((j) => {
+      // check if running
+      return j.state === 0;
+    });
+  }
+  return null;
+});
 
 const nodeStats = computed(() => {
   // Get the combined GPUS in running jobs + queued
@@ -112,14 +103,6 @@ const nodeStats = computed(() => {
   );
 
   const onlineNodes = [...new Set(combined)];
-  const gpuCount = onlineNodes.length;
-  return { gpus: gpuCount, onlineNodes };
+  return { onlineNodes, nodesInMarkets, nodesInRuns };
 });
-
-// Fetch nodes every 60 seconds
-// useIntervalFn(getNodes, 60000);
-
-// Fetch markets & runs every 30 seconds
-useIntervalFn(getMarkets, 30000);
-useIntervalFn(getActiveRuns, 30000);
 </script>

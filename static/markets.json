@@ -30,5 +30,29 @@
   "2dLsNrsBCNc6rmAqA54A4EKQ4HwBkK8L8HmTCCkFE1ej": {
     "name": "NVIDIA RTX 3070",
     "collection": "7SACYwKjKrdgukDgsJB9oexjvHZBckrZDE9fHVK6zeHG"
+  },
+  "2Nz9Hi43CPcwdyw9fTyHwQDWjhRxg4mmauJmoVVATwFU": {
+    "name": "Group 3080",
+    "collection": "Fq1AdbwgBEPTqQHXVp15Fpqyq6jjGNrPf7JrFeNvp71H"
+  },
+
+  "EzBNvVhSZWdXxqbtvFy91ntLfU2jH9E3ENh8izY6pvwj": {
+    "name": "Group 3080 Ti",
+    "collection": "CpaqMg9RCmdoaVRfwWf6Ym3qQyEzsughzDoFZjJhAhDj"
+  },
+
+  "5KQ6JCPcWHyy7ZHKDoeqjE5paRh3SA32gerWdYJjuFZJ": {
+    "name": "Group A4000",
+    "collection": "BCyYJvpX3EGrajqfdb4J2JRxBNjY5vt5c95iNk2qUzUJ"
+  },
+
+  "QuxR88HnRRgMNqh5GfCB5ckWrdW7GsrwcBRhJ4uxJF3": {
+    "name": "Group A6000",
+    "collection": "BAHxjVB5YzYHTfE4vBR7Y7uEx3zqLr9ZTyq2D93c6Q2Z"
+  },
+
+  "CPPjN1MrbX8PkWPMjcMAMGy3LXLNHmMu1w4axQnp1Sgu": {
+    "name": "Group 3070 Multi",
+    "collection": "A7gsUwDeGKF8HqPFozJ7wpKAqmV4G4it5MNkcmWUupSQ"
   }
 }

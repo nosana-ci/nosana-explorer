@@ -1,12 +1,12 @@
 <template>
   <div>
-    <div style="height: 200px">
+    <div style="height: 350px">
       <Bar :options="barOptions" :data="queueData" style="width: 100%" />
     </div>
     <table class="table is-fullwidth is-striped">
       <tbody>
         <tr>
-          <td><b>Total Job Queue</b></td>
+          <td><b>Testgrid Job Queue</b></td>
           <td>
             <span v-if="markets">
               {{
@@ -30,7 +30,7 @@
           </td>
         </tr>
         <tr>
-          <td><b>Total Node Queue</b></td>
+          <td><b>Testgrid Node Queue</b></td>
           <td>
             <span v-if="markets">
               {{
@@ -92,7 +92,11 @@ const queueData = computed<ChartData<'bar'>>(() => {
         )
     : [];
   return {
-    labels: data.map((m) => m.address.toString().slice(0, 7) + '...'),
+    labels: data.map(
+      (m) =>
+        testgridMarkets[m.address.toString() as keyof typeof testgridMarkets]
+          .name,
+    ),
     datasets: [
       {
         label: 'Nodes',

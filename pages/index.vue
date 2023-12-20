@@ -5,8 +5,10 @@
       <div class="column is-6">
         <div class="box is-flex is-flex-direction-column">
           <JobList
-            :title="'Latest Jobs'"
-            :jobs="jobs?.slice(0, 5)"
+            :loading-jobs="loadingJobs"
+            title="Latest Jobs"
+            :jobs="jobs"
+            :limit="5"
             :small="true"
           ></JobList>
           <div class="has-text-right mt-auto pt-2">
@@ -19,19 +21,19 @@
       </div>
       <div class="column is-6">
         <div class="box is-flex is-flex-direction-column">
-          <h2 class="title is-5">Node Statistics</h2>
+          <h2 class="title is-5">Statistics</h2>
           <NodeStats></NodeStats>
-          <div class="has-text-right mt-auto pt-2">
+          <!-- <div class="has-text-right mt-auto pt-2">
             <nuxt-link to="/nodes" class="button is-white">
               <span>All nodes</span>
               <span class="icon"> &#8250; </span>
             </nuxt-link>
-          </div>
+          </div> -->
         </div>
       </div>
       <div class="column is-6">
         <div class="box is-flex is-flex-direction-column">
-          <h2 class="title is-5">Market Queues</h2>
+          <h2 class="title is-5">Testgrid Markets</h2>
           <MarketQueues></MarketQueues>
           <div class="has-text-right mt-auto pt-2">
             <nuxt-link to="/markets" class="button is-white">
@@ -55,6 +57,8 @@
 
 <script setup lang="ts">
 const { jobs, getJobs, loadingJobs } = useJobs();
+const { getMarkets, markets } = useMarkets();
+const { network } = useSDK();
 
 // Fetch jobs when we switch back to tab
 const visibility = useDocumentVisibility();
@@ -63,9 +67,23 @@ watch(visibility, (current, previous) => {
     getJobs();
   }
 });
+watch(network, () => {
+  getJobs();
+  getMarkets();
+});
 
-// Fetch jobs every 20 seconds
-useIntervalFn(getJobs, 20000);
+if (!jobs.value) {
+  getJobs();
+}
+if (!markets.value) {
+  getMarkets();
+}
+
+// Fetch jobs every 30 seconds
+useIntervalFn(getJobs, 30000);
+
+// Fetch markets every 30 seconds
+useIntervalFn(getMarkets, 30000);
 </script>
 
 <style lang="scss" scoped>
