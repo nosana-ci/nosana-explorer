@@ -35,11 +35,22 @@
               <td>Node Access Key</td>
               <td style="vertical-align: middle">
                 <div
+                  v-for="nft in nodeNfts"
                   data-tooltip="Node Access Key found"
                   style="width: fit-content"
                   class="is-flex"
                 >
                   <JobStatus :status="'COMPLETED'" image-only></JobStatus>
+                  <span class="address is-family-monospace ml-2">{{
+                    Object.values(testgridMarkets).find(
+                      (m) => m.collection === nft.collection.address.toString(),
+                    )
+                      ? Object.values(testgridMarkets).find(
+                          (m) =>
+                            m.collection === nft.collection.address.toString(),
+                        ).name
+                      : nft.collection.address.toString()
+                  }}</span>
                 </div>
               </td>
             </tr>
@@ -73,7 +84,7 @@
               <td>Market</td>
               <td>
                 <nuxt-link
-                  :to="`/markets/${nodeMarket[0].address.toString()}`"
+                  :to="`/jobs/${nodeMarket[0].address.toString()}`"
                   class="address is-family-monospace"
                   >{{ nodeMarket[0].address.toString() }}</nuxt-link
                 >
@@ -85,9 +96,9 @@
               <td>Running job</td>
               <td>
                 <nuxt-link
-                  :to="`/markets/${nodeRuns[0].account.job.toString()}`"
+                  :to="`/markets/${nodeRuns[0].pubkey.toString()}`"
                   class="address is-family-monospace"
-                  >{{ nodeRuns[0].account.job.toString() }}</nuxt-link
+                  >{{ nodeRuns[0].pubkey.toString() }}</nuxt-link
                 >
               </td>
             </tr>
@@ -108,12 +119,7 @@
         </table>
 
         <div v-if="nodeNfts && nodeNfts.length > 0">
-          <JobList
-            v-if="jobs && jobs.length > 0"
-            title="Jobs by this node"
-            :jobs="jobs"
-          ></JobList>
-          <span v-else-if="!loading"> No jobs found for this address. </span>
+          <JobList title="Jobs by this node" :jobs="jobs"></JobList>
         </div>
       </div>
       <div v-else>Address not found</div>
@@ -128,7 +134,7 @@ import testgridMarkets from '@/static/markets.json';
 
 const { params } = useRoute();
 const { nosana, network } = useSDK();
-const { runs, getActiveRuns } = useJobs();
+const { getJobs } = useJobs();
 const { markets, getMarkets } = useMarkets();
 const address: Ref<string | null> = ref(null);
 const balance: Ref<any | null> = ref(null);
@@ -163,7 +169,7 @@ const getAddress = async () => {
     address.value = pk.toString();
 
     try {
-      jobs.value = await nosana.value.jobs.all({ node: address.value });
+      jobs.value = await getJobs({ node: address.value });
     } catch (e) {
       console.log('cant get jobs of node', e);
     }
@@ -203,39 +209,30 @@ const getAddress = async () => {
     address.value = null;
   }
 
-  if (nodeNfts.value.length > 0) {
-    // get active runs of node
-    const nodesInRuns = runs?.value?.map(function (item) {
-      return item.account.node.toString();
-    });
+  // get market where node is in
+  const nodesInMarkets = markets?.value?.flatMap((market) => {
+    return market.queueType === 1
+      ? market.queue.map((data: any) => data.toString())
+      : [];
+  });
 
-    if (nodesInRuns?.includes(address.value)) {
-      nodeStatus.value = 'RUNNING';
-      nodeRuns.value = runs?.value?.filter(
-        (r) => r.account.node.toString() === address.value,
-      );
-    }
+  if (nodesInMarkets?.includes(address.value)) {
+    nodeStatus.value = 'QUEUED';
+    nodeMarket.value = markets?.value?.filter((m) =>
+      m.queue.find((a: any) => a.toString() === address.value?.toString()),
+    );
+  }
 
-    // get market where node is in
-    const nodesInMarkets = markets?.value?.flatMap((market) => {
-      return market.queueType === 1
-        ? market.queue.map((data: any) => data.toString())
-        : [];
-    });
-
-    if (nodesInMarkets?.includes(address.value)) {
-      nodeStatus.value = 'QUEUED';
-      nodeMarket.value = markets?.value?.filter((m) =>
-        m.queue.find((a: any) => a.toString() === address.value?.toString()),
-      );
-    }
-
-    useIntervalFn(getMarkets, 30000);
-    useIntervalFn(getActiveRuns, 30000);
+  nodeRuns.value = jobs.value.filter((j) => j.state === 1);
+  // get active runs of node
+  if (nodeRuns.value.length) {
+    nodeStatus.value = 'RUNNING';
   }
   loading.value = false;
 };
 
 getAddress();
+
+useIntervalFn(getMarkets, 30000);
 </script>
 <style lang="scss" scoped></style>

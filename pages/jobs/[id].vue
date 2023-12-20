@@ -31,7 +31,11 @@
               <nuxt-link
                 :to="`/markets/${job.market}`"
                 class="address is-family-monospace"
-                >{{ job.market }}</nuxt-link
+                >{{
+                  testgridMarkets[job.market]
+                    ? testgridMarkets[job.market].name
+                    : job.market
+                }}</nuxt-link
               >
             </td>
           </tr>
@@ -47,7 +51,7 @@
           </tr>
           <tr>
             <td>Price</td>
-            <td>{{ job.price / 1e6 }} NOS</td>
+            <td>{{ job.price / 1e6 }} NOS/s</td>
           </tr>
           <tr>
             <td>Started</td>
@@ -142,6 +146,12 @@
           <li :class="{ 'is-active': activeTab === 'info' }">
             <a @click.prevent="activeTab = 'info'">JSON Flow</a>
           </li>
+          <li
+            v-if="artifacts"
+            :class="{ 'is-active': activeTab === 'artifacts' }"
+          >
+            <a @click.prevent="activeTab = 'artifacts'">Artifacts</a>
+          </li>
         </ul>
       </div>
       <div>
@@ -170,7 +180,7 @@
                 </div>
               </div>
             </div>
-            <span v-else>Loading logs...</span>
+            <span v-else>Waiting for results...</span>
           </div>
           <div v-else-if="loading">Loading results..</div>
           <div v-else-if="!ipfsResult || !ipfsResult.results">No results</div>
@@ -182,6 +192,26 @@
             :ipfs-result="ipfsResult"
             :ipfs-job="ipfsJob"
           />
+        </div>
+        <div
+          v-show="activeTab === 'artifacts'"
+          class="p-1 py-4 has-background-white-bis"
+        >
+          <div>
+            <p class="block">
+              <a
+                v-if="ipfsGateway && artifacts"
+                class="button"
+                :href="`${ipfsGateway}${artifacts.trim()}`"
+              >
+                Download artifacts
+              </a>
+            </p>
+            <p class="block">
+              Download with CLI:<br />
+              <code>npx nosana/cli download {{ artifacts }}</code>
+            </p>
+          </div>
         </div>
       </div>
     </div>
@@ -196,9 +226,9 @@ import { Job } from '@nosana/sdk';
 import VueJsonPretty from 'vue-json-pretty';
 import { UseTimeAgo } from '@vueuse/components';
 import axios from 'axios';
-import { PublicKey } from '@solana/web3.js';
 import AnsiUp from 'ansi_up';
 import nodes from '@/static/nodes.json';
+import testgridMarkets from '@/static/markets.json';
 
 const sleep = (seconds: number): Promise<void> =>
   // eslint-disable-next-line promise/param-names
@@ -216,6 +246,8 @@ const activeTab: Ref<string> = ref('result');
 const jobStatus: Ref<string | null> = ref(null);
 const logs: Ref<any | null> = ref(null);
 const { getIpfs } = useIpfs();
+const artifacts = ref(null);
+const ipfsGateway = ref(nosana.value ? nosana.value.ipfs.config.gateway : null);
 
 const timestamp = useTimestamp({ interval: 1000 });
 const fmtMSS = (s: number) => {
@@ -246,17 +278,28 @@ const getJob = async () => {
         logs.value = [];
         await getStreamingLogs();
       }
-      console.log('retrieving ipfs results..', job.value!.ipfsResult);
-      if (job.value!.ipfsResult) {
+      if (
+        job.value!.ipfsResult &&
+        job.value!.ipfsResult !==
+          'QmNLei78zWmzUdbeRB3CiUfAizWUrbeeZh5K1rhAQKCh51'
+      ) {
         const resultResponse = await getIpfs(job.value!.ipfsResult);
-        console.log('rr', resultResponse);
         ipfsResult.value = resultResponse;
-      } else {
-        ipfsResult.value = job.value!.ipfsResult;
       }
 
-      console.log('retrieving ipfs results done ', ipfsResult.value);
       if (ipfsResult.value && typeof ipfsResult.value !== 'string') {
+        const artifactId = ipfsJob.value.ops[ipfsJob.value.ops.length - 1].id;
+        if (artifactId.startsWith('artifact-')) {
+          if (ipfsResult.value!.results[artifactId]) {
+            const steps = ipfsResult.value!.results[artifactId][1];
+            if (Array.isArray(steps)) {
+              const logs = steps[steps.length - 1].log;
+              if (logs && logs[logs.length - 2]) {
+                artifacts.value = logs[logs.length - 2][1].slice(-46);
+              }
+            }
+          }
+        }
         for (const key in ipfsResult.value!.results) {
           const results = ipfsResult.value!.results[key];
           if (
@@ -314,15 +357,12 @@ const getStreamingLogs = async () => {
   try {
     if (!ipfsJob.value.ops) return new Error('No job steps found');
 
-    const runs = await nosana.value.jobs.getRuns(new PublicKey(jobId.value));
-    if (runs.length === 0) return;
-
     // @ts-ignore
-    const node = nodes[runs[0].account.node.toString()];
+    const node = nodes[job.value.node.toString()];
     const env = network.value as unknown as string;
     if (!node || !node[env] || !node[env].endpoint) {
       // skip streaming logs
-      console.log('node or node endpoint not found');
+      console.log('streaming logs: node or node endpoint not found');
       return;
     }
 

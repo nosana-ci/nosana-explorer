@@ -107,7 +107,7 @@ const getMarket = async () => {
     loading.value = true;
     market.value = await nosana.value.jobs.getMarket(marketId.value);
     try {
-      jobs.value = await getJobs(marketId.value);
+      jobs.value = await getJobs({ market: marketId.value });
     } catch (error) {
       console.error('cant fetch jobs from market', error);
     }
