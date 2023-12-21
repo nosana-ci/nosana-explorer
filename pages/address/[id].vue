@@ -12,7 +12,7 @@
                 address.toString() ===
                 'FEEw3nDocYSyrLT4HPjibjYuaNekakWNmasNvEx3nHKi'
               "
-              >Nosana Testgrid</span
+              >Nosana Test Grid</span
             >
             <span v-else>{{ address }}</span>
           </h3>

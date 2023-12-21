@@ -1,6 +1,6 @@
 <template>
   <div class="box">
-    <h1 class="title is-5">Testgrid Markets</h1>
+    <h1 class="title is-5">Test Grid Markets</h1>
     <MarketList :markets="markets"></MarketList>
     <div v-if="!loadingMarkets && !markets">Could not load markets</div>
   </div>
