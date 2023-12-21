@@ -310,7 +310,7 @@ const getJob = async () => {
             if (Array.isArray(steps)) {
               const logs = steps[steps.length - 1].log;
               if (logs && logs[logs.length - 2]) {
-                artifacts.value = logs[logs.length - 2][1].slice(-46);
+                artifacts.value = logs[logs.length - 2][1].slice(-47);
               }
             }
           }
