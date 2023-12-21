@@ -7,7 +7,14 @@
           class="is-flex is-align-items-center is-justify-content-space-between mb-4"
         >
           <h3 class="title is-5 address is-family-monospace my-0">
-            {{ address }}
+            <span
+              v-if="
+                address.toString() ===
+                'FEEw3nDocYSyrLT4HPjibjYuaNekakWNmasNvEx3nHKi'
+              "
+              >Nosana Testgrid</span
+            >
+            <span v-else>{{ address }}</span>
           </h3>
         </div>
 
