@@ -77,7 +77,7 @@
             <p v-else>There are no nodes in the queue at the moment</p>
           </div>
         </div>
-        <JobList title="All Jobs in this market" :jobs="jobs"></JobList>
+        <JobList title="All Inferences in this market" :jobs="jobs"></JobList>
       </div>
       <div v-else>Market not found</div>
     </div>

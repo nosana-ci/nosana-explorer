@@ -23,7 +23,7 @@
                     0,
                   )
               }}
-              jobs
+              inferences
             </span>
             <span v-else-if="loadingMarkets">...</span>
             <span v-else>-</span>

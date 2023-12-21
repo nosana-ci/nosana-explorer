@@ -10,7 +10,7 @@
           padding-top: 1.4rem !important;
           padding-bottom: 1.4rem !important;
         "
-        placeholder="Search for jobs, nodes, markets and accounts"
+        placeholder="Search for inferences, nodes, markets and accounts"
       />
       <span class="icon is-small pt-1 is-right">
         <SearchIcon />

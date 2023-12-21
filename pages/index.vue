@@ -6,7 +6,7 @@
         <div class="box is-flex is-flex-direction-column">
           <JobList
             :loading-jobs="loadingJobs"
-            title="Latest Jobs"
+            title="Latest Inferences"
             :jobs="jobs"
             :limit="5"
             :small="true"

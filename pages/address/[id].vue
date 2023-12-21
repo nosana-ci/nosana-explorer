@@ -96,7 +96,7 @@
               <td>Running job</td>
               <td>
                 <nuxt-link
-                  :to="`/markets/${nodeRuns[0].pubkey.toString()}`"
+                  :to="`/jobs/${nodeRuns[0].pubkey.toString()}`"
                   class="address is-family-monospace"
                   >{{ nodeRuns[0].pubkey.toString() }}</nuxt-link
                 >
@@ -119,7 +119,7 @@
         </table>
 
         <div v-if="nodeNfts && nodeNfts.length > 0">
-          <JobList title="Jobs by this node" :jobs="jobs"></JobList>
+          <JobList title="Inferences by this node" :jobs="jobs"></JobList>
         </div>
       </div>
       <div v-else>Address not found</div>

@@ -38,7 +38,7 @@
                 to="/jobs"
                 exact-active-class="is-active"
               >
-                Jobs
+                Inferences
               </nuxt-link>
             </div>
             <!-- <div @click="mobileMenu = false">

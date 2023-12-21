@@ -215,8 +215,8 @@
         </div>
       </div>
     </div>
-    <div v-else-if="loading">Loading job..</div>
-    <div v-else>Job not found</div>
+    <div v-else-if="loading">Loading inference..</div>
+    <div v-else>Inference not found</div>
   </div>
 </template>
 

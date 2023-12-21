@@ -2,7 +2,7 @@
   <div class="columns is-mobile is-vcentered">
     <div class="column">
       <h2 class="title" :class="{ 'is-5': small, 'is-4': !small }">
-        {{ title ? title : 'Jobs' }}
+        {{ title ? title : 'Inferences' }}
       </h2>
     </div>
     <div
@@ -13,7 +13,7 @@
         >{{ (page - 1) * perPage + 1 }} -
         {{ Math.min(page * perPage, filteredJobs.length) }} of</span
       >
-      {{ filteredJobs.length }} jobs
+      {{ filteredJobs.length }} inferences
     </div>
   </div>
   <div class="is-flex is-flex-wrap-wrap state-filter">
@@ -27,7 +27,7 @@
         }"
         @click="state = null"
       >
-        <b><span>All Jobs</span></b>
+        <b><span>All</span></b>
       </a>
     </div>
     <div class="mr-2 my-2">
@@ -85,10 +85,10 @@
     </thead>
     <tbody>
       <tr v-if="!filteredJobs">
-        <td colspan="5">Loading jobs..</td>
+        <td colspan="5">Loading inferences..</td>
       </tr>
       <tr v-else-if="!filteredJobs.length">
-        <td colspan="5">No jobs</td>
+        <td colspan="5">No inferences</td>
       </tr>
       <nuxt-link
         v-for="job in paginatedJobs"
