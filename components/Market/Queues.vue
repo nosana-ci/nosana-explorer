@@ -6,7 +6,7 @@
     <table class="table is-fullwidth is-striped">
       <tbody>
         <tr>
-          <td><b>Testgrid Job Queue</b></td>
+          <td><b>Test Grid Job Queue</b></td>
           <td>
             <span v-if="markets">
               {{
@@ -23,7 +23,7 @@
                     0,
                   )
               }}
-              jobs
+              inferences
             </span>
             <span v-else-if="loadingMarkets">...</span>
             <span v-else>-</span>

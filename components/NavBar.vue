@@ -38,7 +38,7 @@
                 to="/jobs"
                 exact-active-class="is-active"
               >
-                Jobs
+                Inferences
               </nuxt-link>
             </div>
             <!-- <div @click="mobileMenu = false">
@@ -64,7 +64,7 @@
                 <div class="select">
                   <select v-model="network" @change="mobileMenu = false">
                     <option value="devnet">DevNet</option>
-                    <option value="mainnet">TestGrid</option>
+                    <option value="mainnet">Test Grid</option>
                   </select>
                 </div>
               </div>

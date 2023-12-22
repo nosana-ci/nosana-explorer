@@ -3,7 +3,7 @@
     <table class="table is-fullwidth is-striped">
       <tbody>
         <tr>
-          <td><b>Completed Jobs</b></td>
+          <td><b>Completed Inferences</b></td>
           <td>
             <span v-if="completedJobs">
               {{ completedJobs.length }}
@@ -12,7 +12,7 @@
           </td>
         </tr>
         <tr>
-          <td><b>Running Jobs</b></td>
+          <td><b>Running Inferences</b></td>
           <td>
             <span v-if="runningJobs">
               {{ runningJobs.length }}
@@ -21,7 +21,7 @@
           </td>
         </tr>
         <tr>
-          <td><b>Queued Jobs</b></td>
+          <td><b>Queued Inferences</b></td>
           <td>
             <span v-if="queuedJobs">
               {{ queuedJobs.length }}

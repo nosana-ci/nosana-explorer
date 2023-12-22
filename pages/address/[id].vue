@@ -7,7 +7,14 @@
           class="is-flex is-align-items-center is-justify-content-space-between mb-4"
         >
           <h3 class="title is-5 address is-family-monospace my-0">
-            {{ address }}
+            <span
+              v-if="
+                address.toString() ===
+                'FEEw3nDocYSyrLT4HPjibjYuaNekakWNmasNvEx3nHKi'
+              "
+              >Nosana Test Grid</span
+            >
+            <span v-else>{{ address }}</span>
           </h3>
         </div>
 
@@ -96,7 +103,7 @@
               <td>Running job</td>
               <td>
                 <nuxt-link
-                  :to="`/markets/${nodeRuns[0].pubkey.toString()}`"
+                  :to="`/jobs/${nodeRuns[0].pubkey.toString()}`"
                   class="address is-family-monospace"
                   >{{ nodeRuns[0].pubkey.toString() }}</nuxt-link
                 >
@@ -119,7 +126,7 @@
         </table>
 
         <div v-if="nodeNfts && nodeNfts.length > 0">
-          <JobList title="Jobs by this node" :jobs="jobs"></JobList>
+          <JobList title="Inferences by this node" :jobs="jobs"></JobList>
         </div>
       </div>
       <div v-else>Address not found</div>

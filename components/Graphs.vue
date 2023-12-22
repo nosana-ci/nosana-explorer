@@ -4,7 +4,7 @@
       <div class="column is-12">
         <div class="box">
           <h2 class="title is-5">
-            Jobs
+            Inferences
             <span>
               <count-up v-if="jobs" :end-val="jobs.length"></count-up>
               <span v-else-if="loadingJobs">...</span>

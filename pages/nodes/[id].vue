@@ -67,7 +67,7 @@
             </tr>
           </tbody>
         </table>
-        <JobList title="Jobs by this node" :jobs="jobs"></JobList>
+        <JobList title="Inferences by this node" :jobs="jobs"></JobList>
       </div>
       <div v-else>Node not found</div>
     </div>

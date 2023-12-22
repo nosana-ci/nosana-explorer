@@ -18,7 +18,14 @@
           <tr>
             <td>Node</td>
             <td>
+              <span
+                v-if="
+                  job.node.toString() === '11111111111111111111111111111111'
+                "
+                >Unclaimed</span
+              >
               <nuxt-link
+                v-else
                 class="address is-family-monospace"
                 :to="`/address/${job.node}`"
                 >{{ job.node }}</nuxt-link
@@ -45,8 +52,16 @@
               <nuxt-link
                 class="address is-family-monospace"
                 :to="`/address/${job.project}`"
-                >{{ job.project }}</nuxt-link
               >
+                <span
+                  v-if="
+                    job.project.toString() ===
+                    'FEEw3nDocYSyrLT4HPjibjYuaNekakWNmasNvEx3nHKi'
+                  "
+                  >Nosana Test Grid</span
+                >
+                <span v-else>{{ job.project }}</span>
+              </nuxt-link>
             </td>
           </tr>
           <tr v-if="jobStatus === 'COMPLETED' || job.state === 'COMPLETED'">
@@ -222,8 +237,8 @@
         </div>
       </div>
     </div>
-    <div v-else-if="loading">Loading job..</div>
-    <div v-else>Job not found</div>
+    <div v-else-if="loading">Loading inference..</div>
+    <div v-else>Inference not found</div>
   </div>
 </template>
 
@@ -302,7 +317,7 @@ const getJob = async () => {
             if (Array.isArray(steps)) {
               const logs = steps[steps.length - 1].log;
               if (logs && logs[logs.length - 2]) {
-                artifacts.value = logs[logs.length - 2][1].slice(-46);
+                artifacts.value = logs[logs.length - 2][1].slice(-47);
               }
             }
           }
