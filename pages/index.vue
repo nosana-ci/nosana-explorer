@@ -79,8 +79,8 @@ if (!markets.value) {
   getMarkets();
 }
 
-// Fetch jobs every 30 seconds
-useIntervalFn(getJobs, 30000);
+// Fetch jobs every 60 seconds
+useIntervalFn(getJobs, 60000);
 
 // Fetch markets every 30 seconds
 useIntervalFn(getMarkets, 30000);

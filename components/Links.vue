@@ -70,6 +70,23 @@
             </a>
           </td>
         </tr>
+        <tr>
+          <td><b>Discord</b></td>
+          <td>
+            <a
+              href="https://discord.gg/nosana"
+              target="_blank"
+              class="is-flex is-align-items-center"
+            >
+              <small>discord.gg/nosana</small>
+              <img
+                class="ml-1"
+                width="11px"
+                src="~assets/img/icons/external.png"
+              />
+            </a>
+          </td>
+        </tr>
       </tbody>
     </table>
   </div>
