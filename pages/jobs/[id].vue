@@ -49,9 +49,16 @@
               >
             </td>
           </tr>
-          <tr>
+          <tr v-if="jobStatus === 'COMPLETED' || job.state === 'COMPLETED'">
             <td>Price</td>
-            <td>{{ job.price / 1e6 }} NOS/s</td>
+            <td>
+              <span
+                >{{
+                  (job.price / 1e6) * (job.timeEnd - job.timeStart)
+                }}
+                NOS</span
+              >
+            </td>
           </tr>
           <tr>
             <td>Started</td>
