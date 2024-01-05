@@ -61,12 +61,12 @@ const { getMarkets, markets } = useMarkets();
 const { network } = useSDK();
 
 // Fetch jobs when we switch back to tab
-const visibility = useDocumentVisibility();
-watch(visibility, (current, previous) => {
-  if (current === 'visible' && previous === 'hidden') {
-    getJobs();
-  }
-});
+// const visibility = useDocumentVisibility();
+// watch(visibility, (current, previous) => {
+//   if (current === 'visible' && previous === 'hidden') {
+//     getJobs();
+//   }
+// });
 watch(network, () => {
   getJobs();
   getMarkets();
