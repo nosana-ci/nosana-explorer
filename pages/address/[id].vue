@@ -157,8 +157,8 @@ const jobs: Ref<Array<any> | null> = ref(null);
 // TODO move this to SDK or plugin(?)
 const web3 = new Connection(
   network.value === 'devnet'
-    ? 'https://rpc-devnet.hellomoon.io/853e30f5-383d-4cc6-a5ee-b5fb4c7a7178'
-    : 'https://rpc.hellomoon.io/853e30f5-383d-4cc6-a5ee-b5fb4c7a7178',
+    ? 'https://rpc.ironforge.network/devnet?apiKey=01HFRX48N027P9XQ07KH3DHBEA'
+    : 'https://rpc.ironforge.network/mainnet?apiKey=01HFRX48N027P9XQ07KH3DHBEA',
 );
 const metaplex = new Metaplex(web3);
 
