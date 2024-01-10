@@ -185,13 +185,22 @@ const state: Ref<number | null> = ref(null);
 const page: Ref<number> = ref(1);
 const perPage: Ref<number> = ref(25);
 
+const jobStateMapping: any = {
+  0: 'QUEUED',
+  1: 'RUNNING',
+  2: 'COMPLETED',
+  3: 'STOPPED',
+};
+
 const filteredJobs = computed(() => {
   if (!props.jobs || !props.jobs.length) return props.jobs;
   let filteredJobs =
     state.value !== null
       ? props.jobs.filter((j) => {
           // check if running
-          return j.state === state.value;
+          return (
+            j.state === state.value || j.state === jobStateMapping[state.value]
+          );
         })
       : props.jobs;
   if (props.limit) {

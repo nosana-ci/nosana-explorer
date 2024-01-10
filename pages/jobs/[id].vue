@@ -64,7 +64,13 @@
               </nuxt-link>
             </td>
           </tr>
-          <tr v-if="jobStatus === 'COMPLETED' || job.state === 'COMPLETED'">
+          <tr
+            v-if="
+              jobStatus === 'COMPLETED' ||
+              job.state === 'COMPLETED' ||
+              job.state === 2
+            "
+          >
             <td>Price</td>
             <td>
               <span
@@ -188,7 +194,7 @@
           class="p-1 py-4 has-background-white-bis"
         >
           <div
-            v-if="job.state === 'RUNNING'"
+            v-if="job.state === 'RUNNING' || job.state === 1"
             class="is-family-monospace has-background-black has-text-white box"
           >
             <div v-if="logs && logs.length > 0" style="counter-reset: line">
@@ -210,7 +216,9 @@
             Results are secret
           </div>
           <JobResult
-            v-else-if="ipfsResult && job.state === 'COMPLETED'"
+            v-else-if="
+              (ipfsResult && job.state === 'COMPLETED') || job.state === 2
+            "
             :ipfs-result="ipfsResult"
             :ipfs-job="ipfsJob"
           />
@@ -259,6 +267,7 @@ const sleep = (seconds: number): Promise<void> =>
 const ansi = new AnsiUp();
 const { nosana, network } = useSDK();
 const job: Ref<Job | null> = ref(null);
+const jsonJobs: Ref<any> = ref(null);
 const ipfsJob: Ref<{ [key: string]: any }> = ref({});
 const ipfsResult: Ref<{ [key: string]: any }> = ref({});
 const { params } = useRoute();
@@ -281,18 +290,46 @@ watch(network, () => {
   getJob();
 });
 
+const importJobsJson = async () => {
+  try {
+    jsonJobs.value = await import(`../../static/${network.value}-jobs.json`);
+  } catch (error) {
+    console.error('import of json failed', error);
+  }
+};
+
 const getJob = async () => {
   try {
     loading.value = true;
-    job.value = await nosana.value.jobs.get(jobId.value);
-    if (job.value.state === 'QUEUED' || job.value.state === 'RUNNING') {
+
+    // try to find job in json snapshot, else fetch it
+    try {
+      await importJobsJson();
+      const index = jsonJobs.value.default.findIndex(
+        (j: any) => j.pubkey === jobId.value,
+      );
+      if (index > -1) {
+        job.value = jsonJobs.value.default[index];
+      } else {
+        job.value = await nosana.value.jobs.get(jobId.value);
+      }
+    } catch (error) {
+      console.error('import modeule', error);
+      job.value = await nosana.value.jobs.get(jobId.value);
+    }
+    if (
+      job.value?.state === 'QUEUED' ||
+      job.value?.state === 'RUNNING' ||
+      job.value?.state === 0 ||
+      job.value?.state === 1
+    ) {
       if (!isActive.value) resume();
     } else if (isActive.value) pause();
 
     try {
       ipfsJob.value = await getIpfs(job.value!.ipfsJob);
       if (
-        job.value.state === 'RUNNING' &&
+        (job.value?.state === 'RUNNING' || job.value?.state === 1) &&
         ipfsJob.value &&
         typeof ipfsJob.value !== 'string' &&
         !logs.value
@@ -308,7 +345,6 @@ const getJob = async () => {
         const resultResponse = await getIpfs(job.value!.ipfsResult);
         ipfsResult.value = resultResponse;
       }
-
       if (ipfsResult.value && typeof ipfsResult.value !== 'string') {
         const artifactId = ipfsJob.value.ops[ipfsJob.value.ops.length - 1].id;
         if (artifactId.startsWith('artifact-')) {
@@ -432,7 +468,12 @@ const getStreamingLogs = async () => {
         if (retries < 1) {
           const job = await nosana.value.jobs.get(jobId.value);
 
-          if (job.state === 'COMPLETED' || job.state === 'STOPPED') {
+          if (
+            job.state === 'COMPLETED' ||
+            job.state === 2 ||
+            job.state === 'STOPPED' ||
+            job.state === 3
+          ) {
             jobFinished = true;
             return;
           }
