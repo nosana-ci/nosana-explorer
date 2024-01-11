@@ -30,7 +30,6 @@ const getJobs = async (filters?: any) => {
     const allRuns = await nosana.value.jobs.getActiveRuns();
     const ids = new Set(allJobs.map((d) => d.pubkey.toString()));
 
-    console.log('Start matching runs', allRuns.length);
     runs.value = allRuns;
     for (let i = 0; i < allRuns.length; i++) {
       if (filters && filters.node) {
@@ -56,14 +55,22 @@ const getJobs = async (filters?: any) => {
         }
       }
     }
-    console.log('Done matching runs');
 
     // get unique jobs from both rpc and json
     allJobs = [
       ...allJobs,
-      ...jsonJobs.value.default.filter(
-        (d: any) => !ids.has(d.pubkey.toString()),
-      ),
+      ...jsonJobs.value.default.filter((j: any) => {
+        // when filter is provided also use it on jsonJobs
+        // for now support only 1 filter here
+        if (filters) {
+          return (
+            j[Object.keys(filters)[0]] === filters[Object.keys(filters)[0]] &&
+            !ids.has(j.pubkey.toString())
+          );
+        } else {
+          return !ids.has(j.pubkey.toString());
+        }
+      }),
     ];
 
     allJobs = allJobs.filter((j) => {
