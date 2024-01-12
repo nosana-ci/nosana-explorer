@@ -7,11 +7,15 @@ const getIpfs = async (hash: string) => {
   try {
     let ipfsData = await get(hash);
     if (!ipfsData) {
-      console.log('retrieving', hash);
+      console.log('retrieving from ipfs', hash);
       ipfsData = await nosana.value.ipfs.retrieve(hash);
       useIDBKeyval(hash, ipfsData);
+    } else {
+      console.log('retrieving from IDB', hash);
     }
-    return ipfsData || null;
+    return ipfsData
+      ? (JSON.parse(JSON.stringify(ipfsData)) as Object)
+      : ipfsData;
   } catch (e) {
     console.error(e);
   }
