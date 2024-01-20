@@ -74,7 +74,7 @@
           <td><b>Discord</b></td>
           <td>
             <a
-              href="https://discord.gg/nosana"
+              href="https://discord.gg/nosana-ai"
               target="_blank"
               class="is-flex is-align-items-center"
             >
