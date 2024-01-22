@@ -78,7 +78,7 @@
               target="_blank"
               class="is-flex is-align-items-center"
             >
-              <small>discord.gg/nosana</small>
+              <small>discord.gg/nosana-ai</small>
               <img
                 class="ml-1"
                 width="11px"
