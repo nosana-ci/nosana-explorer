@@ -105,13 +105,22 @@ const getEarningsPerNode = () => {
   loading.value = true;
 
   // weird for some reason a timeout is needed here
-  setTimeout(() => {
+  setTimeout(async () => {
     console.log('Loading earnings per node...');
     let nodeEarnings: any = [];
+    allJobs.value = await getAllJobs();
 
-    if (jsonJobs.value && jsonJobs.value.length) {
-      for (let i = 0; i < jsonJobs.value.length; i++) {
-        const job = jsonJobs.value[i];
+    let combined = jsonJobs.value.concat(allJobs.value);
+    combined = [...new Set(combined)];
+    console.log('jsonjobs', jsonJobs.value.length);
+    console.log('allJobs', combined);
+    const uniqueJobs = [
+      ...new Map(combined.map((v: any) => [v.pubkey.toString(), v])).values(),
+    ];
+    console.log('uniqueJobs', uniqueJobs.length);
+    if (uniqueJobs && uniqueJobs.length) {
+      for (let i = 0; i < uniqueJobs.length; i++) {
+        const job = uniqueJobs[i];
         const market = markets.value?.find(
           (m) => m.address.toString() === job.market.toString(),
         );
@@ -190,9 +199,16 @@ const downloadAllJobs = async () => {
   loading.value = true;
   try {
     allJobs.value = await getAllJobs();
+    let combined = allJobs.value.concat(jsonJobs.value);
+    combined = [...new Set(combined)];
+    const uniqueJobs = [
+      ...new Map(combined.map((v: any) => [v.pubkey.toString(), v])).values(),
+    ];
+    console.log('unique', uniqueJobs.length);
+
     // '-' + Math.floor(Date.now() / 1000) +
     const jsonFile = network.value + '-jobs.json';
-    const str = JSON.stringify(allJobs.value);
+    const str = JSON.stringify(uniqueJobs);
 
     // Save the file contents as a DataURI
     dataUri.value =
