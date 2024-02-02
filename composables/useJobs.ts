@@ -109,7 +109,12 @@ const getAllJobs = async () => {
   console.log('retrieving ALL jobs..');
   loadingJobs.value = true;
   try {
-    const allJobs = await nosana.value.jobs.allFullJobs();
+    let allJobs = await nosana.value.jobs.allFullJobs();
+    allJobs = allJobs.filter((j) => {
+      // check if running
+      return j.state !== 3 && (j.timeStart || j.state < 2);
+    });
+
     loadingJobs.value = false;
     return allJobs;
   } catch (e) {

@@ -113,7 +113,7 @@ const getEarningsPerNode = () => {
     let combined = jsonJobs.value.concat(allJobs.value);
     combined = [...new Set(combined)];
     console.log('jsonjobs', jsonJobs.value.length);
-    console.log('allJobs', combined);
+    console.log('allJobs', combined.length);
     const uniqueJobs = [
       ...new Map(combined.map((v: any) => [v.pubkey.toString(), v])).values(),
     ];
@@ -152,7 +152,7 @@ const getEarningsPerNode = () => {
           }
         }
       }
-      nodeEarnings = nodeEarnings.sort((a: any, b: any) => b.earned - a.earned);
+      nodeEarnings = nodeEarnings.sort((a: any, b: any) => b.jobs - a.jobs);
       console.log('nodeEarnings', nodeEarnings);
       earningsPerNode.value = nodeEarnings;
       loading.value = false;
