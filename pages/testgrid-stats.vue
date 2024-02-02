@@ -120,6 +120,9 @@ const getEarningsPerNode = () => {
     console.log('uniqueJobs', uniqueJobs.length);
     if (uniqueJobs && uniqueJobs.length) {
       for (let i = 0; i < uniqueJobs.length; i++) {
+        if (i % 1000 === 0) {
+          console.log(i);
+        }
         const job = uniqueJobs[i];
         const market = markets.value?.find(
           (m) => m.address.toString() === job.market.toString(),
@@ -136,7 +139,7 @@ const getEarningsPerNode = () => {
           ) {
             const earnedNos = (job.price / 1e6) * (job.timeEnd - job.timeStart);
             const nodeIndex = nodeEarnings.findIndex(
-              (n: any) => n.address === job.node,
+              (n: any) => n.address.toString() === job.node.toString(),
             );
             if (nodeIndex > -1) {
               nodeEarnings[nodeIndex].earned =
