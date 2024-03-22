@@ -15,8 +15,8 @@ const nosana = computed(() => {
     solana: {
       network:
         network.value === 'devnet'
-          ? 'https://rpc.ironforge.network/devnet?apiKey=01HFRX48N027P9XQ07KH3DHBEA'
-          : 'https://rpc.ironforge.network/mainnet?apiKey=01HFRX48N027P9XQ07KH3DHBEA', // https://rpc-public.hellomoon.io
+          ? 'https://rpc.ironforge.network/devnet?apiKey=01HSK29G2P0Q5G3B5JD6W08VZY'
+          : 'https://rpc.ironforge.network/mainnet?apiKey=01HSK29G2P0Q5G3B5JD6W08VZY', // https://rpc-public.hellomoon.io
       jobs_address:
         network.value === 'devnet'
           ? 'nosJTmGQxvwXy23vng5UjkTbfv91Bzf9jEuro78dAGR'
